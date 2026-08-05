@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CheckoutLink } from "@/components/CheckoutLink";
+import { DiagnosticStartButton } from "@/components/DiagnosticStartButton";
 import { DIAGNOSTIC_STORAGE_KEY } from "@/lib/diagnostic";
 
 function readCompleted() {
@@ -42,9 +43,12 @@ export function DiagnosticStickyCTA() {
             Desbloquear acesso <ArrowRight className="h-3.5 w-3.5" />
           </CheckoutLink>
         ) : (
-          <a href="#diagnostico" className="nss-primary-btn px-4 py-2.5 text-xs">
+          <DiagnosticStartButton
+            placement="mobile_sticky"
+            className="nss-primary-btn px-4 py-2.5 text-xs"
+          >
             Descobrir meu passo <ArrowRight className="h-3.5 w-3.5" />
-          </a>
+          </DiagnosticStartButton>
         )}
       </div>
     </div>

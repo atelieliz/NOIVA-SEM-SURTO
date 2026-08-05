@@ -41,6 +41,32 @@ export function DiagnosticExperience() {
   const processingFinished = useRef(false);
 
   useEffect(() => {
+    function handleExternalStart() {
+      let shouldTrackStart = false;
+
+      setState((current) => {
+        if (current.completed) return current;
+        shouldTrackStart = !current.started;
+        return { ...current, started: true };
+      });
+
+      if (shouldTrackStart) {
+        trackEvent("StartDiagnostic", { questions_total: diagnosticQuestions.length });
+      }
+
+      window.requestAnimationFrame(() => {
+        document.getElementById("diagnostico")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+
+    window.addEventListener("nss:start-diagnostic", handleExternalStart);
+    return () => window.removeEventListener("nss:start-diagnostic", handleExternalStart);
+  }, []);
+
+  useEffect(() => {
     try {
       const stored = window.localStorage.getItem(DIAGNOSTIC_STORAGE_KEY);
       if (stored) {
@@ -134,6 +160,28 @@ export function DiagnosticExperience() {
   function start() {
     setState((current) => ({ ...current, started: true }));
     trackEvent("StartDiagnostic", { questions_total: diagnosticQuestions.length });
+    window.requestAnimationFrame(() => {
+      document.getElementById("diagnostico")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
+
+  function goToOffer() {
+    trackEvent("OfferIntent", { placement: "diagnostic_result" });
+
+    const scroll = () => {
+      document.getElementById("oferta")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    };
+
+    window.requestAnimationFrame(() => {
+      scroll();
+      window.setTimeout(scroll, 120);
+    });
   }
 
   function choose(option: string) {
@@ -293,13 +341,13 @@ export function DiagnosticExperience() {
           <p className="mx-auto mt-3 max-w-2xl text-cream/65">
             O Noiva Sem Surto transforma essa leitura em uma jornada completa, mostrando uma prioridade por vez até a celebração.
           </p>
-          <a
-            href="#oferta"
+          <button
+            type="button"
             className="nss-primary-btn mt-6 w-full sm:w-auto"
-            onClick={() => trackEvent("OfferIntent", { placement: "diagnostic_result" })}
+            onClick={goToOffer}
           >
             Desbloquear meu planejamento <ArrowRight className="h-4 w-4" />
-          </a>
+          </button>
           <button
             type="button"
             onClick={reset}

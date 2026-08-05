@@ -16,8 +16,6 @@ export function CheckoutLink({
   return (
     <a
       href={CHECKOUT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
       className={className}
       onClick={() =>
         trackEvent("InitiateCheckout", {

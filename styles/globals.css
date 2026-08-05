@@ -184,6 +184,9 @@
 @utility nss-primary-btn {
   display: inline-flex;
   min-height: 3.25rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
@@ -213,6 +216,9 @@
 @utility nss-secondary-btn {
   display: inline-flex;
   min-height: 3.1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -245,6 +251,9 @@
 @utility diagnostic-option {
   display: flex;
   width: 100%;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   min-height: 4rem;
   align-items: center;
   justify-content: space-between;

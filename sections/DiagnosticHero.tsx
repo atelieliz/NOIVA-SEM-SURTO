@@ -1,4 +1,5 @@
 import { ArrowRight, Check, Heart } from "lucide-react";
+import { DiagnosticStartButton } from "@/components/DiagnosticStartButton";
 
 export function DiagnosticHero() {
   return (
@@ -27,9 +28,12 @@ export function DiagnosticHero() {
             Responda três perguntas rápidas e receba uma Rota Sem Surto personalizada para organizar seu casamento, bodas ou celebração sem se perder entre orçamento, convidados, fornecedores e detalhes.
           </p>
 
-          <a href="#diagnostico" className="nss-primary-btn mt-8 w-full sm:w-auto">
+          <DiagnosticStartButton
+            placement="hero"
+            className="nss-primary-btn mt-8 w-full sm:w-auto"
+          >
             Descobrir meu próximo passo <ArrowRight className="h-4 w-4" />
-          </a>
+          </DiagnosticStartButton>
           <p className="mt-3 text-sm font-semibold text-ink/55">Leva menos de 3 minutos.</p>
 
           <div className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-2 text-sm font-semibold text-ink/70">

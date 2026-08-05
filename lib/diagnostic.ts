@@ -19,7 +19,7 @@ export type DiagnosticResult = {
   reassurance: string;
 };
 
-export const DIAGNOSTIC_STORAGE_KEY = "nss_route_v3";
+export const DIAGNOSTIC_STORAGE_KEY = "nss_route_final_v1";
 
 export const diagnosticQuestions: DiagnosticQuestion[] = [
   {
