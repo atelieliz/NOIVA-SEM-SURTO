@@ -48,13 +48,19 @@ export function OfferSection() {
               <span className="font-display text-6xl font-black leading-none">R$ 29,90</span>
             </div>
             <p className="mt-3 text-sm text-cream/65">Pagamento único. Sem mensalidade.</p>
-
-            <a
-  href="https://pay.kiwify.com.br/AUehsBX"
-  className="nss-primary-btn mt-7 w-full"
+            <form
+  action="https://pay.kiwify.com.br/AUehsBX"
+  method="get"
+  className="mt-7"
 >
-  Desbloquear meu planejamento <ArrowRight className="h-4 w-4" />
-</a>
+  <button
+    type="submit"
+    className="nss-primary-btn w-full"
+  >
+    Desbloquear meu planejamento
+    <ArrowRight className="h-4 w-4" />
+  </button>
+</form>
             <p className="mt-3 text-center text-xs text-cream/50">
               Continue exatamente de onde seu diagnóstico terminou.
             </p>
