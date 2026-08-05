@@ -294,7 +294,7 @@ export function DiagnosticExperience() {
             O Noiva Sem Surto transforma essa leitura em uma jornada completa, mostrando uma prioridade por vez até a celebração.
           </p>
           <a
-            href="#oferta"
+            href="/checkout"
             className="nss-primary-btn mt-6 w-full sm:w-auto"
             onClick={() => trackEvent("OfferIntent", { placement: "diagnostic_result" })}
           >
