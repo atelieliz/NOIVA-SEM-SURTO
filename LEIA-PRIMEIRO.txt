@@ -1,0 +1,15 @@
+NÃO APAGUE O REPOSITÓRIO.
+
+1. Extraia este ZIP.
+2. No GitHub, use Add file > Upload files.
+3. Arraste a pasta inteira chamada site-final para o repositório.
+4. Faça Commit changes.
+5. Na Vercel, abra o projeto > Settings > Build and Deployment.
+6. Em Root Directory, selecione site-final.
+7. Framework Preset: Other.
+8. Build Command: npm run build.
+9. Output Directory: dist.
+10. Install Command: deixe vazio ou use npm install.
+11. Salve. Depois abra Deployments e use Redeploy no commit NOVO.
+
+Essa pasta é independente do projeto antigo. A Vercel vai compilar somente site-final.
