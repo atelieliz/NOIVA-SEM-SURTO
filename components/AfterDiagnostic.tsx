@@ -20,23 +20,16 @@ export function AfterDiagnostic({ children }: { children: ReactNode }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setVisible(hasCompletedDiagnostic());
-    const show = () => setVisible(true);
-    window.addEventListener("nss:diagnostic-complete", show);
-    return () => window.removeEventListener("nss:diagnostic-complete", show);
+    const read = () => setVisible(hasCompletedDiagnostic());
+    read();
+    window.addEventListener("nss:diagnostic-complete", read);
+    window.addEventListener("nss:diagnostic-reset", read);
+    return () => {
+      window.removeEventListener("nss:diagnostic-complete", read);
+      window.removeEventListener("nss:diagnostic-reset", read);
+    };
   }, []);
 
-  if (!visible) {
-    return (
-      <section className="px-5 pb-20" aria-label="Conteúdo após o diagnóstico">
-        <div className="mx-auto max-w-3xl rounded-[1.75rem] border border-ink/15 bg-white/60 p-6 text-center shadow-sm">
-          <p className="text-sm font-semibold text-ink/60">
-            Sua leitura personalizada e a continuação do planejamento aparecem aqui após as 8 perguntas.
-          </p>
-        </div>
-      </section>
-    );
-  }
-
+  if (!visible) return null;
   return <>{children}</>;
 }

@@ -12,10 +12,10 @@ import {
 import { trackEvent } from "@/lib/analytics";
 
 const PROCESSING_LINES = [
-  "Analisando seu momento atual.",
-  "Identificando suas prioridades.",
-  "Organizando seus próximos passos.",
-  "Seu diagnóstico está pronto.",
+  "Identificando sua fase.",
+  "Encontrando seu maior risco.",
+  "Definindo sua próxima decisão.",
+  "Separando o que ainda pode esperar.",
 ];
 
 type SavedDiagnostic = {
@@ -26,7 +26,7 @@ type SavedDiagnostic = {
   result?: DiagnosticResult;
 };
 
-const initialSaved: SavedDiagnostic = {
+const initialState: SavedDiagnostic = {
   started: false,
   completed: false,
   current: 0,
@@ -34,18 +34,21 @@ const initialSaved: SavedDiagnostic = {
 };
 
 export function DiagnosticExperience() {
-  const [state, setState] = useState<SavedDiagnostic>(initialSaved);
+  const [state, setState] = useState<SavedDiagnostic>(initialState);
   const [processing, setProcessing] = useState(false);
   const [processingLine, setProcessingLine] = useState(0);
   const loaded = useRef(false);
-  const completedProcessing = useRef(false);
+  const processingFinished = useRef(false);
 
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem(DIAGNOSTIC_STORAGE_KEY);
-      if (stored) setState({ ...initialSaved, ...(JSON.parse(stored) as SavedDiagnostic) });
+      if (stored) {
+        const parsed = JSON.parse(stored) as SavedDiagnostic;
+        setState({ ...initialState, ...parsed });
+      }
     } catch {
-      // O diagnóstico continua funcionando mesmo sem armazenamento local.
+      // O diagnóstico funciona mesmo quando o navegador bloqueia o armazenamento.
     } finally {
       loaded.current = true;
     }
@@ -56,32 +59,32 @@ export function DiagnosticExperience() {
     try {
       window.localStorage.setItem(DIAGNOSTIC_STORAGE_KEY, JSON.stringify(state));
     } catch {
-      // Sem bloqueio da experiência caso o navegador impeça localStorage.
+      // Sem bloqueio da experiência.
     }
   }, [state]);
 
   useEffect(() => {
     if (!state.started || state.completed || processing) return;
 
-    const questionNumber = state.current + 1;
+    const question = diagnosticQuestions[state.current];
     trackEvent("DiagnosticQuestionView", {
-      question_number: questionNumber,
-      question_id: diagnosticQuestions[state.current]?.id,
+      question_number: state.current + 1,
+      question_id: question?.id,
     });
 
-    const trackAbandon = () => {
+    const trackAbandonment = () => {
       if (document.visibilityState !== "hidden") return;
-      const key = `nss_abandon_${questionNumber}`;
+      const key = `nss_abandon_v3_${state.current + 1}`;
       if (window.sessionStorage.getItem(key)) return;
       window.sessionStorage.setItem(key, "1");
       trackEvent("DiagnosticAbandon", {
-        question_number: questionNumber,
-        question_id: diagnosticQuestions[state.current]?.id,
+        question_number: state.current + 1,
+        question_id: question?.id,
       });
     };
 
-    document.addEventListener("visibilitychange", trackAbandon);
-    return () => document.removeEventListener("visibilitychange", trackAbandon);
+    document.addEventListener("visibilitychange", trackAbandonment);
+    return () => document.removeEventListener("visibilitychange", trackAbandonment);
   }, [processing, state.completed, state.current, state.started]);
 
   useEffect(() => {
@@ -93,23 +96,30 @@ export function DiagnosticExperience() {
         return;
       }
 
-      if (completedProcessing.current) return;
-      completedProcessing.current = true;
+      if (processingFinished.current) return;
+      processingFinished.current = true;
 
       const result = createDiagnosticResult(state.answers);
-      setState((current) => ({
-        ...current,
-        completed: true,
-        result,
-      }));
+      setState((current) => ({ ...current, completed: true, result }));
       setProcessing(false);
       trackEvent("CompleteDiagnostic", {
-        profile: result.profile,
         questions_answered: diagnosticQuestions.length,
+        moment: result.momentTitle,
+        priority: result.priorityTitle,
       });
-      trackEvent("DiagnosticResultView", { profile: result.profile });
+      trackEvent("DiagnosticResultView", {
+        moment: result.momentTitle,
+        priority: result.priorityTitle,
+      });
       window.dispatchEvent(new Event("nss:diagnostic-complete"));
-    }, 650);
+
+      window.setTimeout(() => {
+        document.getElementById("resultado-diagnostico")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 120);
+    }, 620);
 
     return () => window.clearTimeout(timer);
   }, [processing, processingLine, state.answers]);
@@ -141,12 +151,14 @@ export function DiagnosticExperience() {
 
   function continueDiagnostic() {
     if (!selected) return;
+
     if (state.current === diagnosticQuestions.length - 1) {
-      completedProcessing.current = false;
+      processingFinished.current = false;
       setProcessingLine(0);
       setProcessing(true);
       return;
     }
+
     setState((current) => ({ ...current, current: current.current + 1 }));
   }
 
@@ -160,26 +172,32 @@ export function DiagnosticExperience() {
     } catch {
       // Nada a fazer.
     }
-    completedProcessing.current = false;
-    setProcessingLine(0);
+    processingFinished.current = false;
     setProcessing(false);
-    setState(initialSaved);
+    setProcessingLine(0);
+    setState(initialState);
     trackEvent("RestartDiagnostic");
+    window.dispatchEvent(new Event("nss:diagnostic-reset"));
+    window.setTimeout(() => {
+      document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
   }
 
   if (!state.started) {
     return (
       <div className="diagnostic-shell">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="tag-chip bg-sun">Uma conversa rápida</span>
-          <h3 className="mt-5 text-3xl font-black sm:text-5xl">Vamos entender o momento real do seu casamento.</h3>
+          <span className="tag-chip bg-lime">Sua Rota Sem Surto começa aqui</span>
+          <h2 className="mt-5 text-3xl font-black sm:text-5xl">
+            Vamos entender o momento real da sua celebração.
+          </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-ink/70 sm:text-lg">
-            Não precisa ter todas as respostas. Use o que vocês sabem hoje.
+            Você não precisa ter todas as respostas agora. Escolha as opções que mais combinam com o que está vivendo hoje.
           </p>
           <button type="button" onClick={start} className="nss-primary-btn mt-8 w-full sm:w-auto">
-            Começar <ArrowRight className="h-4 w-4" />
+            Começar minha rota <ArrowRight className="h-4 w-4" />
           </button>
-          <p className="mt-3 text-sm text-ink/50">8 perguntas · cerca de 2 minutos</p>
+          <p className="mt-3 text-sm font-semibold text-ink/50">3 perguntas rápidas · resultado personalizado</p>
         </div>
       </div>
     );
@@ -187,21 +205,22 @@ export function DiagnosticExperience() {
 
   if (processing) {
     return (
-      <div className="diagnostic-shell min-h-[420px] grid place-items-center" aria-live="polite">
+      <div className="diagnostic-shell grid min-h-[390px] place-items-center" aria-live="polite">
         <div className="text-center">
           <div className="mx-auto grid h-16 w-16 place-items-center rounded-full border-2 border-ink bg-sun">
             <Sparkles className="h-7 w-7" />
           </div>
-          <p className="mt-6 font-display text-2xl font-black sm:text-3xl">
-            {PROCESSING_LINES[processingLine]}
+          <p className="mt-6 text-sm font-black uppercase tracking-[0.16em] text-hot">
+            Organizando sua Rota Sem Surto…
           </p>
-          <div className="mx-auto mt-6 h-2 w-64 max-w-full overflow-hidden rounded-full bg-ink/10">
+          <h2 className="mt-3 text-2xl font-black sm:text-4xl">{PROCESSING_LINES[processingLine]}</h2>
+          <div className="mx-auto mt-7 h-2 w-64 max-w-full overflow-hidden rounded-full bg-ink/10">
             <div
               className="h-full rounded-full bg-hot transition-[width] duration-500"
               style={{ width: `${((processingLine + 1) / PROCESSING_LINES.length) * 100}%` }}
             />
           </div>
-          <p className="mt-4 text-sm text-ink/50">Análise baseada somente nas respostas que você forneceu.</p>
+          <p className="mt-4 text-sm text-ink/50">Análise baseada nas três respostas que você forneceu.</p>
         </div>
       </div>
     );
@@ -209,67 +228,91 @@ export function DiagnosticExperience() {
 
   if (state.completed && state.result) {
     const result = state.result;
+
     return (
-      <div className="diagnostic-shell" id="resultado-diagnostico">
-        <div className="flex flex-col gap-8">
-          <div className="text-center">
-            <span className="tag-chip bg-lime"><Check className="h-3 w-3" /> Diagnóstico concluído</span>
-            <p className="mt-5 text-sm font-bold uppercase tracking-[0.18em] text-ink/50">Seu perfil</p>
-            <h3 className="mt-2 text-4xl font-black text-hot sm:text-6xl">{result.profile}</h3>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-ink/75">{result.description}</p>
-          </div>
+      <div className="diagnostic-shell scroll-mt-6" id="resultado-diagnostico">
+        <div className="text-center">
+          <span className="tag-chip bg-lime">
+            <Check className="h-3.5 w-3.5" /> Sua rota está pronta
+          </span>
+          <p className="mt-6 text-sm font-black uppercase tracking-[0.17em] text-hot">Seu momento atual</p>
+          <h2 className="mx-auto mt-2 max-w-3xl text-4xl font-black sm:text-6xl">{result.momentTitle}</h2>
+          <p className="mx-auto mt-5 max-w-3xl text-lg text-ink/70">{result.description}</p>
+        </div>
 
-          <div className="grid gap-4 lg:grid-cols-2">
-            <article className="result-panel bg-coral text-cream">
-              <p className="result-label text-cream/70">Seu maior risco agora</p>
-              <p className="mt-2 text-lg font-semibold">{result.risk}</p>
-            </article>
-            <article className="result-panel bg-sun">
-              <p className="result-label">Mensagem importante</p>
-              <p className="mt-2 text-lg font-semibold">{result.reassurance}</p>
-            </article>
-          </div>
+        <div className="mt-9 grid gap-4 lg:grid-cols-[.85fr_1.15fr]">
+          <article className="result-panel bg-coral text-cream">
+            <p className="result-label text-cream/70">Seu maior risco agora</p>
+            <p className="mt-3 text-lg font-semibold leading-relaxed">{result.risk}</p>
+          </article>
 
-          <div className="grid gap-4 lg:grid-cols-[1.2fr_.8fr]">
-            <article className="result-panel bg-white">
-              <p className="result-label">Suas próximas três decisões</p>
-              <ol className="mt-4 space-y-3">
-                {result.nextSteps.map((step, index) => (
-                  <li key={step} className="flex gap-3 rounded-2xl bg-cream p-4">
-                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-hot text-sm font-black text-cream">
-                      {index + 1}
-                    </span>
-                    <span className="font-semibold">{step}</span>
-                  </li>
-                ))}
-              </ol>
-            </article>
-            <article className="result-panel bg-white">
-              <p className="result-label">Pode esperar</p>
-              <ul className="mt-4 space-y-3 text-ink/75">
-                {result.canWait.map((item) => (
-                  <li key={item} className="flex gap-2">
-                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-hot" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          </div>
-
-          <div className="flex flex-col items-center justify-between gap-4 rounded-3xl bg-ink px-5 py-5 text-cream sm:flex-row">
-            <div>
-              <p className="font-display text-xl font-black">Agora você já sabe por onde continuar.</p>
-              <p className="mt-1 text-sm text-cream/70">Abaixo, veja como transformar essa leitura em uma jornada completa.</p>
+          <article className="result-panel bg-sun">
+            <p className="result-label">Sua prioridade</p>
+            <h3 className="mt-2 text-2xl font-black sm:text-3xl">{result.priorityTitle}</h3>
+            <p className="mt-3 text-ink/70">{result.priorityExplanation}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {result.priorityImpacts.map((impact) => (
+                <span key={impact} className="rounded-full border border-ink/15 bg-white/55 px-3 py-1.5 text-sm font-bold">
+                  {impact}
+                </span>
+              ))}
             </div>
-            <button type="button" onClick={reset} className="inline-flex items-center gap-2 text-sm font-bold text-cream/75 hover:text-cream">
-              <RotateCcw className="h-4 w-4" /> Refazer diagnóstico
-            </button>
-          </div>
+          </article>
+        </div>
+
+        <div className="mt-4 grid gap-4 lg:grid-cols-[1.1fr_.9fr]">
+          <article className="result-panel bg-white">
+            <p className="result-label">O que fazer primeiro</p>
+            <ol className="mt-4 space-y-3">
+              {result.nextSteps.map((step, index) => (
+                <li key={step} className="flex gap-3 rounded-2xl bg-cream p-4">
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-hot text-sm font-black text-cream">
+                    {index + 1}
+                  </span>
+                  <span className="font-semibold">{step}</span>
+                </li>
+              ))}
+            </ol>
+          </article>
+
+          <article className="result-panel bg-white">
+            <p className="result-label">O que pode esperar</p>
+            <ul className="mt-4 space-y-3 text-ink/70">
+              {result.canWait.map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-hot" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        </div>
+
+        <div className="mt-5 rounded-3xl bg-ink p-6 text-center text-cream sm:p-8">
+          <p className="font-display text-2xl font-black sm:text-3xl">{result.reassurance}</p>
+          <p className="mx-auto mt-3 max-w-2xl text-cream/65">
+            O Noiva Sem Surto transforma essa leitura em uma jornada completa, mostrando uma prioridade por vez até a celebração.
+          </p>
+          <a
+            href="#oferta"
+            className="nss-primary-btn mt-6 w-full sm:w-auto"
+            onClick={() => trackEvent("OfferIntent", { placement: "diagnostic_result" })}
+          >
+            Desbloquear meu planejamento <ArrowRight className="h-4 w-4" />
+          </a>
+          <button
+            type="button"
+            onClick={reset}
+            className="mx-auto mt-5 flex items-center gap-2 text-sm font-bold text-cream/60 transition hover:text-cream"
+          >
+            <RotateCcw className="h-4 w-4" /> Refazer minha rota
+          </button>
         </div>
       </div>
     );
   }
+
+  if (!question) return null;
 
   return (
     <div className="diagnostic-shell">
@@ -282,8 +325,10 @@ export function DiagnosticExperience() {
       </div>
 
       <div className="mx-auto mt-8 max-w-3xl">
-        <p className="text-sm font-bold uppercase tracking-[0.16em] text-hot">Conversa com sua assessora</p>
-        <h3 className="mt-3 text-3xl font-black sm:text-5xl">{question.question}</h3>
+        <p className="text-sm font-black uppercase tracking-[0.16em] text-hot">Construindo sua rota</p>
+        <h2 className="mt-3 text-3xl font-black sm:text-5xl">{question.question}</h2>
+        {question.helper && <p className="mt-3 text-ink/60">{question.helper}</p>}
+
         <div className="mt-7 grid gap-3">
           {question.options.map((option) => {
             const active = selected === option;
@@ -296,7 +341,11 @@ export function DiagnosticExperience() {
                 className={`diagnostic-option ${active ? "diagnostic-option-active" : ""}`}
               >
                 <span>{option}</span>
-                <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border-2 ${active ? "border-ink bg-lime" : "border-ink/20 bg-white"}`}>
+                <span
+                  className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border-2 ${
+                    active ? "border-ink bg-lime" : "border-ink/20 bg-white"
+                  }`}
+                >
                   {active && <Check className="h-4 w-4" />}
                 </span>
               </button>
@@ -319,7 +368,7 @@ export function DiagnosticExperience() {
             disabled={!selected}
             className="nss-primary-btn disabled:pointer-events-none disabled:opacity-45"
           >
-            {state.current === diagnosticQuestions.length - 1 ? "Ver meu diagnóstico" : "Continuar"}
+            {state.current === diagnosticQuestions.length - 1 ? "Criar minha rota" : "Continuar"}
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>

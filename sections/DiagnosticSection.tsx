@@ -2,7 +2,7 @@ import { DiagnosticExperience } from "@/components/DiagnosticExperience";
 
 export function DiagnosticSection() {
   return (
-    <section id="diagnostico" className="scroll-mt-6 border-y border-ink/10 bg-[linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,247,236,.95))] px-5 py-20 sm:py-28">
+    <section id="diagnostico" className="scroll-mt-4 px-5 pb-20 pt-5 sm:pb-28 sm:pt-8">
       <div className="mx-auto max-w-5xl">
         <DiagnosticExperience />
       </div>
