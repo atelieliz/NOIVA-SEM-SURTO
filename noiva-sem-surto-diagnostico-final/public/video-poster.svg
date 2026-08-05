@@ -1,0 +1,10 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#4B276D"/>
+  <circle cx="1370" cy="140" r="360" fill="#FF6B5E" fill-opacity="0.75"/>
+  <circle cx="190" cy="790" r="420" fill="#F6D94A" fill-opacity="0.45"/>
+  <path d="M0 610C252 518 401 548 618 666C826 780 1027 788 1600 540V900H0V610Z" fill="#FFF7EC" fill-opacity="0.12"/>
+  <rect x="470" y="228" width="660" height="444" rx="48" fill="#FFF7EC" fill-opacity="0.10" stroke="#FFF7EC" stroke-opacity="0.35" stroke-width="4"/>
+  <text x="800" y="390" text-anchor="middle" fill="#FFF7EC" font-family="Georgia, serif" font-size="72" font-weight="700">Noiva Sem Surto</text>
+  <text x="800" y="470" text-anchor="middle" fill="#FFF7EC" fill-opacity="0.82" font-family="Arial, sans-serif" font-size="34">Por que organizar tudo ao mesmo tempo</text>
+  <text x="800" y="518" text-anchor="middle" fill="#FFF7EC" fill-opacity="0.82" font-family="Arial, sans-serif" font-size="34">faz você se sentir ainda mais perdida?</text>
+</svg>
