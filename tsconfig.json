@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,24 +13,35 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "sections/**/*.ts",
+    "sections/**/*.tsx",
+    "lib/**/*.ts",
+    "lib/**/*.tsx",
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "noiva-sem-surto-diagnostico-final",
+    "noiva-sem-surto-nextjs",
+    "noiva-sem-surto-rota-final",
+    "noiva-sem-surto-rota-final-corrigido",
+    "nss_fix",
+    "nss_rebuild",
+    "**/noiva-sem-surto-diagnostico-final/**",
+    "**/noiva-sem-surto-nextjs/**",
+    "**/noiva-sem-surto-rota-final/**",
+    "**/noiva-sem-surto-rota-final-corrigido/**"
   ]
 }
