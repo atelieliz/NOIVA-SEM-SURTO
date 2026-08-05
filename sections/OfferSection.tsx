@@ -1,5 +1,4 @@
 import { ArrowRight, Check, CreditCard, LockKeyhole, Mail, Smartphone } from "lucide-react";
-import { CheckoutLink } from "@/components/CheckoutLink";
 import { OfferObserver } from "@/components/OfferObserver";
 
 export function OfferSection() {
@@ -50,9 +49,12 @@ export function OfferSection() {
             </div>
             <p className="mt-3 text-sm text-cream/65">Pagamento único. Sem mensalidade.</p>
 
-            <CheckoutLink placement="offer_main" className="nss-primary-btn mt-7 w-full">
-              Desbloquear meu planejamento <ArrowRight className="h-4 w-4" />
-            </CheckoutLink>
+            <a
+  href="https://pay.kiwify.com.br/AUehsBX"
+  className="nss-primary-btn mt-7 w-full"
+>
+  Desbloquear meu planejamento <ArrowRight className="h-4 w-4" />
+</a>
             <p className="mt-3 text-center text-xs text-cream/50">
               Continue exatamente de onde seu diagnóstico terminou.
             </p>
