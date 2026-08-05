@@ -8,7 +8,6 @@ export function FAQItem({ q, a }: { q: string; a: string }) {
   return (
     <div className="brutal-card overflow-hidden">
       <button
-        type="button"
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
       >

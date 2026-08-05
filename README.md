@@ -1,46 +1,61 @@
-# Noiva Sem Surto — Landing Rota Sem Surto
+# Noiva Sem Surto — Landing final enxuta
 
-Landing page em Next.js com jornada enxuta de conversão:
+Esta versão usa exatamente a mesma base técnica da primeira implantação que funcionou:
 
-1. Headline e CTA para o diagnóstico.
-2. Três perguntas interativas.
-3. Resultado personalizado com risco, prioridade e próximos passos.
-4. Apresentação curta da Bússola Sem Surto.
-5. Oferta e checkout da Kiwify.
-6. FAQ transparente.
+- Next.js 15
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- mesma estrutura de pastas e configurações de build
 
-## Links e integrações
+## Jornada final
 
-- Checkout padrão: `https://pay.kiwify.com.br/AUehsBX`
-- Meta Pixel padrão: `3331832193668276`
-
-Ambos podem ser alterados por variáveis de ambiente:
-
-```env
-NEXT_PUBLIC_CHECKOUT_URL=https://pay.kiwify.com.br/AUehsBX
-NEXT_PUBLIC_META_PIXEL_ID=3331832193668276
-NEXT_PUBLIC_SITE_URL=https://seu-dominio.vercel.app
+```text
+Headline → 3 perguntas → resultado personalizado → Noiva Sem Surto → oferta → Kiwify
 ```
+
+## O que aparece na página
+
+- headline direta, sem preço no início;
+- diagnóstico com apenas 3 perguntas;
+- resultado com momento atual, risco, prioridade, 3 passos e o que pode esperar;
+- apresentação curta da Bússola Sem Surto;
+- oferta de R$ 29,90;
+- FAQ enxuto e transparente;
+- CTA fixo no celular;
+- nenhum vídeo na página;
+- nenhum botão decorativo.
+
+## Links configurados
+
+- Checkout: `https://pay.kiwify.com.br/AUehsBX`
+- Meta Pixel: `3331832193668276`
 
 ## Eventos
 
-- PageView
-- StartDiagnostic
-- DiagnosticQuestionView
-- DiagnosticAnswer
-- DiagnosticAbandon
-- CompleteDiagnostic
-- DiagnosticResultView
-- OfferIntent
-- ViewContent
-- InitiateCheckout
+- `PageView`
+- `StartDiagnostic`
+- `DiagnosticQuestionView`
+- `DiagnosticAnswer`
+- `DiagnosticAbandon`
+- `CompleteDiagnostic`
+- `DiagnosticResultView`
+- `OfferIntent`
+- `ViewContent`
+- `InitiateCheckout`
 
 A landing não dispara `Purchase`.
 
 ## Publicação na Vercel
 
-- Framework: Next.js
-- Root Directory: pasta em que está o `package.json`
-- Build Command: `npm run build`
-- Output Directory: vazio
-- Install Command: `npm install`
+Mantenha as mesmas configurações da implantação que já funcionou:
+
+```text
+Framework Preset: Next.js
+Root Directory: ./
+Build Command: npm run build
+Output Directory: vazio
+Install Command: npm install
+```
+
+Os arquivos `package.json`, `app`, `components`, `lib`, `sections` e `styles` precisam aparecer diretamente na raiz do repositório.
