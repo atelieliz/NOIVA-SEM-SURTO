@@ -1,6 +1,8 @@
 import { ArrowRight, Check, CreditCard, LockKeyhole, Mail, Smartphone } from "lucide-react";
 import { OfferObserver } from "@/components/OfferObserver";
 
+const CHECKOUT_URL = "https://pay.kiwify.com.br/AUehsBX";
+
 export function OfferSection() {
   return (
     <section id="oferta" className="scroll-mt-5 px-5 py-20 sm:py-28">
@@ -48,21 +50,22 @@ export function OfferSection() {
               <span className="font-display text-6xl font-black leading-none">R$ 29,90</span>
             </div>
             <p className="mt-3 text-sm text-cream/65">Pagamento único. Sem mensalidade.</p>
-            <form
-  action="https://pay.kiwify.com.br/AUehsBX"
-  method="get"
-  className="mt-7"
->
-  <button
-    type="submit"
-    className="nss-primary-btn w-full"
-  >
-    Desbloquear meu planejamento
-    <ArrowRight className="h-4 w-4" />
-  </button>
-</form>
+
+            <a
+              id="checkout-principal"
+              href={CHECKOUT_URL}
+              data-checkout-link="true"
+              data-placement="offer_main"
+              className="nss-primary-btn relative z-10 mt-7 w-full cursor-pointer"
+              aria-label="Ir para o checkout seguro da Kiwify"
+            >
+              Desbloquear meu planejamento <ArrowRight className="h-4 w-4" />
+            </a>
             <p className="mt-3 text-center text-xs text-cream/50">
               Continue exatamente de onde seu diagnóstico terminou.
+            </p>
+            <p className="mt-3 text-center text-xs text-cream/60">
+              Se preferir, você também encontrará outro botão de acesso após as dúvidas frequentes.
             </p>
 
             <div className="mt-6 grid gap-3 border-t border-cream/10 pt-6 text-sm text-cream/70">

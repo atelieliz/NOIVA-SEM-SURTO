@@ -2,9 +2,9 @@
 
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CheckoutLink } from "@/components/CheckoutLink";
-import { DiagnosticStartButton } from "@/components/DiagnosticStartButton";
 import { DIAGNOSTIC_STORAGE_KEY } from "@/lib/diagnostic";
+
+const CHECKOUT_URL = "https://pay.kiwify.com.br/AUehsBX";
 
 function readCompleted() {
   try {
@@ -39,16 +39,18 @@ export function DiagnosticStickyCTA() {
           <div className="text-cream/60">{completed ? "Pagamento único" : "3 perguntas rápidas"}</div>
         </div>
         {completed ? (
-          <CheckoutLink placement="mobile_sticky" className="nss-primary-btn px-4 py-2.5 text-xs">
-            Desbloquear acesso <ArrowRight className="h-3.5 w-3.5" />
-          </CheckoutLink>
-        ) : (
-          <DiagnosticStartButton
-            placement="mobile_sticky"
-            className="nss-primary-btn px-4 py-2.5 text-xs"
+          <a
+            href={CHECKOUT_URL}
+            data-checkout-link="true"
+            data-placement="mobile_sticky"
+            className="nss-primary-btn cursor-pointer px-4 py-2.5 text-xs"
           >
+            Desbloquear acesso <ArrowRight className="h-3.5 w-3.5" />
+          </a>
+        ) : (
+          <a href="#diagnostico" className="nss-primary-btn cursor-pointer px-4 py-2.5 text-xs">
             Descobrir meu passo <ArrowRight className="h-3.5 w-3.5" />
-          </DiagnosticStartButton>
+          </a>
         )}
       </div>
     </div>

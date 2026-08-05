@@ -1,0 +1,24 @@
+VALIDAÇÃO DA VERSÃO FINAL
+
+Base técnica: mesma estrutura Next.js/Tailwind que já publicou com sucesso.
+
+Checkout fixo:
+https://pay.kiwify.com.br/AUehsBX
+
+Acessos ao checkout:
+1. Botão principal da oferta.
+2. Botão fixo mobile após o diagnóstico.
+3. Botão final após o FAQ.
+4. Link de texto reserva abaixo do CTA final.
+
+Todos são links HTML diretos, abrem na mesma aba e não dependem de variável da Vercel ou JavaScript para navegar.
+
+Testes executados:
+- sintaxe de 48 arquivos TypeScript/TSX;
+- presença do checkout nos 3 componentes ativos;
+- ausência do componente CheckoutLink nos CTAs ativos;
+- ausência de target=_blank nos CTAs ativos;
+- CTA final posicionado depois do FAQ;
+- favicon app/icon.svg incluído.
+
+Observação: o build Next.js integral não pôde ser executado neste ambiente porque o registro interno de pacotes não disponibiliza @tailwindcss/postcss. A base técnica e as versões do package.json foram preservadas da estrutura que já publicou na Vercel.

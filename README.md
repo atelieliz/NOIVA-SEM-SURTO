@@ -1,61 +1,45 @@
-# Noiva Sem Surto — Landing final enxuta
+# Noiva Sem Surto — Landing final
 
-Esta versão usa exatamente a mesma base técnica da primeira implantação que funcionou:
+Landing em Next.js 15 baseada na mesma estrutura técnica que já publicou com sucesso na Vercel.
 
-- Next.js 15
-- React 19
-- TypeScript
-- Tailwind CSS v4
-- mesma estrutura de pastas e configurações de build
+## Fluxo
 
-## Jornada final
+Anúncio → 3 perguntas → Rota Sem Surto → apresentação do produto → oferta → FAQ → CTA final → Kiwify
 
-```text
-Headline → 3 perguntas → resultado personalizado → Noiva Sem Surto → oferta → Kiwify
-```
+## Checkout
 
-## O que aparece na página
+Todos os CTAs de compra usam link HTML direto, na mesma aba, sem depender de variável de ambiente ou JavaScript:
 
-- headline direta, sem preço no início;
-- diagnóstico com apenas 3 perguntas;
-- resultado com momento atual, risco, prioridade, 3 passos e o que pode esperar;
-- apresentação curta da Bússola Sem Surto;
-- oferta de R$ 29,90;
-- FAQ enxuto e transparente;
-- CTA fixo no celular;
-- nenhum vídeo na página;
-- nenhum botão decorativo.
+`https://pay.kiwify.com.br/AUehsBX`
 
-## Links configurados
+Pontos de acesso:
 
-- Checkout: `https://pay.kiwify.com.br/AUehsBX`
-- Meta Pixel: `3331832193668276`
+- botão principal da oferta;
+- botão fixo mobile depois do diagnóstico;
+- CTA final após o FAQ.
 
-## Eventos
+O JavaScript é usado apenas para registrar `InitiateCheckout`; a navegação funciona mesmo se o rastreamento falhar.
 
-- `PageView`
-- `StartDiagnostic`
-- `DiagnosticQuestionView`
-- `DiagnosticAnswer`
-- `DiagnosticAbandon`
-- `CompleteDiagnostic`
-- `DiagnosticResultView`
-- `OfferIntent`
-- `ViewContent`
-- `InitiateCheckout`
+## Meta Pixel
 
-A landing não dispara `Purchase`.
+ID padrão: `3331832193668276`
 
-## Publicação na Vercel
+Eventos principais:
 
-Mantenha as mesmas configurações da implantação que já funcionou:
+- PageView
+- StartDiagnostic
+- CompleteDiagnostic
+- ViewContent
+- InitiateCheckout
 
-```text
-Framework Preset: Next.js
-Root Directory: ./
-Build Command: npm run build
-Output Directory: vazio
-Install Command: npm install
-```
+A landing não dispara Purchase.
 
-Os arquivos `package.json`, `app`, `components`, `lib`, `sections` e `styles` precisam aparecer diretamente na raiz do repositório.
+## Publicação
+
+Envie o conteúdo desta pasta para a raiz do repositório, mantendo:
+
+- Framework: Next.js
+- Root Directory: `./`
+- Build Command: `npm run build`
+- Output Directory: vazio
+- Install Command: `npm install`

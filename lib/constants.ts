@@ -1,10 +1,4 @@
-const DEFAULT_CHECKOUT_URL = "https://pay.kiwify.com.br/AUehsBX";
-const configuredCheckoutUrl = process.env.NEXT_PUBLIC_CHECKOUT_URL?.trim();
-
-export const CHECKOUT_URL =
-  configuredCheckoutUrl && /^https?:\/\//i.test(configuredCheckoutUrl)
-    ? configuredCheckoutUrl
-    : DEFAULT_CHECKOUT_URL;
+export const CHECKOUT_URL = "https://pay.kiwify.com.br/AUehsBX";
 
 // Mantido por compatibilidade com a estrutura que já foi publicada.
 // A página final não renderiza o vídeo.

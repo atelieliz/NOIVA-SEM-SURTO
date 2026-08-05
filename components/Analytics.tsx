@@ -1,6 +1,8 @@
 "use client";
 
 import Script from "next/script";
+import { useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -8,6 +10,25 @@ const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "3331832193668276
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 
 export function Analytics() {
+  useEffect(() => {
+    const handleCheckoutClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const link = target.closest<HTMLAnchorElement>("a[data-checkout-link=\"true\"]");
+      if (!link) return;
+
+      trackEvent("InitiateCheckout", {
+        placement: link.dataset.placement ?? "unknown",
+        value: 29.9,
+        currency: "BRL",
+        content_name: "Noiva Sem Surto",
+      });
+    };
+
+    document.addEventListener("click", handleCheckoutClick, { capture: true });
+    return () => document.removeEventListener("click", handleCheckoutClick, { capture: true });
+  }, []);
+
   return (
     <>
       {GTM_ID && (
