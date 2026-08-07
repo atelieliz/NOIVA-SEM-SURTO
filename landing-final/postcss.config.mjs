@@ -1,1 +1,5 @@
-Unsupported Media Type
+const config = {
+  plugins: {},
+};
+
+export default config;
