@@ -481,76 +481,78 @@ export default function Home() {
             <div className="container">
               <div className="resultHeading">
                 <p className="eyebrow centered"><span /> SUA ROTA ESTÁ PRONTA <span /></p>
-                <h2>O que precisa vir primeiro ficou mais claro.</h2>
+                <h2>Você já sabe onde está. Agora falta enxergar o próximo passo.</h2>
               </div>
 
-              <div className="resultGrid">
-                <article className="resultMainCard">
-                  <p className="cardLabel">SEU MOMENTO ATUAL</p>
+              <div className="resultSignalGrid">
+                <article className="resultSignalCard momentCard">
+                  <span className="resultSignalIcon" aria-hidden="true">✦</span>
+                  <p className="cardLabel">SEU MOMENTO</p>
                   <h3>{route.stage.title}</h3>
-                  <p>{route.stage.text}</p>
-                  <div className="riskBox">
-                    <p className="cardLabel">SEU MAIOR RISCO AGORA</p>
-                    <p>{route.pain.risk}</p>
-                  </div>
                 </article>
 
-                <article className="priorityCard">
+                <article className="resultSignalCard attentionCard">
+                  <span className="resultSignalIcon" aria-hidden="true">!</span>
+                  <p className="cardLabel">PONTO DE ATENÇÃO</p>
+                  <p>{route.pain.risk}</p>
+                </article>
+
+                <article className="resultSignalCard priorityCard">
+                  <span className="resultSignalIcon" aria-hidden="true">→</span>
                   <p className="cardLabel">SUA PRIORIDADE</p>
-                  <span className="priorityNumber">01</span>
                   <h3>{route.pain.priority}</h3>
-                  <p>{route.pain.reason}</p>
                 </article>
               </div>
 
-              <div className="actionGrid">
-                <article className="actionCard">
-                  <p className="cardLabel">O QUE FAZER PRIMEIRO</p>
-                  <ol>
-                    {route.pain.first.map((item, index) => (
-                      <li key={item}><span>{index + 1}</span><p>{item}</p></li>
-                    ))}
-                  </ol>
-                </article>
-                <article className="waitCard">
-                  <p className="cardLabel">O QUE PODE ESPERAR</p>
-                  <ul>
-                    {route.pain.wait.map((item) => <li key={item}>{item}</li>)}
-                  </ul>
-                  <p className="calmNote">Você não está atrasada para tudo. Só precisa parar de tratar todas as decisões como se tivessem a mesma urgência.</p>
-                </article>
+              <article className="waitCard compactWaitCard">
+                <div>
+                  <span className="resultSignalIcon small" aria-hidden="true">⌛</span>
+                  <p className="cardLabel">ISSO PODE ESPERAR</p>
+                </div>
+                <ul>
+                  {route.pain.wait.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              </article>
+
+              <div className="routeFlowCue" aria-hidden="true">
+                <span>⌄</span>
+                <span>⌄</span>
+                <span>⌄</span>
               </div>
+
+              <article className="routeUnlockCard">
+                <span className="routeUnlockIcon" aria-hidden="true">↗</span>
+                <p className="eyebrow centered"><span /> SEU RESULTADO É O COMEÇO <span /></p>
+                <h3>Descubra o que fazer primeiro dentro do Noiva Sem Surto.</h3>
+                <p>Libere o mini app para abrir sua rota completa e avançar uma decisão por vez.</p>
+                <CheckoutButton
+                  className="resultCheckoutButton"
+                  busy={checkoutBusy}
+                  href={checkoutHref}
+                  onClick={handleCheckoutClick}
+                >
+                  DESCOBRIR O QUE FAZER PRIMEIRO
+                </CheckoutButton>
+                <small>Acesso completo ao mini app por R$ 29,90 • pagamento único</small>
+              </article>
 
               <button className="textButton" type="button" onClick={restartDiagnosis}>↻ Refazer meu diagnóstico</button>
-            </div>
-          </section>
-
-          <section className="bridgeSection">
-            <div className="container bridgeGrid">
-              <div>
-                <p className="eyebrow light"><span /> O DIAGNÓSTICO MOSTROU O COMEÇO</p>
-                <h2>Agora você precisa de uma rota que acompanhe as decisões.</h2>
-              </div>
-              <div>
-                <p>Uma orientação isolada ajuda por alguns minutos. O Noiva Sem Surto transforma essa clareza em uma jornada guiada: uma prioridade por vez, com as informações conectadas.</p>
-                <a className="lightLink" href="#como-funciona">VER O QUE VOCÊ RECEBE <ArrowIcon /></a>
-              </div>
             </div>
           </section>
 
           <section id="como-funciona" className="productSection">
             <div className="container">
               <div className="sectionHeading">
-                <p className="eyebrow centered"><span /> NÃO É UMA LISTA GENÉRICA <span /></p>
-                <h2>É um mini app para decidir com mais clareza e acompanhar o que já foi resolvido.</h2>
-                <p>O planejamento se adapta ao tipo de celebração e ao momento informado por você.</p>
+                <p className="eyebrow centered"><span /> SUA ROTA DENTRO DO MINI APP <span /></p>
+                <h2>Menos texto para acumular. Mais clareza para agir.</h2>
+                <p>O Noiva Sem Surto conecta as decisões importantes ao momento da sua celebração.</p>
               </div>
 
               <div className="stepsGrid">
-                <article><span>01</span><h3>Comece pelo essencial</h3><p>Valor possível, convidados e formato criam a base antes das pesquisas.</p></article>
-                <article><span>02</span><h3>Receba sua rota</h3><p>As decisões entram em uma sequência clara, com o que vem agora e o que pode esperar.</p></article>
-                <article><span>03</span><h3>Organize as escolhas</h3><p>Responsáveis, fornecedores e detalhes ficam ligados às prioridades da celebração.</p></article>
-                <article><span>04</span><h3>Acompanhe o avanço</h3><p>Você enxerga o que já foi definido e qual é o próximo movimento possível.</p></article>
+                <article><span className="stepIcon" aria-hidden="true">R$</span><small>01</small><h3>Defina a base</h3><p>Valor, convidados e formato.</p></article>
+                <article><span className="stepIcon" aria-hidden="true">↗</span><small>02</small><h3>Abra sua rota</h3><p>Veja a próxima decisão.</p></article>
+                <article><span className="stepIcon" aria-hidden="true">⇄</span><small>03</small><h3>Divida escolhas</h3><p>Organize responsáveis e pesquisas.</p></article>
+                <article><span className="stepIcon" aria-hidden="true">✓</span><small>04</small><h3>Acompanhe</h3><p>Enxergue o que já foi resolvido.</p></article>
               </div>
 
               <div className="toolGrid">
