@@ -15,9 +15,9 @@ const fraunces = Fraunces({
 });
 
 export const metadata = {
-  title: "Noiva Sem Surto — Descubra o que vem primeiro",
+  title: "Noiva Sem Surto — Uma decisão de cada vez",
   description:
-    "Descubra sua próxima decisão e organize casamento, bodas ou celebração com uma rota personalizada.",
+    "Faça seu diagnóstico e descubra qual decisão merece atenção primeiro no planejamento da sua celebração.",
   robots: {
     index: true,
     follow: true,
@@ -34,20 +34,31 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#fff8ee",
+  themeColor: "#080708",
 };
 
 const pixelCode = `
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '3331832193668276');
-  fbq('track', 'PageView');
+  (function () {
+    if (window.__nssMetaPixelInitialized) return;
+    window.__nssMetaPixelInitialized = true;
+
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '3331832193668276');
+    fbq('track', 'PageView');
+
+    (window.__nssPendingPixelEvents || []).forEach(function (event) {
+      fbq('trackCustom', event[0], event[1]);
+    });
+    window.__nssPendingPixelEvents = [];
+  })();
 `;
 
 export default function RootLayout({ children }) {

@@ -30,3 +30,13 @@ export function appendTrackingParams(baseUrl, trackingSearch = "") {
 
   return url.toString();
 }
+
+export function claimEvent(eventLocks, eventKey) {
+  if (!eventLocks || typeof eventLocks.has !== "function" || typeof eventLocks.add !== "function") {
+    return false;
+  }
+
+  if (eventLocks.has(eventKey)) return false;
+  eventLocks.add(eventKey);
+  return true;
+}
