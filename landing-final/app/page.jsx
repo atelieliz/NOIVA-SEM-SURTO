@@ -1,16 +1,26 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { appendTrackingParams, mergeTrackingParams } from "@/lib/tracking.mjs";
+import {
+  appendTrackingParams,
+  claimEvent,
+  mergeTrackingParams,
+} from "@/lib/tracking.mjs";
 
 const CHECKOUT_URL = "https://pay.kiwify.com.br/AUehsBX";
 const TRACKING_STORAGE_KEY = "nss_landing_tracking";
-const RESULT_STORAGE_KEY = "nss_landing_result_v2";
+const RESULT_STORAGE_KEY = "nss_landing_result_v3";
 
-// Módulos mantidos no projeto, mas fora da experiência até a entrega estar pronta.
+const PRODUCT_MODULES = Object.freeze({
+  bussolaSemSurto: { name: "Bússola Sem Surto", visible: true },
+  listaDosSonhos: { name: "Lista dos Sonhos", visible: true },
+});
+
+// Permanecem no projeto, mas não entram na oferta até estarem comprovados no produto entregue.
 const FUTURE_MODULES = Object.freeze({
-  bussolaSemSurto: { name: "Bússola Sem Surto", visible: false },
-  listaDosSonhos: { name: "Lista dos Sonhos", visible: false },
+  visitaTecnica: { name: "Visita técnica", visible: false },
+  ultimosTrintaDias: { name: "Modo Últimos 30 Dias", visible: false },
 });
 
 const QUESTIONS = [
@@ -53,172 +63,164 @@ const QUESTIONS = [
 
 const PAIN_ROUTES = {
   "Não sei por onde começar.": {
-    risk: "pesquisar detalhes antes de definir a estrutura que sustenta todas as outras escolhas.",
+    risk: "Pesquisar detalhes antes de definir a base.",
     priority: "Criar a base real da celebração",
-    reason:
-      "Valor possível, convidados e formato são as três decisões que dão direção a orçamento, local e fornecedores.",
-    first: [
-      "Definir, em casal, o valor possível para a celebração.",
-      "Estimar os convidados por família ou grupo.",
-      "Escolher o formato e o tamanho aproximado do momento.",
-    ],
+    reason: "Valor, convidados e formato orientam todo o resto.",
     wait: ["lembranças", "papelaria complementar", "atrações extras", "detalhes decorativos"],
   },
   "Tenho medo de gastar mais do que podemos.": {
-    risk: "pedir orçamentos sem um limite claro e acabar escolhendo pelo susto, não pela prioridade.",
+    risk: "Pedir orçamentos sem saber o limite do casal.",
     priority: "Transformar desejo em um valor possível",
-    reason:
-      "Um limite decidido em casal ajuda a comparar escolhas, ajustar convidados e saber onde vale investir mais.",
-    first: [
-      "Conversar em casal sobre o valor total possível.",
-      "Separar o que é prioridade do que pode ser adaptado.",
-      "Estimar convidados antes de comparar espaços e buffet.",
-    ],
-    wait: ["itens extras de decoração", "lembranças", "papelaria adicional", "upgrades sem orçamento"],
+    reason: "Um limite claro facilita comparações e evita escolhas no susto.",
+    wait: ["extras de decoração", "lembranças", "papelaria adicional", "upgrades sem orçamento"],
   },
   "A lista de convidados está virando um problema.": {
-    risk: "tratar cada nome isoladamente e perder a noção do impacto de famílias e grupos no orçamento.",
+    risk: "Contar nomes sem enxergar famílias, grupos e impacto no orçamento.",
     priority: "Estimar convidados por família ou grupo",
-    reason:
-      "A quantidade prevista orienta espaço, buffet e investimento. Famílias maiores entram com a quantidade real, não como um único nome.",
-    first: [
-      "Criar os grupos principais: família, amigos e pessoas essenciais.",
-      "Registrar cada família com a quantidade prevista de convidados.",
-      "Comparar o total com o formato e o valor possível.",
-    ],
-    wait: ["posição nas mesas", "convites individuais", "lembranças", "confirmação final de presença"],
+    reason: "A quantidade real orienta espaço, buffet e investimento.",
+    wait: ["posição nas mesas", "convites individuais", "lembranças", "confirmação final"],
   },
   "Não sei quais fornecedores contratar primeiro.": {
-    risk: "comparar propostas diferentes sem critérios comuns e contratar o que parece urgente.",
+    risk: "Comparar propostas diferentes sem os mesmos critérios.",
     priority: "Definir critérios antes de pedir novos orçamentos",
-    reason:
-      "Com formato, quantidade e valor em mãos, fica mais simples comparar fornecedores e decidir a ordem das contratações.",
-    first: [
-      "Confirmar formato, estimativa de convidados e limite de investimento.",
-      "Escolher a próxima categoria que destrava outras decisões.",
-      "Comparar propostas com os mesmos critérios, lado a lado.",
-    ],
+    reason: "Formato, quantidade e valor mostram o que comparar primeiro.",
     wait: ["fornecedores extras", "personalizações", "detalhes estéticos", "itens sem impacto na estrutura"],
   },
   "Tenho muitas ideias, mas nenhum plano.": {
-    risk: "tentar encaixar todas as referências antes de escolher o que realmente representa vocês.",
+    risk: "Tentar encaixar todas as referências ao mesmo tempo.",
     priority: "Transformar referências em prioridades",
-    reason:
-      "Quando o casal define o que é essencial, as ideias deixam de competir e começam a formar uma rota possível.",
-    first: [
-      "Escolher três sensações que a celebração deve transmitir.",
-      "Definir o que é indispensável para o casal.",
-      "Conectar essas prioridades ao valor, convidados e formato.",
-    ],
-    wait: ["tendências", "detalhes de inspiração", "compras por impulso", "itens que não representam o casal"],
+    reason: "O essencial vira filtro para o restante das ideias.",
+    wait: ["tendências", "detalhes de inspiração", "compras por impulso", "itens sem significado"],
   },
   "Estou organizando praticamente tudo sozinha.": {
-    risk: "acumular decisões sem deixar claro quem participa, aprova ou executa cada etapa.",
+    risk: "Acumular decisões sem definir quem participa de cada etapa.",
     priority: "Dividir as primeiras responsabilidades com clareza",
-    reason:
-      "As decisões centrais começam em casal; depois, cada tarefa pode ter uma pessoa responsável e um próximo passo visível.",
-    first: [
-      "Definir em casal o valor possível da celebração.",
-      "Estimar em casal o número de convidados.",
-      "Decidir juntos o formato antes de dividir as próximas tarefas.",
-    ],
-    wait: ["tarefas sem prazo", "opiniões externas", "detalhes não prioritários", "decisões que dependem da base"],
+    reason: "As decisões centrais são do casal; a execução pode ser dividida.",
+    wait: ["tarefas sem prazo", "opiniões externas", "detalhes não prioritários", "decisões sem base"],
   },
 };
 
 const STAGE_COPY = {
   "Ainda é uma ideia, sem data definida.": {
-    title: "Sua celebração precisa de uma base antes das pesquisas",
-    text: "Não ter uma data ainda não impede o começo. Primeiro, vocês precisam entender tamanho, valor possível e formato para que a data nasça de uma escolha viável.",
+    title: "Comece pela base",
+    text: "Defina tamanho, valor e formato antes das pesquisas.",
   },
   "Já temos uma data, mas quase nada organizado.": {
-    title: "Data definida, mas planejamento sem direção",
-    text: "A data já cria um prazo real. Agora as escolhas precisam entrar em uma sequência que proteja tempo, orçamento e energia.",
+    title: "A data existe. Falta uma ordem.",
+    text: "Organize as decisões para proteger tempo e orçamento.",
   },
   "Já começamos a pesquisar e pedir orçamentos.": {
-    title: "As pesquisas começaram; agora é hora de criar critérios",
-    text: "Receber propostas não significa que a próxima decisão ficou clara. A rota precisa organizar o que comparar, o que decidir e o que ainda pode esperar.",
+    title: "Você já pesquisa. Faltam critérios.",
+    text: "Compare propostas usando a mesma base.",
   },
   "Já contratamos algumas coisas, mas falta controle.": {
-    title: "Já existem escolhas; agora falta enxergar o todo",
-    text: "O próximo passo é reunir o que foi decidido, identificar dependências e impedir que tarefas importantes desapareçam entre os detalhes.",
+    title: "As escolhas existem. Falta controle.",
+    text: "Reúna decisões e veja o que depende do quê.",
   },
   "Faltam poucos meses e estamos atrasados.": {
-    title: "O prazo encurtou: sua rota precisa priorizar o essencial",
-    text: "Nem tudo tem a mesma urgência. O foco agora é proteger o que sustenta a celebração e retirar peso do que pode ser simplificado.",
+    title: "O prazo apertou. Foque no essencial.",
+    text: "Priorize o que sustenta a celebração.",
   },
   "Estamos reorganizando tudo para bodas ou renovação.": {
-    title: "Uma nova celebração merece uma rota feita para este momento",
-    text: "Bodas e renovação não precisam repetir um casamento. A organização deve partir do significado atual, das pessoas presentes e do formato que faz sentido agora.",
+    title: "Uma nova celebração pede outra rota.",
+    text: "Organize o que combina com o momento de vocês.",
   },
 };
 
 const PRODUCT_TOOLS = [
   {
-    icon: "R$",
-    title: "Valor possível",
-    text: "Defina em casal um limite real para orientar as próximas pesquisas.",
-  },
-  {
-    icon: "👥",
-    title: "Convidados por grupo",
-    text: "Estime pessoas por família ou grupo e enxergue o total previsto.",
+    icon: "⌁",
+    title: "Bússola Sem Surto",
+    text: "Mostra o que resolver agora.",
   },
   {
     icon: "↗",
-    title: "Rota personalizada",
-    text: "Veja qual decisão vem primeiro e o que pode esperar no seu momento.",
+    title: "Minha Rota",
+    text: "Separa agora, depois e concluído.",
+  },
+  {
+    icon: "R$",
+    title: "Planejamento de investimento",
+    text: "Define um valor possível em casal.",
+  },
+  {
+    icon: "👥",
+    title: "Lista por família e grupo",
+    text: "Conta pessoas por família ou grupo.",
   },
   {
     icon: "⇄",
-    title: "Comparação de fornecedores",
-    text: "Organize critérios e propostas para comparar com mais clareza.",
+    title: "Comparador de fornecedores",
+    text: "Compara propostas com os mesmos critérios.",
   },
   {
     icon: "✓",
     title: "Responsabilidades claras",
-    text: "Defina quem participa e quem conduz cada próxima tarefa.",
+    text: "Define quem cuida de cada etapa.",
   },
   {
     icon: "✦",
-    title: "Celebração estruturada",
-    text: "Acompanhe o que já foi resolvido e receba orientações no contexto certo.",
+    title: "Área Celebração",
+    text: "Reúne as decisões da celebração.",
+  },
+  {
+    icon: "SOS",
+    title: "SOS Noiva",
+    text: "Ajuda a retomar a rota.",
   },
 ];
 
 const FAQS = [
   {
-    question: "É só uma lista de tarefas?",
+    question: "Isso é só mais um PDF?",
     answer:
-      "Não. O mini app organiza decisões conectadas. Ele parte do seu momento e mostra prioridades, responsáveis e próximos passos sem entregar uma lista genérica de centenas de itens.",
-  },
-  {
-    question: "Serve para bodas e renovação de votos?",
-    answer:
-      "Sim. A rota considera o tipo de celebração informado e adapta a organização ao momento que vocês estão vivendo.",
-  },
-  {
-    question: "Preciso já ter data ou orçamento definidos?",
-    answer:
-      "Não. O mini app ajuda justamente a construir essa base e a entender qual dessas decisões precisa vir primeiro.",
+      "Não. O Noiva Sem Surto é um mini-app usado pelo navegador do celular ou computador. Você abre, consulta sua próxima decisão e retorna conforme o planejamento avança.",
   },
   {
     question: "Preciso instalar alguma coisa?",
     answer:
-      "Não. O acesso é feito pelo navegador do celular ou computador. O planejamento fica salvo no navegador utilizado.",
+      "Não. O acesso acontece pelo navegador. Você também pode adicionar o atalho à tela inicial do celular para abrir como um aplicativo.",
+  },
+  {
+    question: "Serve para bodas e renovação de votos?",
+    answer:
+      "Sim. O momento escolhido no início orienta a organização da celebração sem obrigar vocês a repetir a estrutura de um casamento tradicional.",
+  },
+  {
+    question: "É uma assinatura?",
+    answer:
+      "Não. O valor de R$ 29,90 é pago uma única vez, sem mensalidade.",
+  },
+  {
+    question: "E se eu entrar e perceber que não é para mim?",
+    answer:
+      "A compra conta com 7 dias de garantia. As condições finais também aparecem no checkout seguro da Kiwify.",
   },
 ];
+
+const DREAM_PRIORITIES = ["Essencial", "Gostaria muito", "Talvez", "Opcional"];
 
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function saveTrackingParams() {
-  const merged = mergeTrackingParams(
-    window.location.search,
-    window.sessionStorage.getItem(TRACKING_STORAGE_KEY) || "",
-  );
-  window.sessionStorage.setItem(TRACKING_STORAGE_KEY, merged);
+  let savedSearch = "";
+
+  try {
+    savedSearch = window.sessionStorage.getItem(TRACKING_STORAGE_KEY) || "";
+  } catch {
+    savedSearch = "";
+  }
+
+  const merged = mergeTrackingParams(window.location.search, savedSearch);
+
+  try {
+    window.sessionStorage.setItem(TRACKING_STORAGE_KEY, merged);
+  } catch {
+    // O checkout continua funcionando mesmo quando o navegador bloqueia o armazenamento.
+  }
+
   return merged;
 }
 
@@ -226,11 +228,21 @@ function createCheckoutUrl() {
   return appendTrackingParams(CHECKOUT_URL, saveTrackingParams());
 }
 
+function queueMetaEvent(name, payload) {
+  if (typeof window.fbq === "function") {
+    window.fbq("trackCustom", name, payload);
+    return;
+  }
+
+  window.__nssPendingPixelEvents = window.__nssPendingPixelEvents || [];
+  window.__nssPendingPixelEvents.push([name, payload]);
+}
+
 function Brand() {
   return (
     <a className="brand" href="#inicio" aria-label="Noiva Sem Surto — início">
-      <span className="brandMark" aria-hidden="true">N</span>
-      <span>Noiva Sem Surto</span>
+      <span className="brandMark" aria-hidden="true">NSS</span>
+      <span className="brandText">Noiva Sem Surto</span>
     </a>
   );
 }
@@ -239,13 +251,14 @@ function ArrowIcon() {
   return <span aria-hidden="true">→</span>;
 }
 
-function CheckoutButton({ className, children, busy, href, onClick }) {
+function CheckoutButton({ className, children, busy, href, onClick, placement }) {
   return (
     <a
       className={cx("primaryButton", className, busy && "isBusy")}
       href={href}
-      onClick={onClick}
+      onClick={(event) => onClick(event, placement)}
       aria-disabled={busy}
+      data-checkout-placement={placement}
     >
       <span>{busy ? "ABRINDO PAGAMENTO…" : children}</span>
       {!busy && <ArrowIcon />}
@@ -263,6 +276,17 @@ function Progress({ current }) {
   );
 }
 
+function AppScreenshot({ src, alt, className, sizes = "(max-width: 900px) 82vw, 420px" }) {
+  return (
+    <div className={cx("phoneFrame", className)}>
+      <span className="phoneSpeaker" aria-hidden="true" />
+      <div className="screenCrop">
+        <Image src={src} alt={alt} width={1170} height={2532} sizes={sizes} />
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(0);
@@ -272,21 +296,53 @@ export default function Home() {
   const [checkoutHref, setCheckoutHref] = useState(CHECKOUT_URL);
   const [checkoutBusy, setCheckoutBusy] = useState(false);
   const checkoutLock = useRef(false);
+  const completionLock = useRef(false);
+  const trackedEvents = useRef(new Set());
 
   useEffect(() => {
     setCheckoutHref(createCheckoutUrl());
-    const stored = window.localStorage.getItem(RESULT_STORAGE_KEY);
-    if (!stored) return;
+
+    const resetCheckout = () => {
+      checkoutLock.current = false;
+      setCheckoutBusy(false);
+      setCheckoutHref(createCheckoutUrl());
+    };
+
+    window.addEventListener("pageshow", resetCheckout);
+
     try {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed.answers) && parsed.answers.length === 3) {
-        setAnswers(parsed.answers);
-        setResult(parsed);
+      const stored = window.localStorage.getItem(RESULT_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed.answers) && parsed.answers.length === 3) {
+          setAnswers(parsed.answers);
+          setResult(parsed);
+        }
       }
     } catch {
-      window.localStorage.removeItem(RESULT_STORAGE_KEY);
+      try {
+        window.localStorage.removeItem(RESULT_STORAGE_KEY);
+      } catch {
+        // Sem bloqueio da experiência.
+      }
     }
+
+    return () => window.removeEventListener("pageshow", resetCheckout);
   }, []);
+
+  useEffect(() => {
+    if (!result) return;
+
+    const pain = PAIN_ROUTES[result.answers[1]] || PAIN_ROUTES[QUESTIONS[1].options[0]];
+    const eventKey = `result-view:${result.createdAt}`;
+
+    if (claimEvent(trackedEvents.current, eventKey)) {
+      queueMetaEvent("ResultView", {
+        content_name: "Diagnóstico Noiva Sem Surto",
+        priority: pain.priority,
+      });
+    }
+  }, [result]);
 
   const selected = answers[step];
 
@@ -299,6 +355,14 @@ export default function Home() {
 
   function startDiagnosis() {
     setStarted(true);
+
+    if (claimEvent(trackedEvents.current, "diagnostic-start")) {
+      queueMetaEvent("StartDiagnostic", {
+        content_name: "Diagnóstico Noiva Sem Surto",
+        questions_total: QUESTIONS.length,
+      });
+    }
+
     window.requestAnimationFrame(() => {
       document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
@@ -323,12 +387,29 @@ export default function Home() {
       return;
     }
 
+    if (completionLock.current) return;
+    completionLock.current = true;
     setIsBuilding(true);
+
     window.setTimeout(() => {
       const nextResult = { answers, createdAt: Date.now() };
-      window.localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(nextResult));
+
+      try {
+        window.localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(nextResult));
+      } catch {
+        // O resultado ainda aparece quando o armazenamento está bloqueado.
+      }
+
+      queueMetaEvent("CompleteDiagnostic", {
+        content_name: "Diagnóstico Noiva Sem Surto",
+        questions_answered: QUESTIONS.length,
+        pain_point: answers[1],
+      });
+
       setResult(nextResult);
       setIsBuilding(false);
+      completionLock.current = false;
+
       window.requestAnimationFrame(() => {
         document.getElementById("resultado")?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
@@ -336,17 +417,25 @@ export default function Home() {
   }
 
   function restartDiagnosis() {
-    window.localStorage.removeItem(RESULT_STORAGE_KEY);
+    try {
+      window.localStorage.removeItem(RESULT_STORAGE_KEY);
+    } catch {
+      // Sem bloqueio da experiência.
+    }
+
+    trackedEvents.current.delete("diagnostic-start");
+    completionLock.current = false;
     setAnswers([null, null, null]);
     setStep(0);
     setResult(null);
     setStarted(true);
+
     window.requestAnimationFrame(() => {
       document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
 
-  function handleCheckoutClick(event) {
+  function handleCheckoutClick(event, placement) {
     event.preventDefault();
     if (checkoutLock.current) return;
 
@@ -355,21 +444,18 @@ export default function Home() {
     const destination = createCheckoutUrl();
     setCheckoutHref(destination);
 
-    try {
-      if (typeof window.fbq === "function") {
-        window.fbq("trackCustom", "CheckoutClick", {
-          content_name: "Noiva Sem Surto",
-          content_type: "product",
-          value: 29.9,
-          currency: "BRL",
-        });
-      }
-    } finally {
-      window.setTimeout(() => window.location.assign(destination), 180);
-    }
+    queueMetaEvent("CheckoutClick", {
+      content_name: "Noiva Sem Surto",
+      content_type: "product",
+      placement,
+      value: 29.9,
+      currency: "BRL",
+    });
+
+    window.setTimeout(() => window.location.assign(destination), 220);
   }
 
-  // A referência impede que os módulos futuros sejam removidos por engano.
+  void PRODUCT_MODULES;
   void FUTURE_MODULES;
 
   return (
@@ -386,41 +472,40 @@ export default function Home() {
       </header>
 
       <section className="hero">
-        <div className="heroOrb heroOrbOne" />
-        <div className="heroOrb heroOrbTwo" />
+        <div className="heroGlow heroGlowOne" />
+        <div className="heroGlow heroGlowTwo" />
         <div className="container heroGrid">
           <div className="heroCopy">
             <p className="eyebrow"><span /> ROTA PERSONALIZADA</p>
-            <h1>Você não precisa organizar tudo agora.</h1>
-            <p className="heroAccent">Precisa descobrir o que vem primeiro.</p>
+            <h1>Você não precisa organizar tudo.</h1>
+            <p className="heroAccent">Só descobrir o que vem primeiro.</p>
             <p className="heroText">
-              Responda três perguntas rápidas e receba uma leitura personalizada para organizar casamento, bodas ou celebração sem se perder entre orçamento, convidados, fornecedores e detalhes.
+              Em 3 perguntas, descubra a decisão que destrava seu planejamento.
             </p>
             <button className="primaryButton heroButton" type="button" onClick={handleHeroAction}>
-              <span>{result ? "VER MINHA ROTA" : "DESCOBRIR MEU PRÓXIMO PASSO"}</span>
+              <span>{result ? "VOLTAR AO MEU RESULTADO" : "DESCOBRIR MEU PRÓXIMO PASSO"}</span>
               <ArrowIcon />
             </button>
-            <p className="microcopy">Leva menos de 3 minutos.</p>
+            <p className="microcopy">Gratuito · sem cadastro · resultado na hora</p>
           </div>
 
-          <aside className="heroCard" aria-label="Como funciona o diagnóstico">
+          <aside className="heroCard" aria-label="Etapas do diagnóstico">
             <div className="heroCardTop">
               <span className="routeStamp">ROTA<br />SEM<br />SURTO</span>
               <p>Clareza antes da pressa.</p>
             </div>
-            <div className="routeLine">
-              <span className="routeDot active" />
-              <span className="routeDot" />
-              <span className="routeDot" />
-              <span className="routeArrow">→</span>
-            </div>
-            <p className="heroCardQuote">“Quando tudo parece urgente, a primeira decisão é escolher a ordem.”</p>
+            <ol className="heroSteps">
+              <li><span>01</span><p>Seu momento</p></li>
+              <li><span>02</span><p>O que trava</p></li>
+              <li><span>03</span><p>Próxima decisão</p></li>
+            </ol>
+            <p className="heroCardQuote">Uma decisão de cada vez.</p>
           </aside>
         </div>
         <div className="container trustRow" aria-label="Vantagens do diagnóstico">
-          <span>✓ Diagnóstico gratuito</span>
           <span>✓ 3 perguntas</span>
-          <span>✓ Resultado na hora</span>
+          <span>✓ Leitura personalizada</span>
+          <span>✓ Sem lista infinita</span>
         </div>
       </section>
 
@@ -430,16 +515,18 @@ export default function Home() {
             {!started ? (
               <div className="diagnosisIntro">
                 <p className="eyebrow centered"><span /> PRIMEIRO: ENTENDER SEU MOMENTO <span /></p>
-                <h2>Antes de falar sobre o produto, vamos descobrir o que você precisa agora.</h2>
-                <p>Sem cadastro e sem compromisso. Suas respostas criam uma rota inicial para o seu momento.</p>
-                <button className="secondaryButton" type="button" onClick={startDiagnosis}>COMEÇAR AS 3 PERGUNTAS <ArrowIcon /></button>
+                <h2>Descubra seu próximo passo.</h2>
+                <p>Escolha o que mais parece com o seu momento.</p>
+                <button className="secondaryButton" type="button" onClick={startDiagnosis}>
+                  COMEÇAR AS 3 PERGUNTAS <ArrowIcon />
+                </button>
               </div>
             ) : isBuilding ? (
               <div className="buildingCard" role="status" aria-live="polite">
                 <span className="loadingRing" />
                 <p className="eyebrow centered">ORGANIZANDO SUA ROTA SEM SURTO…</p>
                 <h2>Identificando sua fase.</h2>
-                <p>Análise baseada nas três respostas que você forneceu.</p>
+                <p>Encontrando o ponto que merece sua atenção primeiro.</p>
               </div>
             ) : (
               <div className="quizCard">
@@ -463,7 +550,9 @@ export default function Home() {
                 </div>
                 <div className="quizFooter">
                   {step > 0 ? (
-                    <button className="backButton" type="button" onClick={() => setStep((current) => current - 1)}>← VOLTAR</button>
+                    <button className="backButton" type="button" onClick={() => setStep((current) => current - 1)}>
+                      ← VOLTAR
+                    </button>
                   ) : <span />}
                   <button className="secondaryButton" type="button" disabled={!selected} onClick={continueDiagnosis}>
                     {step === 2 ? "CRIAR MINHA ROTA" : "CONTINUAR"} <ArrowIcon />
@@ -480,8 +569,9 @@ export default function Home() {
           <section id="resultado" className="resultSection">
             <div className="container">
               <div className="resultHeading">
-                <p className="eyebrow centered"><span /> SUA ROTA ESTÁ PRONTA <span /></p>
-                <h2>Você já sabe onde está. Agora falta enxergar o próximo passo.</h2>
+                <p className="eyebrow centered"><span /> SEU DIAGNÓSTICO <span /></p>
+                <h2>Seu planejamento trava aqui.</h2>
+                <p>E a próxima decisão já apareceu.</p>
               </div>
 
               <div className="resultSignalGrid">
@@ -489,18 +579,20 @@ export default function Home() {
                   <span className="resultSignalIcon" aria-hidden="true">✦</span>
                   <p className="cardLabel">SEU MOMENTO</p>
                   <h3>{route.stage.title}</h3>
+                  <p>{route.stage.text}</p>
                 </article>
 
                 <article className="resultSignalCard attentionCard">
                   <span className="resultSignalIcon" aria-hidden="true">!</span>
-                  <p className="cardLabel">PONTO DE ATENÇÃO</p>
+                  <p className="cardLabel">O QUE PODE ATRAPALHAR</p>
                   <p>{route.pain.risk}</p>
                 </article>
 
                 <article className="resultSignalCard priorityCard">
                   <span className="resultSignalIcon" aria-hidden="true">→</span>
-                  <p className="cardLabel">SUA PRIORIDADE</p>
+                  <p className="cardLabel">SUA PRIORIDADE AGORA</p>
                   <h3>{route.pain.priority}</h3>
+                  <p>{route.pain.reason}</p>
                 </article>
               </div>
 
@@ -514,45 +606,75 @@ export default function Home() {
                 </ul>
               </article>
 
-              <div className="routeFlowCue" aria-hidden="true">
-                <span>⌄</span>
-                <span>⌄</span>
-                <span>⌄</span>
-              </div>
-
-              <article className="routeUnlockCard">
-                <span className="routeUnlockIcon" aria-hidden="true">↗</span>
-                <p className="eyebrow centered"><span /> SEU RESULTADO É O COMEÇO <span /></p>
-                <h3>Descubra o que fazer primeiro dentro do Noiva Sem Surto.</h3>
-                <p>Libere o mini app para abrir sua rota completa e avançar uma decisão por vez.</p>
-                <CheckoutButton
-                  className="resultCheckoutButton"
-                  busy={checkoutBusy}
-                  href={checkoutHref}
-                  onClick={handleCheckoutClick}
-                >
-                  DESCOBRIR O QUE FAZER PRIMEIRO
-                </CheckoutButton>
-                <small>Acesso completo ao mini app por R$ 29,90 • pagamento único</small>
-              </article>
-
               <button className="textButton" type="button" onClick={restartDiagnosis}>↻ Refazer meu diagnóstico</button>
+
+              <div className="routeFlowCue" aria-hidden="true">
+                <span>↓</span><span>↓</span><span>↓</span>
+              </div>
             </div>
           </section>
 
-          <section id="como-funciona" className="productSection">
-            <div className="container">
-              <div className="sectionHeading">
-                <p className="eyebrow centered"><span /> SUA ROTA DENTRO DO MINI APP <span /></p>
-                <h2>Menos texto para acumular. Mais clareza para agir.</h2>
-                <p>O Noiva Sem Surto conecta as decisões importantes ao momento da sua celebração.</p>
+          <section className="problemCostSection">
+            <div className="container problemCostGrid">
+              <div>
+                <p className="eyebrow"><span /> O CUSTO DA ORDEM ERRADA</p>
+                <h2>A ordem errada custa tempo e dinheiro.</h2>
+              </div>
+              <div className="problemStack">
+                <article><span>01</span><p>Orçamentos sem limite.</p></article>
+                <article><span>02</span><p>Decoração antes da lista.</p></article>
+                <article><span>03</span><p>Muitas abas. Poucas decisões.</p></article>
+              </div>
+            </div>
+          </section>
+
+          <section className="bridgeSection">
+            <div className="container bridgeInner">
+              <p className="eyebrow centered"><span /> É AQUI QUE O NOIVA SEM SURTO ENTRA <span /></p>
+              <h2>O diagnóstico mostra o problema. O app mostra o próximo passo.</h2>
+              <p>
+                A Bússola indica o que fazer agora, por que vem primeiro e o que pode esperar.
+              </p>
+              <div className="bridgePromise">
+                <span aria-hidden="true">⌁</span>
+                <strong>Tire o casamento inteiro da cabeça.</strong>
+                <small>Veja apenas a próxima decisão.</small>
+              </div>
+            </div>
+          </section>
+
+          <section className="compassSection">
+            <div className="container compassGrid">
+              <div className="compassCopy">
+                <p className="eyebrow"><span /> DEMONSTRAÇÃO REAL</p>
+                <h2>Abra. Veja a prioridade. Decida.</h2>
+                <p className="displayAccent">Uma decisão por vez.</p>
+                <div className="demoDecisionCard">
+                  <p className="cardLabel">NA BÚSSOLA, VOCÊ ENCONTRA</p>
+                  <ul>
+                    <li><span>01</span> Prioridade</li>
+                    <li><span>02</span> Motivo</li>
+                    <li><span>03</span> Tempo</li>
+                    <li><span>04</span> Próximo passo</li>
+                  </ul>
+                </div>
+                <p className="proofNote">Tela real do mini-app — não é botão de compra.</p>
               </div>
 
-              <div className="stepsGrid">
-                <article><span className="stepIcon" aria-hidden="true">R$</span><small>01</small><h3>Defina a base</h3><p>Valor, convidados e formato.</p></article>
-                <article><span className="stepIcon" aria-hidden="true">↗</span><small>02</small><h3>Abra sua rota</h3><p>Veja a próxima decisão.</p></article>
-                <article><span className="stepIcon" aria-hidden="true">⇄</span><small>03</small><h3>Divida escolhas</h3><p>Organize responsáveis e pesquisas.</p></article>
-                <article><span className="stepIcon" aria-hidden="true">✓</span><small>04</small><h3>Acompanhe</h3><p>Enxergue o que já foi resolvido.</p></article>
+              <AppScreenshot
+                src="/app-screens/bussola.webp"
+                alt="Tela real da Bússola Sem Surto mostrando a prioridade de pesquisar locais e alimentação compatíveis"
+                className="mainPhone"
+              />
+            </div>
+          </section>
+
+          <section className="unlocksSection">
+            <div className="container">
+              <div className="sectionHeading">
+                <p className="eyebrow centered"><span /> O QUE VOCÊ RECEBE <span /></p>
+                <h2>Tudo o que precisa para avançar.</h2>
+                <p>Um só lugar. Nada de arquivos soltos.</p>
               </div>
 
               <div className="toolGrid">
@@ -564,34 +686,78 @@ export default function Home() {
                   </article>
                 ))}
               </div>
+
+              <div className="proofGallery" aria-label="Mais telas reais do mini app">
+                <article>
+                  <AppScreenshot src="/app-screens/minha-rota.webp" alt="Tela Minha Rota com etapas concluídas, etapa atual e próximas decisões" sizes="(max-width: 900px) 72vw, 300px" />
+                  <div><span>01</span><h3>O caminho em ordem</h3><p>Concluído, agora e depois ficam visíveis.</p></div>
+                </article>
+                <article>
+                  <AppScreenshot src="/app-screens/planejamento.webp" alt="Tela de planejamento com investimento, lista, fornecedores e responsabilidades" sizes="(max-width: 900px) 72vw, 300px" />
+                  <div><span>02</span><h3>Planejamento reunido</h3><p>Abra somente o bloco que pede decisão.</p></div>
+                </article>
+                <article>
+                  <AppScreenshot src="/app-screens/sos.webp" alt="Tela SOS com situações comuns do planejamento de casamento" sizes="(max-width: 900px) 72vw, 300px" />
+                  <div><span>03</span><h3>Direção quando algo sai do eixo</h3><p>Situações comuns ganham um ponto de partida.</p></div>
+                </article>
+              </div>
             </div>
           </section>
 
-          <section className="comparisonSection">
-            <div className="container comparisonGrid">
-              <div className="comparisonIntro">
-                <p className="eyebrow"><span /> MENOS RUÍDO, MAIS DIREÇÃO</p>
-                <h2>O objetivo não é fazer você planejar mais. É impedir que você gaste energia na decisão errada.</h2>
+          <section className="dreamListSection">
+            <div className="container dreamListGrid">
+              <div className="dreamListCopy">
+                <p className="eyebrow"><span /> DIFERENCIAL LISTA DOS SONHOS</p>
+                <h2>Primeiro, o sonho. Depois, os cortes.</h2>
+                <p>
+                  Adicione pessoas por família ou grupo, sem começar pela pressão do limite.
+                </p>
+                <p className="dreamManifesto">Sem cortar antes da hora.</p>
+                <p>Depois, organize por prioridade:</p>
+                <div className="priorityChips">
+                  {DREAM_PRIORITIES.map((priority) => <span key={priority}>{priority}</span>)}
+                </div>
+                <blockquote>Sonho primeiro. Ajuste depois.</blockquote>
               </div>
-              <div className="comparisonCards">
-                <article className="comparisonCard muted">
-                  <p className="cardLabel">SEM UMA ROTA</p>
-                  <ul>
-                    <li>pesquisas abertas ao mesmo tempo</li>
-                    <li>orçamentos difíceis de comparar</li>
-                    <li>tarefas concentradas em uma pessoa</li>
-                    <li>sensação de que tudo está atrasado</li>
-                  </ul>
-                </article>
-                <article className="comparisonCard bright">
-                  <p className="cardLabel">COM O NOIVA SEM SURTO</p>
-                  <ul>
-                    <li>uma prioridade visível por vez</li>
-                    <li>base para comparar escolhas</li>
-                    <li>responsabilidades mais claras</li>
-                    <li>visão do que já foi resolvido</li>
-                  </ul>
-                </article>
+
+              <AppScreenshot
+                src="/app-screens/lista-dos-sonhos.webp"
+                alt="Tela real da Lista dos Sonhos organizando convidados por família ou grupo e quantidade de pessoas"
+                className="dreamPhone"
+              />
+            </div>
+          </section>
+
+          <section className="trustSection">
+            <div className="container">
+              <div className="sectionHeading trustHeading">
+                <p className="eyebrow centered"><span /> PRODUTO REAL, CONDIÇÕES CLARAS <span /></p>
+                <h2>Simples de usar. Feito para noivas.</h2>
+                <p>
+                  Abra pelo celular, veja a próxima decisão e volte quando precisar.
+                </p>
+              </div>
+
+              <div className="trustCards">
+                <article><span>▣</span><h3>Mini-app, não PDF</h3><p>Abra pelo navegador e volte conforme o planejamento avança.</p></article>
+                <article><span>◎</span><h3>Telas reais</h3><p>As demonstrações desta página são do produto que você acessa.</p></article>
+                <article><span>↗</span><h3>Acesso simples</h3><p>Use pelo celular ou computador, sem instalar um programa.</p></article>
+                <article><span>✓</span><h3>7 dias de garantia</h3><p>Você pode conhecer a experiência e conferir se ela faz sentido.</p></article>
+              </div>
+
+              <div className="faqGrid">
+                <div>
+                  <p className="eyebrow"><span /> ANTES DE CONTINUAR</p>
+                  <h2>Dúvidas comuns</h2>
+                </div>
+                <div className="faqList">
+                  {FAQS.map((item) => (
+                    <details key={item.question}>
+                      <summary>{item.question}<span>+</span></summary>
+                      <p>{item.answer}</p>
+                    </details>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
@@ -599,55 +765,51 @@ export default function Home() {
           <section id="oferta" className="offerSection">
             <div className="container offerGrid">
               <div className="offerCopy">
-                <p className="eyebrow light"><span /> ACESSO AO MINI APP</p>
-                <h2>Continue exatamente de onde sua Rota Sem Surto terminou.</h2>
-                <p>Organize as próximas decisões no celular, sem planilhas gigantes e sem precisar descobrir a ordem sozinha.</p>
+                <p className="eyebrow"><span /> DESBLOQUEIE SUA JORNADA COMPLETA</p>
+                <h2>Abra sua rota completa.</h2>
+                <p>Avance pelo celular, uma decisão por vez.</p>
                 <ul className="offerList">
-                  <li>✓ Jornada guiada para o seu momento</li>
-                  <li>✓ Valor possível, convidados e fornecedores organizados</li>
-                  <li>✓ Responsabilidades e decisões organizadas</li>
-                  <li>✓ Acesso pelo navegador, no celular ou computador</li>
+                  <li>✓ Bússola + Minha Rota</li>
+                  <li>✓ Orçamento, convidados e fornecedores</li>
+                  <li>✓ Responsabilidades, Celebração e SOS</li>
+                  <li>✓ Acesso pelo celular ou computador</li>
                 </ul>
               </div>
 
               <aside className="priceCard">
                 <p className="cardLabel">NOIVA SEM SURTO</p>
-                <p className="priceIntro">Acesso ao mini app por</p>
+                <p className="oldPrice">De <s>R$ 67,00</s></p>
+                <p className="priceIntro">por</p>
                 <div className="price"><span>R$</span><strong>29</strong><span>,90</span></div>
-                <p className="paymentNote">pagamento único</p>
-                <CheckoutButton busy={checkoutBusy} href={checkoutHref} onClick={handleCheckoutClick}>
-                  QUERO ORGANIZAR SEM SURTO
+                <p className="paymentNote">pagamento único · sem mensalidade</p>
+                <CheckoutButton
+                  busy={checkoutBusy}
+                  href={checkoutHref}
+                  onClick={handleCheckoutClick}
+                  placement="offer_main"
+                >
+                  DESBLOQUEAR MEU PLANEJAMENTO
                 </CheckoutButton>
                 <p className="secureNote">Pagamento processado com segurança pela Kiwify.</p>
               </aside>
             </div>
           </section>
 
-          <section className="faqSection">
-            <div className="container faqGrid">
-              <div>
-                <p className="eyebrow"><span /> ANTES DE CONTINUAR</p>
-                <h2>Dúvidas comuns</h2>
-              </div>
-              <div className="faqList">
-                {FAQS.map((item) => (
-                  <details key={item.question}>
-                    <summary>{item.question}<span>+</span></summary>
-                    <p>{item.answer}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="finalCta">
-            <div className="container finalCtaInner">
-              <p className="eyebrow centered light"><span /> SUA PRÓXIMA DECISÃO JÁ APARECEU <span /></p>
-              <h2>Agora transforme clareza em caminho.</h2>
-              <p>Acesse o Noiva Sem Surto por R$ 29,90.</p>
-              <CheckoutButton className="lightButton" busy={checkoutBusy} href={checkoutHref} onClick={handleCheckoutClick}>
-                COMEÇAR MEU PLANEJAMENTO
+          <section className="finalCheckoutSection">
+            <div className="container finalCheckoutInner">
+              <p className="eyebrow centered"><span /> SUA PRÓXIMA DECISÃO JÁ APARECEU <span /></p>
+              <h2>Seu próximo passo está pronto.</h2>
+              <p>Abra sua rota e avance sem tentar resolver tudo hoje.</p>
+              <CheckoutButton
+                className="finalCheckoutButton"
+                busy={checkoutBusy}
+                href={checkoutHref}
+                onClick={handleCheckoutClick}
+                placement="final_cta"
+              >
+                CONTINUAR MINHA JORNADA
               </CheckoutButton>
+              <small>R$ 29,90 · pagamento único · acesso após a confirmação</small>
             </div>
           </section>
         </>
