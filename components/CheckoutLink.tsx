@@ -22,7 +22,7 @@ export function CheckoutLink({
       onClick={() =>
         trackEvent("InitiateCheckout", {
           placement,
-          value: 14.99,
+          value: 29.9,
           currency: "BRL",
           content_name: "Noiva Sem Surto",
         })

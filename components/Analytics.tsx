@@ -19,7 +19,7 @@ export function Analytics() {
 
       trackEvent("InitiateCheckout", {
         placement: link.dataset.placement ?? "unknown",
-        value: 14.99,
+        value: 29.9,
         currency: "BRL",
         content_name: "Noiva Sem Surto",
       });

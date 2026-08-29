@@ -1,0 +1,301 @@
+/* Upgrade de conversão — prova real do produto + oferta R$ 14,99 */
+
+.previewSection {
+  padding: 92px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.75fr);
+  align-items: center;
+  gap: 84px;
+}
+
+.previewCopy h2,
+.proofSection .sectionHeading h2 {
+  margin-bottom: 22px;
+  font-size: clamp(38px, 5vw, 62px);
+}
+
+.previewCopy > p:not(.eyebrow) {
+  max-width: 680px;
+  color: var(--ink-soft);
+  font-size: 18px;
+}
+
+.previewList {
+  margin: 30px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+
+.previewList li {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.previewPhone {
+  max-width: 390px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.previewPhone > p {
+  margin: 14px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.screenFrame {
+  width: min(100%, 390px);
+  margin: 0 auto;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(47, 18, 61, .18);
+  border-radius: 32px;
+  background: var(--cream);
+  box-shadow: 0 24px 65px rgba(63, 27, 68, .17);
+}
+
+.screenFrame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 24px;
+}
+
+.proofSection {
+  padding: 110px 0;
+  background: var(--white);
+}
+
+.proofGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.proofCard {
+  padding: 34px;
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(210px, .65fr);
+  align-items: center;
+  gap: 30px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: var(--cream);
+}
+
+.proofCardAlt {
+  background: #fff0ec;
+}
+
+.proofText h3 {
+  margin-bottom: 14px;
+  font-size: clamp(28px, 3vw, 38px);
+}
+
+.proofText > p:not(.cardLabel) {
+  margin-bottom: 0;
+  color: var(--ink-soft);
+}
+
+.proofCard .screenFrame {
+  width: 100%;
+  padding: 7px;
+  border-radius: 24px;
+  box-shadow: 0 18px 45px rgba(63, 27, 68, .13);
+}
+
+.proofCard .screenFrame img {
+  border-radius: 18px;
+}
+
+.valueGrid {
+  margin-top: 70px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.valueGrid article {
+  min-height: 250px;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--cream);
+}
+
+.valueGrid article > span {
+  color: var(--coral);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.valueGrid h3 {
+  margin: 44px 0 12px;
+  font-size: 27px;
+}
+
+.valueGrid p {
+  margin-bottom: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.bigPromise {
+  margin-top: 26px;
+  padding: 44px;
+  border-radius: 28px;
+  background: var(--yellow);
+  text-align: center;
+}
+
+.bigPromise p {
+  margin-bottom: 8px;
+  color: var(--ink-soft);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.bigPromise h3 {
+  max-width: 850px;
+  margin: 0 auto;
+  font-size: clamp(30px, 4vw, 48px);
+}
+
+.valueAnchor {
+  margin: 6px 0 26px;
+  padding: 18px;
+  border: 1px solid rgba(92, 40, 95, .14);
+  border-radius: 18px;
+  background: #fff0ec;
+}
+
+.valueAnchor strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.valueAnchor p {
+  margin-bottom: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.faqIntro {
+  max-width: 420px;
+  color: var(--ink-soft);
+}
+
+.finalCta strong {
+  font-weight: 900;
+}
+
+.finalMicro {
+  margin: 14px 0 0;
+  font-size: 12px !important;
+  font-weight: 700;
+  opacity: .72;
+}
+
+@media (max-width: 1080px) {
+  .proofGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .proofCard {
+    grid-template-columns: 1fr 280px;
+  }
+}
+
+@media (max-width: 960px) {
+  .previewGrid {
+    grid-template-columns: 1fr;
+    gap: 46px;
+  }
+
+  .previewPhone {
+    width: min(390px, 100%);
+  }
+
+  .valueGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .valueGrid article {
+    min-height: 0;
+  }
+
+  .valueGrid h3 {
+    margin-top: 22px;
+  }
+}
+
+@media (max-width: 680px) {
+  .previewSection,
+  .proofSection {
+    padding: 72px 0;
+  }
+
+  .previewCopy h2,
+  .proofSection .sectionHeading h2 {
+    font-size: 36px;
+  }
+
+  .previewCopy > p:not(.eyebrow) {
+    font-size: 16px;
+  }
+
+  .screenFrame {
+    border-radius: 26px;
+  }
+
+  .screenFrame img {
+    border-radius: 19px;
+  }
+
+  .proofCard {
+    padding: 24px 18px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .proofCard .screenFrame {
+    width: min(320px, 100%);
+  }
+
+  .proofText h3 {
+    font-size: 30px;
+  }
+
+  .valueGrid {
+    margin-top: 44px;
+  }
+
+  .bigPromise {
+    padding: 30px 20px;
+  }
+
+  .bigPromise h3 {
+    font-size: 32px;
+  }
+}

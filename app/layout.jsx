@@ -1,5 +1,6 @@
 import Script from "next/script";
 import "./globals.css";
+import "./upgrade.css";
 
 export const metadata = {
   title: "Noiva Sem Surto — Descubra o que vem primeiro",

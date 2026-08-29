@@ -35,7 +35,7 @@ export function DiagnosticStickyCTA() {
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-cream/10 bg-ink/95 p-3 backdrop-blur-md sm:hidden">
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
         <div className="text-xs text-cream">
-          <div className="font-black text-sun">{completed ? "R$ 14,99" : "Rota gratuita"}</div>
+          <div className="font-black text-sun">{completed ? "R$ 29,90" : "Rota gratuita"}</div>
           <div className="text-cream/60">{completed ? "Pagamento único" : "3 perguntas rápidas"}</div>
         </div>
         {completed ? (
@@ -45,7 +45,7 @@ export function DiagnosticStickyCTA() {
             data-placement="mobile_sticky"
             className="nss-primary-btn cursor-pointer px-4 py-2.5 text-xs"
           >
-            Quero minha rota <ArrowRight className="h-3.5 w-3.5" />
+            Desbloquear acesso <ArrowRight className="h-3.5 w-3.5" />
           </a>
         ) : (
           <a href="#diagnostico" className="nss-primary-btn cursor-pointer px-4 py-2.5 text-xs">
