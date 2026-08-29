@@ -114,14 +114,14 @@ const STAGE_COPY = {
 };
 
 const PRODUCT_TOOLS = [
-  { icon: "⌁", title: "Bússola Sem Surto", text: "Mostra o que faz sentido resolver agora." },
-  { icon: "↗", title: "Minha Rota", text: "Separa o que vem agora, depois e o que já foi concluído." },
-  { icon: "R$", title: "Planejamento de investimento", text: "Ajuda a organizar um valor possível para orientar escolhas." },
-  { icon: "👥", title: "Lista por família e grupo", text: "Organiza pessoas, famílias, grupos e quantidades." },
-  { icon: "⇄", title: "Comparador de fornecedores", text: "Coloca propostas lado a lado usando critérios comuns." },
-  { icon: "✓", title: "Responsabilidades claras", text: "Ajuda a visualizar quem cuida de cada etapa." },
-  { icon: "✦", title: "Área Celebração", text: "Reúne decisões importantes da celebração em um só lugar." },
-  { icon: "SOS", title: "SOS Noiva", text: "Dá um ponto de partida quando algo sai do eixo." },
+  { icon: "⌁", title: "Bússola Sem Surto", text: "Mostra o que resolver agora." },
+  { icon: "↗", title: "Minha Rota", text: "Organiza agora, depois e concluído." },
+  { icon: "R$", title: "Investimento", text: "Dá um limite para orientar escolhas." },
+  { icon: "👥", title: "Convidados", text: "Conta por família e grupo." },
+  { icon: "⇄", title: "Fornecedores", text: "Compara propostas lado a lado." },
+  { icon: "✓", title: "Responsabilidades", text: "Mostra quem cuida do quê." },
+  { icon: "✦", title: "Celebração", text: "Reúne decisões essenciais." },
+  { icon: "SOS", title: "SOS Noiva", text: "Mostra por onde retomar." },
 ];
 
 const FAQS = [
@@ -394,7 +394,7 @@ export default function Home() {
         <div className="container headerInner">
           <Brand />
           {result ? (
-            <a className="headerAction" href="#oferta">VER ACESSO</a>
+            <a className="headerAction" href="#oferta">VER ACESSO · R$ 14,99</a>
           ) : (
             <a className="headerAction" href="#diagnostico" onClick={startDiagnosis}>FAZER DIAGNÓSTICO</a>
           )}
@@ -561,31 +561,92 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="problemCostSection">
-            <div className="container problemCostGrid">
-              <div>
-                <p className="eyebrow"><span /> O CUSTO DA ORDEM ERRADA</p>
-                <h2>O problema não é falta de esforço. É tentar decidir tudo fora de ordem.</h2>
+          <section className="instantOfferStrip">
+            <div className="container instantOfferInner">
+              <div className="instantOfferCopy">
+                <p className="eyebrow"><span /> SUA ROTA PODE CONTINUAR</p>
+                <h2>O diagnóstico mostrou o primeiro passo.</h2>
+                <p>Leve a mesma lógica para as próximas decisões.</p>
               </div>
-              <div className="problemStack">
-                <article><span>01</span><p>Orçamentos sem um limite claro.</p></article>
-                <article><span>02</span><p>Detalhes antes das decisões que sustentam o evento.</p></article>
-                <article><span>03</span><p>Muitas abas abertas. Poucas decisões fechadas.</p></article>
+              <div className="instantOfferBuy">
+                <div className="inlinePrice">
+                  <span>ACESSO COMPLETO</span>
+                  <strong>R$ 14,99</strong>
+                  <small>pagamento único · sem mensalidade</small>
+                </div>
+                <CheckoutButton
+                  className="conversionCta"
+                  busy={checkoutBusy}
+                  href={checkoutHref}
+                  onClick={handleCheckoutClick}
+                  placement="after_result"
+                >
+                  LIBERAR MEU ACESSO POR R$ 14,99
+                </CheckoutButton>
+                <small>7 dias de garantia · checkout seguro</small>
               </div>
             </div>
           </section>
 
-          <section className="bridgeSection">
-            <div className="container bridgeInner">
-              <p className="eyebrow centered"><span /> AGORA VOCÊ SABE O QUE VEM PRIMEIRO <span /></p>
-              <h2>Mas o casamento não trava em uma decisão só.</h2>
-              <p>
-                Amanhã aparecem convidados, orçamento, fornecedores, pagamentos e outras escolhas. É exatamente aí que o Noiva Sem Surto entra: para colocar as próximas decisões em ordem sem te devolver para o zero.
-              </p>
-              <div className="bridgePromise">
-                <span aria-hidden="true">⌁</span>
-                <strong>Você não precisa voltar para o zero.</strong>
-                <small>Abra, veja a próxima decisão e continue.</small>
+          <section className="problemCostSection convictionSection">
+            <div className="container problemCostGrid">
+              <div>
+                <p className="eyebrow"><span /> POR QUE O PLANEJAMENTO TRAVA</p>
+                <h2>Não é falta de informação. É falta de ordem.</h2>
+                <p className="shortLead">Mais uma lista não resolve isso.</p>
+              </div>
+              <div className="problemStack convictionCards">
+                <article><span>01</span><strong>Muita lista</strong><p>Tudo parece urgente.</p></article>
+                <article><span>02</span><strong>Muita pesquisa</strong><p>Cada resposta abre outra dúvida.</p></article>
+                <article><span>03</span><strong>Muita decisão</strong><p>Você volta para o zero.</p></article>
+              </div>
+            </div>
+          </section>
+
+          <section className="positioningSection">
+            <div className="container">
+              <div className="sectionHeading positioningHeading">
+                <p className="eyebrow centered"><span /> O QUE O NOIVA SEM SURTO É <span /></p>
+                <h2>Não é uma lista. É uma assessora digital de próximos passos.</h2>
+                <p>Em vez de mostrar tudo, ela mostra o que merece sua atenção agora.</p>
+              </div>
+
+              <div className="positioningGrid">
+                <article>
+                  <span className="positionTag">LISTA</span>
+                  <h3>Mostra tudo.</h3>
+                  <p>Você ainda precisa descobrir a ordem.</p>
+                </article>
+                <article>
+                  <span className="positionTag">PLANILHA</span>
+                  <h3>Guarda tudo.</h3>
+                  <p>Você ainda precisa decidir o próximo passo.</p>
+                </article>
+                <article className="positioningMain">
+                  <span className="positionTag">NOIVA SEM SURTO</span>
+                  <h3>Mostra o agora.</h3>
+                  <p>Prioridade, motivo e próximo passo.</p>
+                </article>
+              </div>
+
+              <div className="midCtaCard">
+                <div className="midCtaPrice">
+                  <strong>R$ 14,99</strong>
+                  <span>pagamento único</span>
+                </div>
+                <div className="midCtaCopy">
+                  <h3>Se o diagnóstico já trouxe clareza, continue com a mesma lógica.</h3>
+                  <p>Sem assinatura. Sem mensalidade.</p>
+                </div>
+                <CheckoutButton
+                  className="conversionCta"
+                  busy={checkoutBusy}
+                  href={checkoutHref}
+                  onClick={handleCheckoutClick}
+                  placement="positioning"
+                >
+                  QUERO MINHA ROTA COMPLETA
+                </CheckoutButton>
               </div>
             </div>
           </section>
@@ -615,12 +676,32 @@ export default function Home() {
             </div>
           </section>
 
+          <section className="proofCtaBar">
+            <div className="container proofCtaInner">
+              <div>
+                <span>ACESSO COMPLETO</span>
+                <strong>R$ 14,99</strong>
+                <small>pagamento único</small>
+              </div>
+              <p>Viu a lógica funcionando? Continue pelo mini-app.</p>
+              <CheckoutButton
+                className="proofCtaButton"
+                busy={checkoutBusy}
+                href={checkoutHref}
+                onClick={handleCheckoutClick}
+                placement="after_demo"
+              >
+                ACESSAR AGORA POR R$ 14,99
+              </CheckoutButton>
+            </div>
+          </section>
+
           <section className="unlocksSection">
             <div className="container">
               <div className="sectionHeading">
-                <p className="eyebrow centered"><span /> O QUE MUDA QUANDO VOCÊ ENTRA <span /></p>
-                <h2>Você deixa de carregar o casamento inteiro na cabeça.</h2>
-                <p>O app reúne decisões e mostra o que merece atenção agora.</p>
+                <p className="eyebrow centered"><span /> TUDO EM UM SÓ LUGAR <span /></p>
+                <h2>Menos arquivos. Mais decisões fechadas.</h2>
+                <p>Abra só o bloco que precisa de atenção agora.</p>
               </div>
 
               <div className="toolGrid">
@@ -636,16 +717,33 @@ export default function Home() {
               <div className="proofGallery" aria-label="Telas reais do mini app">
                 <article>
                   <AppScreenshot src="/app-screens/minha-rota.webp" alt="Tela Minha Rota com etapas concluídas, atual e próximas decisões" sizes="(max-width: 900px) 72vw, 300px" />
-                  <div><span>01</span><h3>O caminho em ordem</h3><p>Concluído, agora e depois ficam visíveis.</p></div>
+                  <div><span>01</span><h3>O caminho em ordem</h3><p>Concluído, agora e depois.</p></div>
                 </article>
                 <article>
                   <AppScreenshot src="/app-screens/planejamento.webp" alt="Tela de planejamento com investimento, lista, fornecedores e responsabilidades" sizes="(max-width: 900px) 72vw, 300px" />
-                  <div><span>02</span><h3>Planejamento reunido</h3><p>Abra somente o bloco que pede decisão.</p></div>
+                  <div><span>02</span><h3>Planejamento reunido</h3><p>Abra só o que pede decisão.</p></div>
                 </article>
                 <article>
                   <AppScreenshot src="/app-screens/sos.webp" alt="Tela SOS com situações comuns do planejamento" sizes="(max-width: 900px) 72vw, 300px" />
-                  <div><span>03</span><h3>Direção quando algo sai do eixo</h3><p>Situações comuns ganham um ponto de partida.</p></div>
+                  <div><span>03</span><h3>Direção quando trava</h3><p>Um ponto de partida para retomar.</p></div>
                 </article>
+              </div>
+
+              <div className="sectionCtaCard">
+                <div>
+                  <span>NOIVA SEM SURTO COMPLETO</span>
+                  <strong>R$ 14,99</strong>
+                  <small>pagamento único · 7 dias de garantia</small>
+                </div>
+                <CheckoutButton
+                  className="conversionCta"
+                  busy={checkoutBusy}
+                  href={checkoutHref}
+                  onClick={handleCheckoutClick}
+                  placement="features"
+                >
+                  QUERO ACESSAR O MINI-APP
+                </CheckoutButton>
               </div>
             </div>
           </section>
@@ -653,12 +751,10 @@ export default function Home() {
           <section className="dreamListSection">
             <div className="container dreamListGrid">
               <div className="dreamListCopy">
-                <p className="eyebrow"><span /> TELA REAL: LISTA DE CONVIDADOS</p>
+                <p className="eyebrow"><span /> TELA REAL: CONVIDADOS</p>
                 <h2>Do “quem a gente convida?” para uma lista que dá para enxergar.</h2>
-                <p>
-                  Adicione uma pessoa, casal, família ou grupo por vez. O app soma as quantidades e separa os convidados de um jeito mais visual.
-                </p>
-                <blockquote>Menos nomes soltos. Mais visão do tamanho real da celebração.</blockquote>
+                <p>Adicione pessoa, casal, família ou grupo. O app soma as quantidades.</p>
+                <blockquote>Menos nomes soltos. Mais visão do tamanho real.</blockquote>
               </div>
               <AppScreenshot
                 src="/app-screens/convidados-real.webp"
@@ -672,22 +768,27 @@ export default function Home() {
             <div className="container">
               <div className="sectionHeading trustHeading">
                 <p className="eyebrow centered"><span /> PRODUTO REAL, CONDIÇÕES CLARAS <span /></p>
-                <h2>Não é um PDF bonito que você baixa e esquece.</h2>
-                <p>É um mini-app para abrir pelo celular e consultar conforme o planejamento avança.</p>
+                <h2>Você abre, consulta e continua.</h2>
+                <p>Mini-app no navegador. Sem mensalidade.</p>
               </div>
 
               <div className="trustCards">
-                <article><span>▣</span><h3>Mini-app</h3><p>Abra pelo navegador e volte conforme o planejamento avança.</p></article>
-                <article><span>◎</span><h3>Telas reais</h3><p>As demonstrações desta página mostram a experiência do produto.</p></article>
-                <article><span>↗</span><h3>Acesso simples</h3><p>Use pelo celular ou computador, sem instalar programa.</p></article>
-                <article><span>✓</span><h3>7 dias de garantia</h3><p>Você pode conhecer a experiência e conferir se ela faz sentido para você.</p></article>
+                <article><span>▣</span><h3>Mini-app</h3><p>Não é PDF.</p></article>
+                <article><span>◎</span><h3>Telas reais</h3><p>Você viu o produto.</p></article>
+                <article><span>↗</span><h3>Acesso simples</h3><p>Celular ou computador.</p></article>
+                <article><span>✓</span><h3>7 dias</h3><p>Garantia para conhecer.</p></article>
+              </div>
+
+              <div className="trustPriceLine">
+                <strong>R$ 14,99</strong>
+                <span>uma única vez · sem mensalidade</span>
               </div>
 
               <div className="faqGrid">
                 <div>
                   <p className="eyebrow"><span /> ANTES DE DECIDIR</p>
-                  <h2>As últimas dúvidas antes de continuar.</h2>
-                  <p className="objectionNote">Sem promessa milagrosa: a proposta é organizar a ordem das decisões para o planejamento ficar mais claro.</p>
+                  <h2>Dúvidas rápidas.</h2>
+                  <p className="objectionNote">Sem promessa milagrosa: é direção para a próxima decisão.</p>
                 </div>
                 <div className="faqList">
                   {FAQS.map((item) => (
@@ -705,15 +806,13 @@ export default function Home() {
             <div className="container offerGrid">
               <div className="offerCopy">
                 <p className="eyebrow"><span /> CONTINUE SUA ROTA SEM SURTO</p>
-                <h2>Tenha um lugar para voltar sempre que bater a dúvida: “e agora, o que eu faço?”</h2>
-                <p>
-                  O diagnóstico mostrou a primeira prioridade. O Noiva Sem Surto transforma essa clareza em uma estrutura para continuar pelas próximas decisões.
-                </p>
+                <h2>Tenha um lugar para voltar quando surgir: “e agora?”</h2>
+                <p>O diagnóstico mostrou a primeira prioridade. O mini-app organiza as próximas.</p>
                 <ul className="offerList">
                   <li>✓ Bússola + Minha Rota</li>
                   <li>✓ Orçamento, convidados e fornecedores</li>
                   <li>✓ Responsabilidades, Celebração e SOS</li>
-                  <li>✓ Acesso pelo celular ou computador</li>
+                  <li>✓ Celular ou computador</li>
                 </ul>
               </div>
 
@@ -724,8 +823,8 @@ export default function Home() {
                 <p className="paymentNote">sem mensalidade</p>
 
                 <div className="valueAnchor">
-                  <strong>Você não está comprando outra lista.</strong>
-                  <p>Está comprando um lugar para voltar quando o planejamento travar e você precisar saber qual é a próxima decisão possível.</p>
+                  <strong>Não é outra lista.</strong>
+                  <p>É um lugar para voltar quando você precisar saber qual é a próxima decisão possível.</p>
                 </div>
 
                 <CheckoutButton
@@ -734,9 +833,9 @@ export default function Home() {
                   onClick={handleCheckoutClick}
                   placement="offer_main"
                 >
-                  QUERO MEU PLANEJAMENTO SEM SURTO
+                  QUERO ACESSAR POR R$ 14,99
                 </CheckoutButton>
-                <p className="secureNote">Pagamento processado com segurança pela Kiwify.</p>
+                <p className="secureNote">Pagamento seguro pela Kiwify · 7 dias de garantia.</p>
               </aside>
             </div>
           </section>
@@ -745,7 +844,7 @@ export default function Home() {
             <div className="container finalCheckoutInner">
               <p className="eyebrow centered"><span /> UMA DECISÃO DE CADA VEZ <span /></p>
               <h2>Você não precisa saber tudo agora.</h2>
-              <p>Só precisa parar de voltar para o zero toda vez que surgir uma nova dúvida.</p>
+              <p>Só precisa parar de voltar para o zero.</p>
               <div className="finalPrice">R$ 14,99 <span>· pagamento único</span></div>
               <CheckoutButton
                 className="finalCheckoutButton"
@@ -754,11 +853,24 @@ export default function Home() {
                 onClick={handleCheckoutClick}
                 placement="final_cta"
               >
-                QUERO MINHA ROTA SEM SURTO
+                LIBERAR MEU ACESSO AGORA
               </CheckoutButton>
               <small>Acesso após a confirmação · checkout seguro pela Kiwify</small>
             </div>
           </section>
+
+          <div className="mobileCheckoutBar" aria-label="Acesso ao Noiva Sem Surto">
+            <div><strong>R$ 14,99</strong><span>pagamento único</span></div>
+            <CheckoutButton
+              className="mobileCheckoutButton"
+              busy={checkoutBusy}
+              href={checkoutHref}
+              onClick={handleCheckoutClick}
+              placement="mobile_fixed"
+            >
+              ACESSAR
+            </CheckoutButton>
+          </div>
         </>
       )}
 
