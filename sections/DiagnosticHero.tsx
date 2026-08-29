@@ -24,7 +24,7 @@ export function DiagnosticHero() {
             <span className="mt-2 block text-hot">Precisa descobrir o que vem primeiro.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-3xl text-lg text-ink/70 sm:text-xl">
-            Responda três perguntas rápidas e receba uma Rota Sem Surto personalizada para organizar seu casamento, bodas ou celebração sem se perder entre orçamento, convidados, fornecedores e detalhes.
+            Responda 3 perguntas rápidas e descubra qual decisão pode destravar seu planejamento agora — sem lista infinita e sem tentar resolver tudo de uma vez.
           </p>
 
           <a href="#diagnostico" className="nss-primary-btn mt-8 w-full sm:w-auto">
