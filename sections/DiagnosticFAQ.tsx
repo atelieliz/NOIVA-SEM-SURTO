@@ -7,23 +7,23 @@ const items = [
   ],
   [
     "Por que comprar se o diagnóstico já mostrou meu próximo passo?",
-    "O diagnóstico mostra a prioridade inicial. O Noiva Sem Surto ajuda você a executar essa decisão, organiza as próximas etapas e atualiza sua rota conforme o planejamento avança.",
+    "Porque o diagnóstico mostra a primeira prioridade. Depois dela surgem novas decisões. O Noiva Sem Surto organiza a sequência, reúne informações e te ajuda a continuar sem voltar para a sensação de não saber por onde começar.",
   ],
   [
-    "E se eu já tiver começado a organizar?",
-    "Você não precisa começar do zero. A ferramenta ajuda a reunir o que já foi decidido, identificar o que ainda está solto e retomar o planejamento a partir da sua fase atual.",
+    "Mas eu já tenho planilhas e listas. Isso não é a mesma coisa?",
+    "Não. Listas mostram tudo o que existe para fazer. A proposta do Noiva Sem Surto é ajudar você a entender a ordem: o que faz sentido resolver agora, o que vem depois e o que pode esperar.",
   ],
   [
-    "Preciso instalar algum aplicativo?",
-    "Não. O acesso é feito pelo navegador do celular ou do computador, conforme as orientações enviadas após a compra.",
+    "E se eu já tiver começado a organizar o casamento?",
+    "Você não precisa começar do zero. A ferramenta foi pensada para ajudar a reunir o que já foi decidido e retomar a organização a partir da fase em que você está.",
+  ],
+  [
+    "É fácil de usar pelo celular?",
+    "Sim. O acesso é feito pelo navegador do celular ou computador. As telas foram pensadas para uso simples e direto, sem exigir instalação.",
   ],
   [
     "O Noiva Sem Surto substitui uma assessoria presencial?",
     "Não. Ele funciona como uma assessora digital para organizar prioridades, decisões e informações. A execução presencial do evento continua dependendo dos profissionais contratados.",
-  ],
-  [
-    "Os meus dados ficam salvos?",
-    "O progresso desta landing fica salvo no navegador utilizado. Limpar os dados do navegador ou trocar de aparelho pode remover esse progresso.",
   ],
   [
     "Como funciona o acesso e a garantia?",
@@ -36,10 +36,10 @@ export function DiagnosticFAQ() {
     <section className="border-t border-ink/10 bg-white px-5 py-20 sm:py-24">
       <div className="mx-auto max-w-3xl">
         <div className="text-center">
-          <span className="tag-chip bg-lime">Antes de continuar</span>
-          <h2 className="mt-5 text-4xl font-black sm:text-5xl">Tire suas últimas dúvidas com transparência.</h2>
+          <span className="tag-chip bg-lime">Antes de decidir</span>
+          <h2 className="mt-5 text-4xl font-black sm:text-5xl">As dúvidas que podem estar passando pela sua cabeça agora.</h2>
           <p className="mx-auto mt-4 max-w-2xl text-ink/65">
-            Nada de promessas vagas. Veja exatamente onde termina o diagnóstico gratuito e como o Noiva Sem Surto ajuda você a continuar.
+            Sem promessa milagrosa: o Noiva Sem Surto organiza a parte do planejamento que costuma ficar mais confusa — a ordem das decisões.
           </p>
         </div>
         <div className="mt-10 space-y-3">
