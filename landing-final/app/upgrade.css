@@ -1,10 +1,11 @@
-/* Conversão v4 — preview pré-diagnóstico, prova real e oferta R$ 14,99 */
+/* Conversão v5 — preço recorrente na página, posicionamento enxuto e CTAs claros */
 
 .preProofSection {
   padding: 92px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: var(--white);
+  color: #1d171d;
 }
 
 .preProofGrid {
@@ -21,7 +22,7 @@
 
 .preProofCopy > p:not(.eyebrow) {
   max-width: 680px;
-  color: var(--ink-soft);
+  color: #655a63;
   font-size: 18px;
 }
 
@@ -35,9 +36,9 @@
 
 .preProofList li {
   padding: 14px 16px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(20, 12, 18, .12);
   border-radius: 16px;
-  background: var(--cream);
+  background: #fff8f2;
   font-weight: 750;
 }
 
@@ -49,7 +50,7 @@
 
 .preProofPhone > p {
   margin: 14px 0 0;
-  color: var(--ink-soft);
+  color: #655a63;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .12em;
@@ -60,12 +61,385 @@
   transform: rotate(1.2deg);
 }
 
+/* Oferta imediata logo após o resultado */
+.instantOfferStrip {
+  padding: 54px 0;
+  border-top: 1px solid rgba(20, 12, 18, .08);
+  border-bottom: 1px solid rgba(20, 12, 18, .08);
+  background: var(--white);
+  color: #1d171d;
+}
+
+.instantOfferInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, .9fr);
+  align-items: center;
+  gap: 52px;
+}
+
+.instantOfferCopy h2 {
+  max-width: 650px;
+  margin-bottom: 10px;
+  font-size: clamp(34px, 4.8vw, 54px);
+}
+
+.instantOfferCopy > p:not(.eyebrow) {
+  margin-bottom: 0;
+  color: #655a63;
+  font-size: 17px;
+}
+
+.instantOfferBuy {
+  padding: 28px;
+  border-radius: 24px;
+  background: #0c0a0c;
+  color: var(--white);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .18);
+}
+
+.inlinePrice {
+  margin-bottom: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+}
+
+.inlinePrice > span {
+  width: 100%;
+  color: #ff80ba;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.inlinePrice strong {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: clamp(42px, 6vw, 62px);
+  line-height: .95;
+}
+
+.inlinePrice small,
+.instantOfferBuy > small {
+  color: #cbbfc7;
+  font-size: 11px;
+}
+
+.instantOfferBuy > small {
+  margin-top: 11px;
+  display: block;
+  text-align: center;
+}
+
+.conversionCta {
+  width: 100%;
+  min-height: 58px;
+  background: var(--pink);
+  color: var(--white);
+  box-shadow: 0 16px 34px rgba(255, 15, 135, .24);
+}
+
+/* Blocos de convencimento */
+.convictionSection {
+  padding: 94px 0;
+}
+
+.convictionSection .shortLead {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.convictionCards article {
+  position: relative;
+  min-height: 128px;
+  padding: 24px 24px 22px 68px;
+  border: 1px solid rgba(20, 12, 18, .10);
+  border-radius: 22px;
+  background: var(--white);
+  color: #1d171d;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .10);
+}
+
+.convictionCards article > span {
+  position: absolute;
+  top: 24px;
+  left: 22px;
+  color: var(--pink);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.convictionCards strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.convictionCards p {
+  margin: 0;
+  color: #655a63;
+  font-size: 14px;
+}
+
+/* Posicionamento principal — branco e escaneável */
+.positioningSection {
+  padding: 108px 0;
+  background: #f5f1ed;
+  color: #1d171d;
+}
+
+.positioningHeading {
+  margin-bottom: 46px;
+}
+
+.positioningHeading > p:not(.eyebrow) {
+  color: #655a63;
+}
+
+.positioningGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.positioningGrid article {
+  min-height: 220px;
+  padding: 28px;
+  border: 1px solid rgba(20, 12, 18, .10);
+  border-radius: 24px;
+  background: var(--white);
+  box-shadow: 0 14px 40px rgba(20, 10, 18, .07);
+}
+
+.positioningGrid article.positioningMain {
+  border: 2px solid var(--pink);
+  box-shadow: 0 18px 55px rgba(255, 15, 135, .12);
+}
+
+.positionTag {
+  display: inline-flex;
+  margin-bottom: 42px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #f1ecef;
+  color: #655a63;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.positioningMain .positionTag {
+  background: rgba(255, 15, 135, .10);
+  color: #c80063;
+}
+
+.positioningGrid h3 {
+  margin-bottom: 8px;
+  font-size: 29px;
+}
+
+.positioningGrid p {
+  margin: 0;
+  color: #655a63;
+  font-size: 14px;
+}
+
+.midCtaCard {
+  margin-top: 28px;
+  padding: 26px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(260px, auto);
+  align-items: center;
+  gap: 28px;
+  border-radius: 24px;
+  background: #0c0a0c;
+  color: var(--white);
+}
+
+.midCtaPrice strong {
+  display: block;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.midCtaPrice span,
+.midCtaCopy p {
+  color: #cbbfc7;
+  font-size: 11px;
+}
+
+.midCtaCopy h3 {
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.midCtaCopy p {
+  margin: 0;
+}
+
+/* CTA entre prova visual e benefícios */
+.proofCtaBar {
+  padding: 34px 0;
+  background: var(--pink);
+  color: var(--white);
+}
+
+.proofCtaInner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(290px, auto);
+  align-items: center;
+  gap: 30px;
+}
+
+.proofCtaInner > div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.proofCtaInner > div > span {
+  margin-bottom: 6px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.proofCtaInner > div > strong {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 38px;
+}
+
+.proofCtaInner > div > small {
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+.proofCtaInner > p {
+  margin: 0;
+  font-weight: 800;
+}
+
+.proofCtaButton {
+  width: 100%;
+  background: #0c0a0c;
+  color: var(--white);
+  box-shadow: none;
+}
+
+/* Benefícios em cards brancos */
+.unlocksSection .toolGrid {
+  gap: 14px;
+}
+
+.unlocksSection .toolCard {
+  min-height: 180px;
+  padding: 24px;
+  border: 1px solid rgba(20, 12, 18, .10);
+  border-radius: 22px;
+  background: var(--white);
+  color: #1d171d;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .08);
+}
+
+.unlocksSection .toolCard h3 {
+  margin-top: 20px;
+  margin-bottom: 7px;
+  font-size: 20px;
+}
+
+.unlocksSection .toolCard p {
+  margin-bottom: 0;
+  color: #655a63;
+}
+
+.sectionCtaCard {
+  margin-top: 48px;
+  padding: 26px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  border: 1px solid rgba(20, 12, 18, .10);
+  border-radius: 24px;
+  background: var(--white);
+  color: #1d171d;
+  box-shadow: 0 18px 52px rgba(0, 0, 0, .10);
+}
+
+.sectionCtaCard > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionCtaCard > div > span {
+  color: #8a7b86;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.sectionCtaCard > div > strong {
+  margin: 5px 0;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 44px;
+  line-height: 1;
+}
+
+.sectionCtaCard > div > small {
+  color: #655a63;
+}
+
+.sectionCtaCard .conversionCta {
+  width: min(420px, 100%);
+}
+
+/* Prova e confiança mais visual */
+.trustCards article {
+  border: 1px solid rgba(20, 12, 18, .10) !important;
+  background: var(--white) !important;
+  color: #1d171d !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .08);
+}
+
+.trustCards article p {
+  color: #655a63 !important;
+}
+
+.trustPriceLine {
+  margin: 28px 0 70px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 14px;
+  border: 1px solid rgba(20, 12, 18, .10);
+  border-radius: 22px;
+  background: var(--white);
+  color: #1d171d;
+  text-align: center;
+}
+
+.trustPriceLine strong {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.trustPriceLine span {
+  color: #655a63;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .valueAnchor {
   margin: 8px 0 26px;
   padding: 18px;
   border: 1px solid rgba(92, 40, 95, .16);
   border-radius: 18px;
-  background: rgba(239, 109, 105, .10);
+  background: rgba(255, 15, 135, .08);
 }
 
 .valueAnchor strong {
@@ -78,14 +452,14 @@
 
 .valueAnchor p {
   margin: 0;
-  color: var(--ink-soft);
+  color: #655a63;
   font-size: 13px;
   line-height: 1.55;
 }
 
 .objectionNote {
   max-width: 430px;
-  color: var(--ink-soft);
+  color: var(--muted);
 }
 
 .finalCheckoutUpgrade .finalCheckoutInner {
@@ -121,14 +495,63 @@
   margin-bottom: 20px;
 }
 
+.mobileCheckoutBar {
+  display: none;
+}
+
 @media (max-width: 960px) {
-  .preProofGrid {
+  .preProofGrid,
+  .instantOfferInner,
+  .positioningGrid,
+  .proofCtaInner {
     grid-template-columns: 1fr;
+  }
+
+  .preProofGrid {
     gap: 48px;
   }
 
   .preProofPhone {
     width: min(360px, 100%);
+  }
+
+  .instantOfferInner,
+  .proofCtaInner {
+    gap: 24px;
+  }
+
+  .positioningGrid {
+    gap: 12px;
+  }
+
+  .positioningGrid article {
+    min-height: 0;
+  }
+
+  .positionTag {
+    margin-bottom: 26px;
+  }
+
+  .midCtaCard {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .proofCtaInner {
+    text-align: center;
+  }
+
+  .proofCtaInner > div {
+    align-items: center;
+  }
+
+  .sectionCtaCard {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sectionCtaCard .conversionCta {
+    width: 100%;
   }
 }
 
@@ -154,13 +577,123 @@
     font-size: 14px;
   }
 
-  .valueAnchor {
-    padding: 16px;
+  .instantOfferStrip {
+    padding: 44px 0;
+  }
+
+  .instantOfferCopy h2,
+  .positioningHeading h2 {
+    font-size: 34px;
+  }
+
+  .instantOfferBuy,
+  .midCtaCard,
+  .sectionCtaCard {
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+
+  .inlinePrice strong {
+    font-size: 50px;
+  }
+
+  .conversionCta,
+  .proofCtaButton {
+    min-height: 56px;
+    padding-right: 16px;
+    padding-left: 16px;
+    font-size: 11px;
+  }
+
+  .convictionSection,
+  .positioningSection {
+    padding: 72px 0;
+  }
+
+  .convictionCards article {
+    padding: 22px 18px 20px 62px;
+  }
+
+  .positioningGrid article {
+    padding: 24px 20px;
+  }
+
+  .midCtaPrice strong {
+    font-size: 38px;
+  }
+
+  .proofCtaBar {
+    padding: 30px 0;
+  }
+
+  .proofCtaInner > p {
+    font-size: 14px;
+  }
+
+  .sectionCtaCard > div > strong,
+  .trustPriceLine strong {
+    font-size: 38px;
+  }
+
+  .trustPriceLine {
+    margin-bottom: 52px;
+    align-items: center;
+    flex-direction: column;
+    gap: 7px;
   }
 
   .finalPrice {
     display: flex;
     flex-direction: column;
     gap: 8px;
+  }
+
+  .mobileCheckoutBar {
+    position: fixed;
+    right: 10px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 10px;
+    z-index: 80;
+    padding: 10px 10px 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 18px;
+    background: rgba(8, 7, 8, .96);
+    color: var(--white);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .38);
+    backdrop-filter: blur(16px);
+  }
+
+  .mobileCheckoutBar > div {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+
+  .mobileCheckoutBar > div strong {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-size: 23px;
+  }
+
+  .mobileCheckoutBar > div span {
+    margin-top: 3px;
+    color: #cbbfc7;
+    font-size: 9px;
+  }
+
+  .mobileCheckoutButton {
+    min-height: 44px;
+    padding: 0 16px;
+    background: var(--pink);
+    color: var(--white);
+    font-size: 10px;
+    box-shadow: none;
+  }
+
+  footer {
+    padding-bottom: 96px;
   }
 }
