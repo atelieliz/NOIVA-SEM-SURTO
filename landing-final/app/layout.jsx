@@ -1,6 +1,7 @@
 import Script from "next/script";
 import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
+import "./upgrade.css";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -17,7 +18,7 @@ const fraunces = Fraunces({
 export const metadata = {
   title: "Noiva Sem Surto — Uma decisão de cada vez",
   description:
-    "Faça seu diagnóstico e descubra qual decisão merece atenção primeiro no planejamento da sua celebração.",
+    "Faça seu diagnóstico, descubra qual decisão merece atenção primeiro e continue o planejamento com uma rota organizada.",
   robots: {
     index: true,
     follow: true,

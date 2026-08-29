@@ -1,0 +1,166 @@
+/* Conversão v4 — preview pré-diagnóstico, prova real e oferta R$ 14,99 */
+
+.preProofSection {
+  padding: 92px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+
+.preProofGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, .72fr);
+  align-items: center;
+  gap: 84px;
+}
+
+.preProofCopy h2 {
+  margin-bottom: 22px;
+  font-size: clamp(38px, 5vw, 62px);
+}
+
+.preProofCopy > p:not(.eyebrow) {
+  max-width: 680px;
+  color: var(--ink-soft);
+  font-size: 18px;
+}
+
+.preProofList {
+  margin: 30px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 11px;
+  list-style: none;
+}
+
+.preProofList li {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--cream);
+  font-weight: 750;
+}
+
+.preProofPhone {
+  width: min(390px, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.preProofPhone > p {
+  margin: 14px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.preProofPhone .phoneFrame {
+  transform: rotate(1.2deg);
+}
+
+.valueAnchor {
+  margin: 8px 0 26px;
+  padding: 18px;
+  border: 1px solid rgba(92, 40, 95, .16);
+  border-radius: 18px;
+  background: rgba(239, 109, 105, .10);
+}
+
+.valueAnchor strong {
+  display: block;
+  margin-bottom: 7px;
+  font-family: var(--font-fraunces), Fraunces, Georgia, serif;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.valueAnchor p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.objectionNote {
+  max-width: 430px;
+  color: var(--ink-soft);
+}
+
+.finalCheckoutUpgrade .finalCheckoutInner {
+  max-width: 900px;
+}
+
+.finalCheckoutUpgrade .finalCheckoutInner > p:not(.eyebrow) {
+  max-width: 660px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.finalPrice {
+  margin: 24px auto 4px;
+  font-family: var(--font-fraunces), Fraunces, Georgia, serif;
+  font-size: clamp(34px, 5vw, 52px);
+  font-weight: 850;
+  line-height: 1;
+}
+
+.finalPrice span {
+  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.offerSection .priceCard .price strong {
+  letter-spacing: -.07em;
+}
+
+.offerSection .priceCard .paymentNote {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 960px) {
+  .preProofGrid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .preProofPhone {
+    width: min(360px, 100%);
+  }
+}
+
+@media (max-width: 680px) {
+  .preProofSection {
+    padding: 68px 0;
+  }
+
+  .preProofCopy h2 {
+    font-size: 36px;
+  }
+
+  .preProofCopy > p:not(.eyebrow) {
+    font-size: 16px;
+  }
+
+  .preProofPhone {
+    width: min(315px, 92%);
+  }
+
+  .preProofList li {
+    padding: 13px 14px;
+    font-size: 14px;
+  }
+
+  .valueAnchor {
+    padding: 16px;
+  }
+
+  .finalPrice {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
