@@ -499,6 +499,16 @@
   display: none;
 }
 
+/* No topo fixo, mantenha somente o rótulo curto solicitado. */
+.headerAction[href="#oferta"] {
+  font-size: 0;
+}
+
+.headerAction[href="#oferta"]::after {
+  content: "VER ACESSO";
+  font-size: 12px;
+}
+
 @media (max-width: 960px) {
   .preProofGrid,
   .instantOfferInner,
