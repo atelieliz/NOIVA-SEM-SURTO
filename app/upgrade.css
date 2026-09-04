@@ -217,6 +217,181 @@
   opacity: .72;
 }
 
+/* Check-in visual — reduz atrito e faz o quiz parecer um checklist real */
+.checkinHeader {
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .78);
+}
+
+.checkinKicker {
+  margin: 0 0 3px;
+  color: var(--coral);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.checkinMeta {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.checkinPercent {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.checkinSteps {
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.checkinStep {
+  min-height: 66px;
+  padding: 10px 8px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 3px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .58);
+  color: var(--ink-soft);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  transition: .2s ease;
+}
+
+.checkinStep.active {
+  border-color: rgba(75, 36, 86, .55);
+  background: #fff2bd;
+  color: var(--ink);
+}
+
+.checkinStep.done {
+  background: #e5f3d3;
+}
+
+.checkinStepIcon {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.quizCard .progress {
+  margin-bottom: 26px;
+}
+
+.quizHelper {
+  max-width: 650px;
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.checklistOptions {
+  grid-template-columns: 1fr !important;
+  gap: 11px !important;
+}
+
+.optionButton.optionChecklist {
+  min-height: 88px;
+  padding: 14px 16px;
+  align-items: center;
+  gap: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .9);
+}
+
+.optionButton.optionChecklist:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 125, 101, .62);
+}
+
+.optionButton.optionChecklist.selected {
+  border-color: var(--ink);
+  background: #fff6d9;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.optionEmoji {
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: var(--cream);
+  font-size: 24px;
+}
+
+.optionCopy {
+  min-width: 0;
+  flex: 1;
+  display: block;
+}
+
+.optionCopy strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.optionCopy small {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.checkMark {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(75, 36, 86, .2);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.optionChecklist.selected .checkMark {
+  border-color: var(--ink);
+  background: var(--lime);
+}
+
+.checkinReassurance {
+  margin: 13px 0 0;
+  color: var(--ink-soft);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 650;
+}
+
 @media (max-width: 1080px) {
   .proofGrid {
     grid-template-columns: 1fr;
@@ -297,5 +472,48 @@
 
   .bigPromise h3 {
     font-size: 32px;
+  }
+
+  .checkinHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .checkinSteps {
+    gap: 6px;
+  }
+
+  .checkinStep {
+    min-height: 62px;
+    padding: 8px 5px;
+    font-size: 9px;
+  }
+
+  .optionButton.optionChecklist {
+    min-height: 84px;
+    padding: 12px;
+    gap: 11px;
+  }
+
+  .optionEmoji {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    font-size: 21px;
+  }
+
+  .optionCopy strong {
+    font-size: 14px;
+  }
+
+  .optionCopy small {
+    font-size: 11px;
+  }
+
+  .checkMark {
+    width: 25px;
+    height: 25px;
+    flex-basis: 25px;
   }
 }
