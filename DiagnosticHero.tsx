@@ -14,26 +14,26 @@ export function DiagnosticHero() {
             </span>
             <span className="font-display text-xl font-black">Noiva Sem Surto</span>
           </a>
-          <span className="tag-chip hidden bg-white/75 sm:inline-flex">Rota personalizada</span>
+          <span className="tag-chip hidden bg-white/75 sm:inline-flex">Check-in personalizado</span>
         </nav>
 
         <div className="mx-auto max-w-4xl text-center">
-          <span className="tag-chip bg-sun">Descubra sua próxima decisão</span>
+          <span className="tag-chip bg-sun">Seu check-in de organização</span>
           <h1 className="mt-6 text-[2.65rem] font-black leading-[1.02] sm:text-6xl lg:text-7xl">
             Você não precisa organizar tudo agora.
-            <span className="mt-2 block text-hot">Precisa descobrir o que vem primeiro.</span>
+            <span className="mt-2 block text-hot">Precisa descobrir o que merece sua atenção primeiro.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-3xl text-lg text-ink/70 sm:text-xl">
-            Responda três perguntas rápidas e receba uma Rota Sem Surto personalizada para organizar seu casamento, bodas ou celebração sem se perder entre orçamento, convidados, fornecedores e detalhes.
+            Marque 3 respostas rápidas e receba um checklist personalizado com sua prioridade, seus próximos passos e o que pode esperar.
           </p>
 
           <a href="#diagnostico" className="nss-primary-btn mt-8 w-full sm:w-auto">
-            Descobrir meu próximo passo <ArrowRight className="h-4 w-4" />
+            Fazer meu check-in <ArrowRight className="h-4 w-4" />
           </a>
-          <p className="mt-3 text-sm font-semibold text-ink/55">Leva menos de 3 minutos.</p>
+          <p className="mt-3 text-sm font-semibold text-ink/55">Sem cadastro · leva menos de 3 minutos · resultado na hora</p>
 
           <div className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-2 text-sm font-semibold text-ink/70">
-            {["Diagnóstico gratuito", "3 perguntas", "Resultado na hora"].map((item) => (
+            {["3 respostas", "Sem formulário longo", "Checklist personalizado"].map((item) => (
               <span key={item} className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/70 px-3 py-2">
                 <Check className="h-4 w-4 text-hot" /> {item}
               </span>
