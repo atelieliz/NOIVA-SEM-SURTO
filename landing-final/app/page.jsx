@@ -7,44 +7,120 @@ import { appendTrackingParams, claimEvent, mergeTrackingParams } from "@/lib/tra
 const CHECKOUT_URL = "https://pay.kiwify.com.br/AUehsBX";
 const PRICE = 14.99;
 const TRACKING_STORAGE_KEY = "nss_landing_tracking";
-const RESULT_STORAGE_KEY = "nss_landing_result_v4";
+const RESULT_STORAGE_KEY = "nss_landing_result_v5";
 
 const QUESTIONS = [
   {
-    eyebrow: "PERGUNTA 1 DE 3",
-    title: "Qual celebração você quer tirar do papel?",
+    eyebrow: "1 · SEU MOMENTO",
+    title: "Qual dessas frases parece mais com você hoje?",
+    helper: "Não precisa ter tudo decidido. Marque apenas a opção que melhor descreve seu momento.",
     options: [
-      "Meu casamento.",
-      "Casamento civil com comemoração.",
-      "Mini wedding ou cerimônia íntima.",
-      "Bodas ou renovação de votos.",
-      "Ainda estamos decidindo o formato.",
+      {
+        value: "Meu casamento.",
+        emoji: "👰",
+        label: "Sou a noiva",
+        description: "Meu casamento já faz parte da minha realidade e eu quero organizar as decisões sem me perder.",
+      },
+      {
+        value: "Ainda estamos decidindo o formato.",
+        emoji: "💍",
+        label: "Ainda não estou noiva, mas já quero me organizar",
+        description: "Quero entender o que faz sentido antes de começar a gastar, pesquisar e decidir.",
+      },
+      {
+        value: "Bodas ou renovação de votos.",
+        emoji: "🥂",
+        label: "Minhas bodas merecem organização",
+        description: "Quero celebrar nossa história com carinho, estrutura e sem transformar tudo em correria.",
+      },
     ],
   },
   {
-    eyebrow: "PERGUNTA 2 DE 3",
-    title: "Onde o planejamento começa a sair do controle?",
+    eyebrow: "2 · SUA PRIORIDADE",
+    title: "O que mais está te deixando perdida agora?",
+    helper: "Escolha só uma. A ideia é descobrir qual decisão merece sua atenção primeiro.",
     options: [
-      "Não sei por onde começar.",
-      "Tenho medo de gastar mais do que podemos.",
-      "A lista de convidados está virando um problema.",
-      "Não sei quais fornecedores contratar primeiro.",
-      "Tenho muitas ideias, mas nenhum plano.",
-      "Estou organizando praticamente tudo sozinha.",
+      {
+        value: "Não sei por onde começar.",
+        emoji: "🧭",
+        label: "Não sei por onde começar",
+        description: "Tem tanta coisa para pensar que eu não sei qual decisão vem primeiro.",
+      },
+      {
+        value: "Tenho medo de gastar mais do que podemos.",
+        emoji: "💸",
+        label: "Tenho medo de gastar mais do que deveria",
+        description: "Quero organizar o sonho sem perder o controle do orçamento.",
+      },
+      {
+        value: "A lista de convidados está virando um problema.",
+        emoji: "👥",
+        label: "A lista de convidados está me travando",
+        description: "Não sei quem chamar, quantas pessoas considerar ou como isso afeta o restante.",
+      },
+      {
+        value: "Não sei quais fornecedores contratar primeiro.",
+        emoji: "🤝",
+        label: "Não sei o que contratar primeiro",
+        description: "Estou vendo fornecedores, mas não sei qual contratação realmente precisa acontecer agora.",
+      },
+      {
+        value: "Tenho muitas ideias, mas nenhum plano.",
+        emoji: "📌",
+        label: "Tenho muitas ideias, mas nada organizado",
+        description: "Salvei referências e possibilidades, mas ainda não consegui transformar isso em um plano.",
+      },
+      {
+        value: "Estou organizando praticamente tudo sozinha.",
+        emoji: "🙋‍♀️",
+        label: "Estou organizando praticamente tudo sozinha",
+        description: "As decisões e informações estão ficando concentradas demais em mim.",
+      },
     ],
   },
   {
-    eyebrow: "PERGUNTA 3 DE 3",
-    title: "Em qual fase sua celebração está?",
+    eyebrow: "3 · SEU ANDAMENTO",
+    title: "O que já está encaminhado hoje?",
+    helper: "Isso ajuda o Noiva Sem Surto a separar o que é prioridade do que ainda pode esperar.",
     options: [
-      "Ainda é uma ideia, sem data definida.",
-      "Já temos uma data, mas quase nada organizado.",
-      "Já começamos a pesquisar e pedir orçamentos.",
-      "Já contratamos algumas coisas, mas falta controle.",
-      "Faltam poucos meses e estamos atrasados.",
-      "Estamos reorganizando tudo para bodas ou renovação.",
+      {
+        value: "Ainda é uma ideia, sem data definida.",
+        emoji: "🌱",
+        label: "Ainda estou no começo",
+        description: "Tenho o desejo, mas ainda não existe uma base clara ou uma data definida.",
+      },
+      {
+        value: "Já temos uma data, mas quase nada organizado.",
+        emoji: "📅",
+        label: "Já temos uma data",
+        description: "A data existe, mas ainda falta transformar isso em uma sequência de decisões.",
+      },
+      {
+        value: "Já começamos a pesquisar e pedir orçamentos.",
+        emoji: "🔎",
+        label: "Já estou pesquisando e pedindo orçamentos",
+        description: "Já comecei a olhar possibilidades, valores e fornecedores.",
+      },
+      {
+        value: "Já contratamos algumas coisas, mas falta controle.",
+        emoji: "✅",
+        label: "Já temos algumas coisas resolvidas",
+        description: "Algumas decisões foram tomadas, mas eu preciso enxergar melhor o que ainda falta.",
+      },
+      {
+        value: "Faltam poucos meses e estamos atrasados.",
+        emoji: "⏰",
+        label: "Faltam poucos meses e ainda há pendências",
+        description: "Agora eu preciso saber o que é realmente urgente para não gastar energia no lugar errado.",
+      },
     ],
   },
+];
+
+const CHECKPOINTS = [
+  { emoji: "👰", label: "Seu momento" },
+  { emoji: "🧭", label: "O que trava" },
+  { emoji: "✅", label: "Seu andamento" },
 ];
 
 const PAIN_ROUTES = {
@@ -239,7 +315,7 @@ function AppScreenshot({ src, alt, className, sizes = "(max-width: 900px) 82vw, 
 }
 
 export default function Home() {
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(true);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([null, null, null]);
   const [result, setResult] = useState(null);
@@ -277,7 +353,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!result) return;
-    const pain = PAIN_ROUTES[result.answers[1]] || PAIN_ROUTES[QUESTIONS[1].options[0]];
+    const pain = PAIN_ROUTES[result.answers[1]] || PAIN_ROUTES[QUESTIONS[1].options[0].value];
     const eventKey = `result-view:${result.createdAt}`;
     if (claimEvent(trackedEvents.current, eventKey)) {
       queueMetaEvent("ResultView", {
@@ -288,18 +364,19 @@ export default function Home() {
   }, [result]);
 
   const selected = answers[step];
+  const completion = Math.round(((step + (selected ? 1 : 0)) / QUESTIONS.length) * 100);
   const route = useMemo(() => {
     if (!result) return null;
     return {
-      pain: PAIN_ROUTES[result.answers[1]] || PAIN_ROUTES[QUESTIONS[1].options[0]],
-      stage: STAGE_COPY[result.answers[2]] || STAGE_COPY[QUESTIONS[2].options[0]],
+      pain: PAIN_ROUTES[result.answers[1]] || PAIN_ROUTES[QUESTIONS[1].options[0].value],
+      stage: STAGE_COPY[result.answers[2]] || STAGE_COPY[QUESTIONS[2].options[0].value],
     };
   }, [result]);
 
   function startDiagnosis() {
     setStarted(true);
-    if (claimEvent(trackedEvents.current, "diagnostic-start")) {
-      queueMetaEvent("StartDiagnostic", {
+    if (claimEvent(trackedEvents.current, "diagnostic-intent")) {
+      queueMetaEvent("DiagnosticIntent", {
         content_name: "Diagnóstico Noiva Sem Surto",
         questions_total: QUESTIONS.length,
       });
@@ -315,7 +392,13 @@ export default function Home() {
   }
 
   function selectOption(option) {
-    setAnswers((current) => current.map((value, index) => (index === step ? option : value)));
+    if (answers.every((value) => value === null) && claimEvent(trackedEvents.current, "diagnostic-start")) {
+      queueMetaEvent("StartDiagnostic", {
+        content_name: "Diagnóstico Noiva Sem Surto",
+        questions_total: QUESTIONS.length,
+      });
+    }
+    setAnswers((current) => current.map((value, index) => (index === step ? option.value : value)));
   }
 
   function continueDiagnosis() {
@@ -350,6 +433,7 @@ export default function Home() {
   function restartDiagnosis() {
     try { window.localStorage.removeItem(RESULT_STORAGE_KEY); } catch {}
     trackedEvents.current.delete("diagnostic-start");
+    trackedEvents.current.delete("diagnostic-intent");
     completionLock.current = false;
     setAnswers([null, null, null]);
     setStep(0);
@@ -396,7 +480,7 @@ export default function Home() {
           {result ? (
             <a className="headerAction" href="#oferta">VER ACESSO · R$ 14,99</a>
           ) : (
-            <a className="headerAction" href="#diagnostico" onClick={startDiagnosis}>FAZER DIAGNÓSTICO</a>
+            <a className="headerAction" href="#diagnostico" onClick={startDiagnosis}>FAZER CHECK-IN</a>
           )}
         </div>
       </header>
@@ -406,17 +490,17 @@ export default function Home() {
         <div className="heroGlow heroGlowTwo" />
         <div className="container heroGrid">
           <div className="heroCopy">
-            <p className="eyebrow"><span /> ROTA PERSONALIZADA</p>
+            <p className="eyebrow"><span /> CHECK-IN DE ORGANIZAÇÃO</p>
             <h1>Você não precisa organizar tudo agora.</h1>
-            <p className="heroAccent">Precisa descobrir o que vem primeiro.</p>
+            <p className="heroAccent">Descubra o que merece sua atenção primeiro.</p>
             <p className="heroText">
-              Responda 3 perguntas rápidas e descubra qual decisão pode destravar seu planejamento agora — sem lista infinita e sem tentar resolver tudo de uma vez.
+              Marque 3 respostas rápidas e receba um checklist personalizado com sua prioridade, seus próximos passos e o que pode esperar.
             </p>
             <button className="primaryButton heroButton" type="button" onClick={handleHeroAction}>
-              <span>{result ? "VOLTAR AO MEU RESULTADO" : "DESCOBRIR MEU PRÓXIMO PASSO"}</span>
+              <span>{result ? "VOLTAR AO MEU RESULTADO" : "FAZER MEU CHECK-IN"}</span>
               <ArrowIcon />
             </button>
-            <p className="microcopy">Gratuito · sem cadastro · resultado na hora</p>
+            <p className="microcopy">Sem cadastro · 3 respostas · resultado na hora</p>
           </div>
 
           <aside className="heroCard" aria-label="Etapas do diagnóstico">
@@ -433,9 +517,9 @@ export default function Home() {
           </aside>
         </div>
         <div className="container trustRow" aria-label="Vantagens do diagnóstico">
-          <span>✓ 3 perguntas</span>
-          <span>✓ Leitura personalizada</span>
-          <span>✓ Sem lista infinita</span>
+          <span>✓ 3 respostas</span>
+          <span>✓ Sem formulário longo</span>
+          <span>✓ Checklist personalizado</span>
         </div>
       </section>
 
@@ -470,37 +554,63 @@ export default function Home() {
           <div className="container narrow">
             {!started ? (
               <div className="diagnosisIntro">
-                <p className="eyebrow centered"><span /> PRIMEIRO: ENTENDER SEU MOMENTO <span /></p>
+                <p className="eyebrow centered"><span /> SEU CHECK-IN DE ORGANIZAÇÃO <span /></p>
                 <h2>Descubra seu próximo passo antes de tentar organizar o casamento inteiro.</h2>
-                <p>Escolha o que mais parece com o seu momento. São só 3 perguntas.</p>
+                <p>Sem cadastro e sem compromisso. São só 3 respostas para montar sua rota inicial.</p>
                 <button className="secondaryButton" type="button" onClick={startDiagnosis}>
-                  COMEÇAR AS 3 PERGUNTAS <ArrowIcon />
+                  FAZER MEU CHECK-IN <ArrowIcon />
                 </button>
               </div>
             ) : isBuilding ? (
               <div className="buildingCard" role="status" aria-live="polite">
                 <span className="loadingRing" />
-                <p className="eyebrow centered">ORGANIZANDO SUA ROTA SEM SURTO…</p>
-                <h2>Encontrando o ponto que merece sua atenção primeiro.</h2>
-                <p>Análise baseada nas três respostas que você forneceu.</p>
+                <p className="eyebrow centered">MONTANDO SEU CHECK-IN…</p>
+                <h2>Separando o que merece sua atenção primeiro.</h2>
+                <p>Usando apenas as 3 respostas que você acabou de marcar.</p>
               </div>
             ) : (
               <div className="quizCard">
+                <div className="checkinHeader">
+                  <div>
+                    <p className="checkinKicker">SEU CHECK-IN DE ORGANIZAÇÃO</p>
+                    <p className="checkinMeta">3 respostas · sem cadastro · resultado na hora</p>
+                  </div>
+                  <span className="checkinPercent">{completion}% preenchido</span>
+                </div>
+
+                <div className="checkinSteps" aria-label="Etapas do check-in">
+                  {CHECKPOINTS.map((item, index) => {
+                    const active = index === step;
+                    const done = index < step || (active && Boolean(selected));
+                    return (
+                      <div key={item.label} className={cx("checkinStep", active && "active", done && "done")}>
+                        <span className="checkinStepIcon" aria-hidden="true">{done ? "✓" : item.emoji}</span>
+                        <span>{item.label}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
                 <Progress current={step} />
                 <p className="eyebrow">{QUESTIONS[step].eyebrow}</p>
                 <h2>{QUESTIONS[step].title}</h2>
-                <div className="optionList" role="radiogroup" aria-label={QUESTIONS[step].title}>
+                <p className="quizHelper">{QUESTIONS[step].helper}</p>
+                <div className="optionList checklistOptions" role="radiogroup" aria-label={QUESTIONS[step].title}>
                   {QUESTIONS[step].options.map((option) => (
                     <button
-                      key={option}
-                      className={cx("optionButton", selected === option && "selected")}
+                      key={option.value}
+                      className={cx("optionButton", "optionChecklist", selected === option.value && "selected")}
                       type="button"
                       role="radio"
-                      aria-checked={selected === option}
+                      aria-checked={selected === option.value}
                       onClick={() => selectOption(option)}
                     >
-                      <span className="radioMark" />
-                      <span>{option}</span>
+                      <span className="optionEmoji" aria-hidden="true">{option.emoji}</span>
+                      <span className="optionCopy">
+                        <strong>{option.label}</strong>
+                        <small>{option.description}</small>
+                      </span>
+                      <span className="checkMark" aria-hidden="true">{selected === option.value ? "✓" : ""}</span>
                     </button>
                   ))}
                 </div>
@@ -509,9 +619,10 @@ export default function Home() {
                     <button className="backButton" type="button" onClick={() => setStep((current) => current - 1)}>← VOLTAR</button>
                   ) : <span />}
                   <button className="secondaryButton" type="button" disabled={!selected} onClick={continueDiagnosis}>
-                    {step === 2 ? "CRIAR MINHA ROTA" : "CONTINUAR"} <ArrowIcon />
+                    {step === 2 ? "VER MEU CHECKLIST" : "SALVAR E CONTINUAR"} <ArrowIcon />
                   </button>
                 </div>
+                <p className="checkinReassurance">Você pode voltar e trocar qualquer resposta antes do resultado.</p>
               </div>
             )}
           </div>
@@ -523,7 +634,7 @@ export default function Home() {
           <section id="resultado" className="resultSection">
             <div className="container">
               <div className="resultHeading">
-                <p className="eyebrow centered"><span /> SEU DIAGNÓSTICO <span /></p>
+                <p className="eyebrow centered"><span /> SEU CHECK-IN ESTÁ PRONTO <span /></p>
                 <h2>Agora ficou mais claro o que precisa vir primeiro.</h2>
                 <p>Você não precisa resolver tudo. Precisa proteger a ordem das decisões.</p>
               </div>
@@ -551,12 +662,12 @@ export default function Home() {
               <article className="waitCard compactWaitCard">
                 <div>
                   <span className="resultSignalIcon small" aria-hidden="true">⌛</span>
-                  <p className="cardLabel">ISSO PODE ESPERAR</p>
+                  <p className="cardLabel">PODE FICAR PARA DEPOIS</p>
                 </div>
                 <ul>{route.pain.wait.map((item) => <li key={item}>{item}</li>)}</ul>
               </article>
 
-              <button className="textButton" type="button" onClick={restartDiagnosis}>↻ Refazer meu diagnóstico</button>
+              <button className="textButton" type="button" onClick={restartDiagnosis}>↻ Refazer meu check-in</button>
               <div className="routeFlowCue" aria-hidden="true"><span>↓</span><span>↓</span><span>↓</span></div>
             </div>
           </section>
