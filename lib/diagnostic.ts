@@ -1,8 +1,16 @@
+export type DiagnosticOption = {
+  value: string;
+  emoji: string;
+  label: string;
+  description?: string;
+};
+
 export type DiagnosticQuestion = {
   id: "celebration" | "pain" | "phase";
+  eyebrow: string;
   question: string;
   helper?: string;
-  options: string[];
+  options: DiagnosticOption[];
 };
 
 export type DiagnosticAnswers = Partial<Record<DiagnosticQuestion["id"], string>>;
@@ -19,53 +27,123 @@ export type DiagnosticResult = {
   reassurance: string;
 };
 
-export const DIAGNOSTIC_STORAGE_KEY = "nss_route_v3";
+export const DIAGNOSTIC_STORAGE_KEY = "nss_route_v4";
 
 export const diagnosticQuestions: DiagnosticQuestion[] = [
   {
     id: "celebration",
-    question: "Qual celebração você quer tirar do papel?",
+    eyebrow: "1 · Seu momento",
+    question: "Qual dessas frases parece mais com você hoje?",
+    helper: "Não precisa ter tudo decidido. Marque apenas a opção que melhor descreve seu momento.",
     options: [
-      "Meu casamento.",
-      "Casamento civil com comemoração.",
-      "Mini wedding ou cerimônia íntima.",
-      "Bodas ou renovação de votos.",
-      "Ainda estamos decidindo o formato.",
+      {
+        value: "bride",
+        emoji: "👰",
+        label: "Sou a noiva",
+        description: "Meu casamento já faz parte da minha realidade e eu quero organizar as decisões sem me perder.",
+      },
+      {
+        value: "planning_ahead",
+        emoji: "💍",
+        label: "Ainda não estou noiva, mas já quero me organizar",
+        description: "Quero entender o que faz sentido antes de começar a gastar, pesquisar e decidir.",
+      },
+      {
+        value: "anniversary",
+        emoji: "🥂",
+        label: "Minhas bodas merecem organização",
+        description: "Quero celebrar nossa história com carinho, estrutura e sem transformar tudo em correria.",
+      },
     ],
   },
   {
     id: "pain",
-    question: "Onde o planejamento começa a sair do controle?",
-    helper: "Escolha a situação que mais parece com o que você está vivendo.",
+    eyebrow: "2 · Sua prioridade",
+    question: "O que mais está te deixando perdida agora?",
+    helper: "Escolha só uma. A ideia é descobrir qual decisão merece sua atenção primeiro.",
     options: [
-      "Não sei por onde começar.",
-      "Tenho medo de gastar mais do que podemos.",
-      "A lista de convidados está virando um problema.",
-      "Não sei quais fornecedores contratar primeiro.",
-      "Tenho muitas ideias, mas nenhum plano.",
-      "Estou organizando praticamente tudo sozinha.",
+      {
+        value: "start",
+        emoji: "🧭",
+        label: "Não sei por onde começar",
+        description: "Tem tanta coisa para pensar que eu não sei qual decisão vem primeiro.",
+      },
+      {
+        value: "budget",
+        emoji: "💸",
+        label: "Tenho medo de gastar mais do que deveria",
+        description: "Quero organizar o sonho sem perder o controle do orçamento.",
+      },
+      {
+        value: "guests",
+        emoji: "👥",
+        label: "A lista de convidados está me travando",
+        description: "Não sei quem chamar, quantas pessoas considerar ou como isso afeta o restante.",
+      },
+      {
+        value: "suppliers",
+        emoji: "🤝",
+        label: "Não sei o que contratar primeiro",
+        description: "Estou vendo fornecedores, mas não sei qual contratação realmente precisa acontecer agora.",
+      },
+      {
+        value: "ideas",
+        emoji: "📌",
+        label: "Tenho muitas ideias, mas nada organizado",
+        description: "Salvei referências e possibilidades, mas ainda não consegui transformar isso em um plano.",
+      },
+      {
+        value: "alone",
+        emoji: "🙋‍♀️",
+        label: "Estou organizando praticamente tudo sozinha",
+        description: "As decisões e informações estão ficando concentradas demais em mim.",
+      },
     ],
   },
   {
     id: "phase",
-    question: "Em qual fase sua celebração está?",
+    eyebrow: "3 · Seu andamento",
+    question: "O que já está encaminhado hoje?",
+    helper: "Isso ajuda o Noiva Sem Surto a separar o que é prioridade do que ainda pode esperar.",
     options: [
-      "Ainda é uma ideia, sem data definida.",
-      "Já temos uma data, mas quase nada organizado.",
-      "Já começamos a pesquisar e pedir orçamentos.",
-      "Já contratamos algumas coisas, mas falta controle.",
-      "Faltam poucos meses e estamos atrasados.",
-      "Estamos reorganizando tudo para bodas ou renovação.",
+      {
+        value: "idea",
+        emoji: "🌱",
+        label: "Ainda estou no começo",
+        description: "Tenho o desejo, mas ainda não existe uma base clara ou uma data definida.",
+      },
+      {
+        value: "date",
+        emoji: "📅",
+        label: "Já temos uma data",
+        description: "A data existe, mas ainda falta transformar isso em uma sequência de decisões.",
+      },
+      {
+        value: "research",
+        emoji: "🔎",
+        label: "Já estou pesquisando e pedindo orçamentos",
+        description: "Já comecei a olhar possibilidades, valores e fornecedores.",
+      },
+      {
+        value: "booked",
+        emoji: "✅",
+        label: "Já temos algumas coisas resolvidas",
+        description: "Algumas decisões foram tomadas, mas eu preciso enxergar melhor o que ainda falta.",
+      },
+      {
+        value: "urgent",
+        emoji: "⏰",
+        label: "Faltam poucos meses e ainda há pendências",
+        description: "Agora eu preciso saber o que é realmente urgente para não gastar energia no lugar errado.",
+      },
     ],
   },
 ];
 
 const celebrationNames: Record<string, string> = {
-  "Meu casamento.": "casamento",
-  "Casamento civil com comemoração.": "casamento civil com comemoração",
-  "Mini wedding ou cerimônia íntima.": "celebração íntima",
-  "Bodas ou renovação de votos.": "bodas ou renovação de votos",
-  "Ainda estamos decidindo o formato.": "celebração",
+  bride: "casamento",
+  planning_ahead: "futuro casamento",
+  anniversary: "bodas",
 };
 
 const impactMap: Record<string, string[]> = {
@@ -76,58 +154,67 @@ const impactMap: Record<string, string[]> = {
   responsibilities: ["prazos", "sobrecarga", "tarefas do casal", "continuidade do planejamento"],
 };
 
-function getPhaseProfile(phase = "") {
-  if (phase === "Ainda é uma ideia, sem data definida.") {
+function getPhaseProfile(phase = "", celebration = "") {
+  if (celebration === "planning_ahead") {
     return {
-      title: "Planejamento ainda sem uma base clara",
+      title: "Você está se organizando antes da correria começar",
       description:
-        "A celebração já existe como desejo, mas ainda falta uma estrutura inicial para transformar ideias em decisões seguras.",
+        "Esse é um ótimo momento para entender a ordem das decisões antes que referências, orçamentos e expectativas comecem a disputar sua atenção.",
     };
   }
-  if (phase === "Já temos uma data, mas quase nada organizado.") {
+
+  if (celebration === "anniversary" && phase === "idea") {
     return {
-      title: "Data definida, mas planejamento sem direção",
+      title: "Suas bodas estão começando a ganhar forma",
       description:
-        "A data já cria um prazo real, mas as próximas escolhas ainda não estão organizadas em uma sequência que proteja tempo e orçamento.",
+        "A vontade de celebrar já existe. Agora vale transformar essa intenção em uma estrutura que combine com a história e com o momento atual do casal.",
     };
   }
-  if (phase === "Já começamos a pesquisar e pedir orçamentos.") {
+
+  if (phase === "idea") {
     return {
-      title: "Muita pesquisa, pouca ordem de decisão",
+      title: "Seu planejamento ainda precisa de uma base clara",
       description:
-        "Você já está buscando referências e valores, mas precisa de critérios para saber o que comparar, contratar ou deixar para depois.",
+        "O desejo já existe, mas ainda falta uma estrutura inicial para transformar ideias em decisões seguras.",
     };
   }
-  if (phase === "Já contratamos algumas coisas, mas falta controle.") {
+  if (phase === "date") {
     return {
-      title: "Planejamento em andamento, mas sem visão do todo",
+      title: "Você já tem um prazo real — agora precisa de direção",
       description:
-        "Algumas decisões já foram tomadas, porém ainda falta conectar contratos, orçamento e próximos prazos em uma única rota.",
+        "A data já organiza o calendário, mas as próximas escolhas precisam entrar em uma sequência que proteja tempo e orçamento.",
     };
   }
-  if (phase === "Faltam poucos meses e estamos atrasados.") {
+  if (phase === "research") {
     return {
-      title: "Planejamento sob pressão de prazo",
+      title: "Você já começou a pesquisar, mas precisa de critérios",
       description:
-        "Agora não é hora de tentar fazer tudo. É hora de separar o que realmente interfere na realização da celebração do que é apenas desejável.",
+        "Referências e orçamentos já estão aparecendo. Agora o mais importante é saber o que comparar, decidir ou deixar para depois.",
     };
   }
-  if (phase === "Estamos reorganizando tudo para bodas ou renovação.") {
+  if (phase === "booked") {
     return {
-      title: "Celebração em fase de reconstrução",
+      title: "O planejamento já começou — falta enxergar o todo",
       description:
-        "Vocês já têm uma história e uma intenção, mas precisam adaptar formato, prioridades e orçamento ao momento atual do casal.",
+        "Algumas decisões já foram tomadas. O próximo passo é conectar contratos, orçamento e prazos para não depender da memória.",
+    };
+  }
+  if (phase === "urgent") {
+    return {
+      title: "Seu planejamento precisa de uma rota de prioridade",
+      description:
+        "Com menos tempo, tentar resolver tudo ao mesmo tempo aumenta a sensação de atraso. Agora é hora de proteger as decisões essenciais.",
     };
   }
   return {
-    title: "Planejamento sem direção clara",
+    title: "Seu planejamento precisa de uma direção clara",
     description:
       "Você sabe que quer realizar essa celebração, mas ainda não existe uma ordem segura para tomar as decisões.",
   };
 }
 
 function getPriority(pain = "", phase = "") {
-  if (pain === "Tenho medo de gastar mais do que podemos.") {
+  if (pain === "budget") {
     return {
       key: "budget",
       title: "Definir um limite inicial de investimento",
@@ -143,7 +230,7 @@ function getPriority(pain = "", phase = "") {
     };
   }
 
-  if (pain === "A lista de convidados está virando um problema.") {
+  if (pain === "guests") {
     return {
       key: "guests",
       title: "Criar a primeira lista sem cortes",
@@ -159,7 +246,7 @@ function getPriority(pain = "", phase = "") {
     };
   }
 
-  if (pain === "Não sei quais fornecedores contratar primeiro.") {
+  if (pain === "suppliers") {
     return {
       key: "suppliers",
       title: "Definir a ordem real das contratações",
@@ -175,7 +262,7 @@ function getPriority(pain = "", phase = "") {
     };
   }
 
-  if (pain === "Estou organizando praticamente tudo sozinha.") {
+  if (pain === "alone") {
     return {
       key: "responsibilities",
       title: "Dividir responsabilidades antes de acumular tarefas",
@@ -191,7 +278,7 @@ function getPriority(pain = "", phase = "") {
     };
   }
 
-  if (pain === "Tenho muitas ideias, mas nenhum plano.") {
+  if (pain === "ideas") {
     return {
       key: "structure",
       title: "Transformar referências em uma estrutura de celebração",
@@ -207,7 +294,7 @@ function getPriority(pain = "", phase = "") {
     };
   }
 
-  if (phase === "Faltam poucos meses e estamos atrasados.") {
+  if (phase === "urgent") {
     return {
       key: "structure",
       title: "Montar uma rota crítica para os próximos dias",
@@ -240,9 +327,9 @@ function getPriority(pain = "", phase = "") {
 
 export function createDiagnosticResult(answers: DiagnosticAnswers): DiagnosticResult {
   const celebration = celebrationNames[answers.celebration ?? ""] ?? "celebração";
-  const phaseProfile = getPhaseProfile(answers.phase);
+  const phaseProfile = getPhaseProfile(answers.phase, answers.celebration);
   const priority = getPriority(answers.pain, answers.phase);
-  const urgent = answers.phase === "Faltam poucos meses e estamos atrasados.";
+  const urgent = answers.phase === "urgent";
 
   return {
     momentTitle: phaseProfile.title,
@@ -266,6 +353,6 @@ export function createDiagnosticResult(answers: DiagnosticAnswers): DiagnosticRe
         ],
     reassurance: urgent
       ? "Você não precisa recuperar todo o tempo hoje. Precisa proteger as decisões essenciais e avançar em uma etapa de cada vez."
-      : "Você não está atrasada para tudo. Só precisa parar de tratar todas as decisões como se tivessem a mesma urgência.",
+      : "Você não precisa resolver tudo hoje. Precisa enxergar o que merece sua atenção agora e avançar uma decisão de cada vez.",
   };
 }
