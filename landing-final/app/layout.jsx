@@ -2,6 +2,7 @@ import Script from "next/script";
 import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import "./upgrade.css";
+import "./checkin.css";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
