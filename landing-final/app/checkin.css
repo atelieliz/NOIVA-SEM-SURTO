@@ -1,0 +1,224 @@
+/* Check-in do diagnóstico — visual de checklist claro, leve e mobile-first */
+
+.checkinHeader {
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid rgba(29, 23, 29, .12);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .9);
+}
+
+.checkinKicker {
+  margin: 0 0 3px;
+  color: var(--pink);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .13em;
+}
+
+.checkinMeta {
+  margin: 0;
+  color: #716772;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.checkinPercent {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #e5f4d4;
+  color: #1d171d;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.checkinSteps {
+  margin-bottom: 17px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.checkinStep {
+  min-height: 65px;
+  padding: 9px 7px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  border: 1px solid rgba(29, 23, 29, .10);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .7);
+  color: #837985;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 850;
+  transition: .2s ease;
+}
+
+.checkinStep.active {
+  border-color: rgba(255, 15, 135, .45);
+  background: #fff1f7;
+  color: #1d171d;
+}
+
+.checkinStep.done {
+  background: #edf7df;
+}
+
+.checkinStepIcon {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.quizCard .progress {
+  margin-bottom: 24px;
+}
+
+.quizHelper {
+  max-width: 650px;
+  margin: 10px 0 0;
+  color: #716772;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.optionList.checklistOptions {
+  grid-template-columns: 1fr;
+  gap: 11px;
+}
+
+.optionButton.optionChecklist {
+  width: 100%;
+  min-height: 88px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .92);
+  text-align: left;
+}
+
+.optionButton.optionChecklist:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 15, 135, .48);
+}
+
+.optionButton.optionChecklist.selected {
+  border-color: #1d171d;
+  background: #fff2f8;
+  box-shadow: 4px 4px 0 #1d171d;
+}
+
+.optionEmoji {
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: #fff8f2;
+  font-size: 24px;
+}
+
+.optionCopy {
+  min-width: 0;
+  flex: 1;
+  display: block;
+}
+
+.optionCopy strong {
+  display: block;
+  color: #1d171d;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.optionCopy small {
+  display: block;
+  margin-top: 4px;
+  color: #716772;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.checkMark {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(29, 23, 29, .18);
+  border-radius: 8px;
+  background: #fff;
+  color: #1d171d;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.optionChecklist.selected .checkMark {
+  border-color: #1d171d;
+  background: #e5f4d4;
+}
+
+.checkinReassurance {
+  margin: 13px 0 0;
+  color: #827883;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+@media (max-width: 680px) {
+  .checkinHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+    padding: 14px;
+  }
+
+  .checkinSteps {
+    gap: 5px;
+  }
+
+  .checkinStep {
+    min-height: 60px;
+    padding: 7px 4px;
+    font-size: 9px;
+  }
+
+  .optionButton.optionChecklist {
+    min-height: 84px;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .optionEmoji {
+    width: 43px;
+    height: 43px;
+    flex-basis: 43px;
+    font-size: 21px;
+  }
+
+  .optionCopy strong {
+    font-size: 14px;
+  }
+
+  .optionCopy small {
+    font-size: 11px;
+  }
+
+  .checkMark {
+    width: 25px;
+    height: 25px;
+    flex-basis: 25px;
+  }
+}
