@@ -1,8 +1,20 @@
 /* Quiz de 3 perguntas — direto, próximo e claramente interativo */
 
+/* Quiz-first: a landing abre direto na pergunta 1. O restante da oferta continua após o resultado. */
+.hero,
+.preProofSection {
+  display: none !important;
+}
+
 .diagnosisSection {
   position: relative;
+  min-height: calc(100svh - 76px);
+  padding: 24px 0 52px;
   background: #f7f2f4;
+}
+
+.diagnosisSection .container.narrow {
+  width: min(100% - 24px, 820px);
 }
 
 .quizCard {
@@ -115,31 +127,27 @@
   letter-spacing: .12em;
 }
 
-/* A pergunta precisa ser o elemento mais legível do quiz.
-   Cor e preenchimento explícitos evitam herdar o título claro/decorativo da landing. */
 .quizCard > h2 {
-  max-width: 100%;
-  margin: 0 0 16px;
+  max-width: 680px;
+  margin: 0 0 14px;
   font-family: var(--font-fraunces), Georgia, serif;
-  font-size: clamp(31px, 4.8vw, 46px);
-  font-weight: 650;
+  font-size: clamp(31px, 5vw, 48px);
+  font-weight: 700;
   line-height: 1.02;
-  letter-spacing: -.035em;
-  color: #241b24 !important;
+  letter-spacing: -.025em;
+  color: #201922 !important;
   opacity: 1 !important;
-  background: none !important;
   text-shadow: none !important;
-  -webkit-text-fill-color: #241b24 !important;
+  -webkit-text-fill-color: #201922;
 }
 
 .quizHelper {
-  max-width: 650px;
+  max-width: 620px;
   margin: 0;
-  font-family: var(--font-dm-sans), Arial, sans-serif;
-  color: #625962;
+  color: #5f5661 !important;
   font-size: 15px;
-  font-weight: 500;
   line-height: 1.5;
+  opacity: 1 !important;
 }
 
 .quizPromptBadge {
@@ -298,66 +306,99 @@
   font-weight: 650;
 }
 
+/* Depois do quiz, o resultado passa a ser a primeira seção de venda visível. */
+.resultSection {
+  scroll-margin-top: 76px;
+}
+
+#oferta {
+  scroll-margin-top: 76px;
+}
+
 @media (max-width: 680px) {
+  .diagnosisSection {
+    min-height: calc(100svh - 68px);
+    padding: 12px 0 34px;
+  }
+
+  .diagnosisSection .container.narrow {
+    width: min(100% - 16px, 820px);
+  }
+
   .quizCard {
-    border-radius: 24px;
+    border-radius: 22px;
   }
 
   .checkinHeader {
     align-items: flex-start;
     flex-direction: column;
-    gap: 9px;
-    padding: 14px;
+    gap: 7px;
+    margin-bottom: 12px;
+    padding: 12px 13px;
   }
 
   .checkinPercent {
     align-self: flex-start;
+    padding: 6px 9px;
   }
 
   .checkinSteps {
     gap: 5px;
-    margin-bottom: 19px;
+    margin-bottom: 14px;
   }
 
   .checkinStep {
-    min-height: 58px;
-    padding: 7px 4px;
+    min-height: 53px;
+    padding: 6px 4px;
     font-size: 9px;
+  }
+
+  .checkinStepIcon {
+    font-size: 17px;
+  }
+
+  .quizCard .progress {
+    margin-bottom: 19px;
+  }
+
+  .quizCard > .eyebrow {
+    margin-bottom: 7px;
   }
 
   .quizCard > h2 {
     max-width: 100%;
-    margin-bottom: 14px;
-    font-size: clamp(28px, 7.8vw, 36px);
-    font-weight: 650;
-    line-height: 1.04;
-    letter-spacing: -.03em;
-    color: #241b24 !important;
-    opacity: 1 !important;
-    -webkit-text-fill-color: #241b24 !important;
+    margin-bottom: 10px;
+    font-size: clamp(27px, 8.2vw, 34px);
+    line-height: 1.03;
+    letter-spacing: -.02em;
+    color: #201922 !important;
+    -webkit-text-fill-color: #201922;
   }
 
   .quizHelper {
-    font-size: 15px;
-    line-height: 1.48;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.45;
   }
 
   .quizPromptBadge {
-    margin-top: 18px;
+    margin: 16px 0 10px;
+    padding: 7px 9px;
+    font-size: 9px;
   }
 
   .optionButton.optionChecklist {
-    min-height: 78px;
-    padding: 11px;
+    min-height: 72px;
+    padding: 10px;
     gap: 9px;
-    border-radius: 16px;
+    border-radius: 15px;
   }
 
   .optionEmoji {
-    width: 41px;
-    height: 41px;
-    flex-basis: 41px;
-    font-size: 20px;
+    width: 39px;
+    height: 39px;
+    flex-basis: 39px;
+    font-size: 19px;
   }
 
   .optionCopy strong {
@@ -365,23 +406,26 @@
   }
 
   .optionCopy small {
-    margin-top: 3px;
+    margin-top: 2px;
     font-size: 10.5px;
-    line-height: 1.35;
+    line-height: 1.32;
   }
 
   .checkMark {
-    width: 28px;
-    height: 28px;
-    flex-basis: 28px;
+    width: 27px;
+    height: 27px;
+    flex-basis: 27px;
     font-size: 10px;
   }
 
   .quizFooter {
     gap: 10px;
+    margin-top: 18px;
+    padding-top: 14px;
   }
 
   .quizFooter .secondaryButton {
     width: 100%;
+    min-height: 52px;
   }
 }
