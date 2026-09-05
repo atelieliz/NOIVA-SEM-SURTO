@@ -19,7 +19,7 @@ const fraunces = Fraunces({
 export const metadata = {
   title: "Noiva Sem Surto — Uma decisão de cada vez",
   description:
-    "Faça seu diagnóstico, descubra qual decisão merece atenção primeiro e continue o planejamento com uma rota organizada.",
+    "Responda 3 perguntas rápidas, descubra o que organizar primeiro e continue o planejamento com uma rota clara.",
   robots: {
     index: true,
     follow: true,
@@ -63,11 +63,126 @@ const pixelCode = `
   })();
 `;
 
+const quizLanguageCode = `
+  (function () {
+    if (window.__nssQuizLanguagePatch) return;
+    window.__nssQuizLanguagePatch = true;
+
+    var replacements = new Map([
+      ['FAZER CHECK-IN', 'RESPONDER AGORA'],
+      ['CHECK-IN DE ORGANIZAÇÃO', '3 PERGUNTAS. UMA DIREÇÃO.'],
+      ['FAZER MEU CHECK-IN', 'QUERO RESPONDER 💜'],
+      ['SEU CHECK-IN DE ORGANIZAÇÃO', 'ME CONTA COMO TÁ SEU CASAMENTO'],
+      ['MONTANDO SEU CHECK-IN…', 'ORGANIZANDO SUAS RESPOSTAS…'],
+      ['VER MEU CHECKLIST', 'VER O QUE FAZER PRIMEIRO'],
+      ['SALVAR E CONTINUAR', 'PRÓXIMA PERGUNTA'],
+      ['SEU CHECK-IN ESTÁ PRONTO', 'SUA ROTA ESTÁ PRONTA'],
+      ['↻ Refazer meu check-in', '↻ Responder novamente'],
+      ['Descubra o que merece sua atenção primeiro.', 'Me conta como tá seu casamento.'],
+      ['Marque 3 respostas rápidas e receba um checklist personalizado com sua prioridade, seus próximos passos e o que pode esperar.', 'Me responde 3 coisinhas sobre o momento do seu casamento e eu te mostro o que organizar primeiro, o que pode esperar e qual deve ser seu próximo passo.'],
+      ['Sem cadastro · 3 respostas · resultado na hora', 'Leva menos de 1 minuto · sem cadastro · resultado na hora'],
+      ['3 respostas · sem cadastro · resultado na hora', '3 perguntas rápidas · resultado na hora'],
+      ['✓ 3 respostas', '✓ Só 3 perguntas'],
+      ['✓ Sem formulário longo', '✓ Você só escolhe uma opção'],
+      ['✓ Checklist personalizado', '✓ Direção personalizada']
+    ]);
+
+    var shortDescriptions = {
+      'Sou a noiva': 'Já estou organizando meu casamento.',
+      'Ainda não estou noiva, mas já quero me organizar': 'Quero começar com calma e me preparar antes.',
+      'Minhas bodas merecem organização': 'Quero organizar essa celebração sem transformar tudo em correria.',
+      'Não sei por onde começar': 'Tem tanta coisa que eu não sei qual vem primeiro.',
+      'Tenho medo de gastar mais do que deveria': 'Quero organizar sem perder o controle do orçamento.',
+      'A lista de convidados está me travando': 'Convidados estão travando outras decisões.',
+      'Não sei o que contratar primeiro': 'Estou pesquisando, mas não sei quem fechar agora.',
+      'Tenho muitas ideias, mas nada organizado': 'Tenho referências, mas ainda não tenho uma ordem.',
+      'Estou organizando praticamente tudo sozinha': 'As decisões estão ficando todas comigo.',
+      'Ainda estou no começo': 'Ainda não tenho uma base definida.',
+      'Já temos uma data': 'A data existe, mas o restante ainda está solto.',
+      'Já estou pesquisando e pedindo orçamentos': 'Já comecei a olhar preços e fornecedores.',
+      'Já temos algumas coisas resolvidas': 'Algumas decisões estão fechadas, mas ainda falta controle.',
+      'Faltam poucos meses e ainda há pendências': 'Preciso separar o urgente do que pode esperar.'
+    };
+
+    var scheduled = false;
+
+    function replaceTextNodes(root) {
+      if (!root) return;
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      nodes.forEach(function (node) {
+        var raw = node.nodeValue || '';
+        var clean = raw.trim();
+        if (!replacements.has(clean)) return;
+        var leading = (raw.match(/^\\s*/) || [''])[0];
+        var trailing = (raw.match(/\\s*$/) || [''])[0];
+        node.nodeValue = leading + replacements.get(clean) + trailing;
+      });
+    }
+
+    function applyQuizLanguage() {
+      scheduled = false;
+      replaceTextNodes(document.body);
+
+      var kicker = document.querySelector('.checkinKicker');
+      if (kicker && kicker.textContent !== 'ME CONTA COMO TÁ SEU CASAMENTO') {
+        kicker.textContent = 'ME CONTA COMO TÁ SEU CASAMENTO';
+      }
+
+      var helper = document.querySelector('.quizHelper');
+      if (helper && helper.textContent !== 'Escolha só uma opção — a que mais combina com você agora.') {
+        helper.textContent = 'Escolha só uma opção — a que mais combina com você agora.';
+      }
+
+      document.querySelectorAll('.optionCopy').forEach(function (copy) {
+        var title = copy.querySelector('strong');
+        var description = copy.querySelector('small');
+        if (!title || !description) return;
+        var replacement = shortDescriptions[title.textContent.trim()];
+        if (replacement && description.textContent !== replacement) {
+          description.textContent = replacement;
+        }
+      });
+
+      var options = document.querySelector('.optionList.checklistOptions');
+      if (options) {
+        var previous = options.previousElementSibling;
+        if (!previous || !previous.classList.contains('quizPromptBadge')) {
+          var prompt = document.createElement('p');
+          prompt.className = 'quizPromptBadge';
+          prompt.textContent = '👆 Escolha uma resposta para continuar';
+          options.parentNode.insertBefore(prompt, options);
+        }
+      }
+
+      var reassurance = document.querySelector('.checkinReassurance');
+      if (reassurance && reassurance.textContent !== 'Escolha a resposta que mais parece com você. Não existe resposta certa.') {
+        reassurance.textContent = 'Escolha a resposta que mais parece com você. Não existe resposta certa.';
+      }
+    }
+
+    function scheduleApply() {
+      if (scheduled) return;
+      scheduled = true;
+      window.requestAnimationFrame(applyQuizLanguage);
+    }
+
+    applyQuizLanguage();
+    var observer = new MutationObserver(scheduleApply);
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  })();
+`;
+
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR" className={`${dmSans.variable} ${fraunces.variable}`}>
       <body>
         {children}
+        <Script id="nss-quiz-language" strategy="afterInteractive">
+          {quizLanguageCode}
+        </Script>
         <Script id="meta-pixel" strategy="afterInteractive">
           {pixelCode}
         </Script>
