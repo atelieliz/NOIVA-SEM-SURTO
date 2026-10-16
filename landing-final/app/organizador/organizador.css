@@ -618,3 +618,29 @@
 @media print {
   .ns-rsvp-check { display:none!important; }
 }
+
+
+.ns-button:disabled,.ns-rsvp-actions .ns-button:disabled {
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+.ns-rsvp-actions a[aria-disabled="true"] {
+  opacity:.45;
+  pointer-events:none;
+  cursor:not-allowed;
+}
+.ns-review-reminder { color:#8a2857; font-weight:700; }
+.ns-guest-list { border-color:#d9c9c0; }
+.ns-guest-row:focus-within { background:#fff8ed; }
+.ns-guest-row.guest-removed { opacity:.8; }
+.ns-module-card:active,.ns-guest-steps button:active,.ns-bottom-nav button:active {
+  transform:scale(.98);
+}
+.ns-overview-next .ns-button { flex:0 0 auto; }
+@media(max-width:620px) {
+  .ns-overview-next .ns-button { flex:1 1 100%; width:100%; }
+  .ns-guest-summary strong { font-size:19px; }
+  .ns-rsvp-check { padding:13px; }
+}
