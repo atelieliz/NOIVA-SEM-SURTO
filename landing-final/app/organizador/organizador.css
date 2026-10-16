@@ -666,3 +666,123 @@
   .ns-overview-details .ns-card { padding:15px; }
   .ns-overview-details .ns-card h2 { font-size:18px; }
 }
+
+
+/* Reestruturação: a assessoria orienta e o menu acompanha a sequência */
+.ns-advisor-card {
+  margin: 0 0 30px;
+  padding: clamp(22px,4vw,36px);
+  border: 1.5px solid #180d10;
+  border-radius: 24px;
+  background: #fffdf8;
+  box-shadow: 5px 5px 0 #ec1687;
+}
+.ns-advisor-heading { display:flex; align-items:center; gap:13px; }
+.ns-advisor-heading>span {
+  width:48px;height:48px;flex:0 0 auto;display:grid;place-items:center;
+  border:1px solid #ec1687;border-radius:50%;background:#ffe8f2;font-size:23px;
+}
+.ns-advisor-heading .ns-kicker { margin:0 0 2px; color:#180d10; }
+.ns-advisor-heading small { color:#6d5b60; font-size:11px; font-weight:700; letter-spacing:.05em; }
+.ns-advisor-body { margin:23px 0; display:grid; grid-template-columns:1.25fr .75fr; gap:22px; align-items:center; }
+.ns-advisor-label,.ns-advisor-body aside>span {
+  color:#c80070;font-size:11px;font-weight:700;letter-spacing:.1em;
+}
+.ns-advisor-body h1 {
+  margin:5px 0 8px;font-family:Fraunces,Georgia,serif;font-size:clamp(29px,4vw,41px);
+  line-height:1.05;letter-spacing:-.035em;color:#180d10;
+}
+.ns-advisor-body>div>p,.ns-advisor-body aside p { margin:0;color:#65585a;font-size:15px;line-height:1.55; }
+.ns-advisor-body aside {
+  padding:15px 17px;border-left:3px solid #ec1687;border-radius:0 13px 13px 0;background:#fff1df;
+}
+.ns-advisor-body aside p { margin-top:6px;font-size:13px; }
+.ns-advisor-card>.ns-button { min-width:220px; }
+.ns-section-head { margin-top:37px; }
+.ns-section-head h2 { max-width:600px; }
+.ns-module-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; }
+.ns-module-card { min-height:164px; padding:22px; }
+.ns-module-order { font-size:10px; }
+.ns-module-card.module-sos { min-height:110px; border-style:dashed; }
+.ns-module-card.module-sos .ns-module-icon { border-color:#180d10; }
+.ns-view-tabs {
+  margin: 0 0 23px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.ns-view-tabs button {
+  min-height:88px;
+  padding:13px 15px;
+  display:grid;
+  grid-template-columns:38px 1fr;
+  grid-template-rows:auto auto;
+  align-items:center;
+  gap:2px 11px;
+  border:1px solid #ddcec5;
+  border-radius:15px;
+  background:#fffdf8;
+  color:#180d10;
+  text-align:left;
+  cursor:pointer;
+}
+.ns-view-tabs button>span {
+  grid-row:1/3;
+  width:36px;height:36px;display:grid;place-items:center;border:1px solid #ec1687;
+  border-radius:50%;background:#fff8ed;font-size:20px;
+}
+.ns-view-tabs button strong { font-size:15px; }
+.ns-view-tabs button small { color:#65585a;font-size:12px; }
+.ns-view-tabs button.selected {
+  border:2px solid #180d10;
+  background:#ffe8f2;
+  box-shadow:3px 3px 0 #ec1687;
+}
+.ns-subview { animation: nss-view-in .16s ease-out; }
+@keyframes nss-view-in { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+.ns-overview-section { margin:38px 0 16px; padding-top:25px; border-top:2px solid #180d10; }
+.ns-overview-section>.ns-kicker { margin-bottom:15px; color:#c80070; }
+.ns-overview-section .ns-overview-grid,.ns-overview-section .ns-overview-details { margin:0 0 13px; }
+.ns-overview-section .ns-overview-actions { margin-bottom:7px; }
+.ns-bottom-nav { grid-template-columns:repeat(5,minmax(0,1fr)); }
+@media(max-width:850px) {
+  .ns-advisor-card { margin-bottom:24px; }
+  .ns-view-tabs { margin-bottom:18px; }
+}
+@media(max-width:620px) {
+  .ns-advisor-card { padding:18px 16px 19px; border-radius:19px; box-shadow:3px 3px 0 #ec1687; }
+  .ns-advisor-heading>span { width:42px;height:42px; }
+  .ns-advisor-heading small { font-size:9px; line-height:1.35; }
+  .ns-advisor-body { margin:19px 0; grid-template-columns:1fr; gap:14px; }
+  .ns-advisor-body h1 { font-size:31px; }
+  .ns-advisor-body>div>p { font-size:14px; }
+  .ns-advisor-body aside { padding:12px 13px; }
+  .ns-advisor-card>.ns-button { width:100%; }
+  .ns-section-head { margin-top:29px; }
+  .ns-module-grid { grid-template-columns:1fr; gap:10px; }
+  .ns-module-card,.ns-module-card.module-sos {
+    min-height:116px;
+    padding:15px 48px 15px 15px;
+    display:grid;
+    grid-template-columns:43px 1fr;
+    grid-template-rows:auto auto;
+    align-items:center;
+    gap:3px 12px;
+  }
+  .ns-module-icon { grid-column:1; grid-row:1/3; margin:0; }
+  .ns-module-title { grid-column:2; grid-row:1; align-self:end; padding:0; }
+  .ns-module-desc { grid-column:2; grid-row:2; align-self:start; margin:1px 0 0; padding:0; }
+  .ns-module-order { top:10px; right:11px; }
+  .ns-module-arrow { right:12px; bottom:calc(50% - 15px); }
+  .ns-view-tabs { gap:8px; }
+  .ns-view-tabs button { min-height:93px; padding:10px; grid-template-columns:30px 1fr; gap:2px 7px; }
+  .ns-view-tabs button>span { width:29px;height:29px;font-size:17px; }
+  .ns-view-tabs button strong { font-size:12px; }
+  .ns-view-tabs button small { font-size:10px; line-height:1.25; }
+  .ns-overview-section { margin-top:28px; padding-top:20px; }
+}
+@media(max-width:360px) {
+  .ns-view-tabs button { grid-template-columns:1fr; justify-items:start; }
+  .ns-view-tabs button>span { grid-row:auto; }
+  .ns-view-tabs button strong,.ns-view-tabs button small { grid-column:1; }
+}
