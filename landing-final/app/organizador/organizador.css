@@ -123,6 +123,7 @@
 .ns-budget-row { min-height:62px; padding:7px 12px 7px 16px; border-top:1px solid #f1e9ee; }
 .ns-budget-row strong { font-size:12px; }
 .ns-budget-row small { display:block; color:#a098a1; font-size:9px; }
+.ns-category-name { width:100%; min-width:0; padding:2px 0; border:0; outline:0; background:transparent; color:var(--ns-ink); font-size:12px; font-weight:700; }
 .ns-budget-row .ns-suggested { color:var(--ns-purple); }
 .ns-inline-money { min-height:36px; }
 .ns-inline-money input { height:34px; font-size:12px; }
