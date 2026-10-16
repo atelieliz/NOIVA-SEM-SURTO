@@ -889,3 +889,11 @@
   .ns-review-item > strong { font-size: 13px; }
   .ns-review-item .ns-text-button { font-size: 12px; }
 }
+
+
+@media print {
+  .ns-stage-progress,.ns-review-item .ns-text-button,.ns-review-complete { display:none!important; }
+  .ns-final-checklist { padding:12px; border-color:#bbb; background:white; }
+  .ns-review-item { break-inside:avoid; }
+  .ns-view-inicio .ns-section-head { text-align:left; justify-items:start; }
+}
