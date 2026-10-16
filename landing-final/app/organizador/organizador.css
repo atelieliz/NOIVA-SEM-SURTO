@@ -998,3 +998,93 @@
   .ns-couple-edit,.ns-gift-form,.ns-progress-actions { display:none!important; }
   .ns-couple-card,.ns-progress-card,.ns-dream-gifts { break-inside:avoid; }
 }
+
+
+/* Refinements: onboarding, format choices, and a gentle guest review. */
+.ns-app .ns-moment { width:min(700px,calc(100% - 38px)); padding-top:34px; }
+.ns-app .ns-moment h1 { max-width:620px; font-size:clamp(30px,4.8vw,45px); line-height:1.08; }
+.ns-moment-progress { height:6px; margin:0 0 28px; overflow:hidden; border-radius:999px; background:#eee4eb; }
+.ns-moment-progress span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#d82e83,#f3bd43); transition:width .2s ease; }
+.ns-moment-choice { min-height:92px; margin:25px 0 0; padding:16px 18px; display:grid; grid-template-columns:42px minmax(120px,1fr) minmax(170px,1.2fr); align-items:center; gap:13px; border:1px solid var(--ns-line); border-radius:18px; background:#fffdfb; box-shadow:0 3px 0 #ede5e2; }
+.ns-moment-choice>span:first-child { width:40px;height:40px;display:grid;place-items:center;border:1px solid #ed3791;border-radius:50%;background:#fff4fa;font-size:19px; }
+.ns-moment-choice>span:nth-child(2) { font-size:13px; font-weight:700; }
+.ns-moment-choice select { min-width:0; min-height:44px; padding:8px 10px; border:1px solid var(--ns-line); border-radius:10px; background:white; color:var(--ns-ink); }
+.ns-moment-fields { margin:24px 0 0; padding:19px; display:grid; grid-template-columns:1fr 1fr; gap:14px; border:1px solid var(--ns-line); border-radius:18px; background:#fffdfb; }
+.ns-moment-fields .ns-field { font-size:12px; }
+.ns-moment-fields .ns-field input,.ns-moment-fields .ns-field select { min-height:45px; padding:9px 11px; border:1px solid var(--ns-line); border-radius:10px; background:#fff; color:var(--ns-ink); }
+.ns-moment-reassure { margin:17px 0 20px; color:var(--ns-muted); font-size:12px; }
+.ns-moment-summary { margin:24px 0 16px; padding:17px; display:grid; grid-template-columns:1fr 1fr; gap:0 17px; border:1px solid var(--ns-line); border-radius:17px; background:#fffdfb; }
+.ns-moment-summary>div { padding:12px 0; border-bottom:1px solid #f1e9ee; }
+.ns-moment-summary>div:last-child { grid-column:1/-1; border:0; }
+.ns-moment-summary small,.ns-starting-point small { display:block; color:var(--ns-purple); font-size:9px; font-weight:700; letter-spacing:.1em; }
+.ns-moment-summary strong { display:block; margin-top:3px; font-size:13px; }
+.ns-starting-point { margin:15px 0; padding:19px; display:grid; grid-template-columns:38px 1fr; align-items:start; gap:10px; border:1px solid #d9c7df; border-radius:17px; background:#f4edf5; }
+.ns-starting-point>span { color:#d82e83; font-size:23px; }
+.ns-starting-point h2 { margin:4px 0; font-family:Fraunces,Georgia,serif; font-size:22px; line-height:1.15; }
+.ns-starting-point p { margin:5px 0 0; color:var(--ns-muted); font-size:12px; }
+.ns-starting-point .ns-starting-reason { margin-top:14px; }
+.ns-starting-point button { grid-column:2; justify-self:start; margin-top:8px; padding:0; border:0; background:none; color:var(--ns-purple-dark); font-size:12px; font-weight:700; cursor:pointer; }
+.ns-page-heading h1 { font-size:clamp(31px,4.8vw,46px); }
+.ns-welcome h1 { font-size:clamp(42px,8vw,64px); }
+.ns-format-section { padding:22px; }
+.ns-format-section-head { margin:0 0 14px; display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+.ns-format-section-head h2 { margin:0; font-family:Fraunces,Georgia,serif; font-size:27px; }
+.ns-format-section-head>span { color:var(--ns-muted); font-size:11px; }
+.ns-format-grid { margin-bottom:16px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; }
+.ns-format-card { min-height:112px; padding:14px; position:relative; display:grid; grid-template-columns:47px minmax(0,1fr) 24px; align-items:center; gap:11px; border:1.5px solid #3a2a37; border-radius:20px; background:#fffdfb; box-shadow:0 3px 0 #eee9e5; transition:transform .15s ease,background .15s ease,box-shadow .15s ease; }
+.ns-format-card:hover { transform:translateY(-1px); }
+.ns-format-card .ns-format-icon { width:44px;height:44px;display:grid;place-items:center;border:1.5px solid #3a2a37;border-radius:14px;background:#f5d14c;color:#21131e;font-size:21px; }
+.ns-format-card .ns-format-copy { min-width:0; }
+.ns-format-card .ns-format-copy strong { display:block; font-size:13px; }
+.ns-format-card .ns-format-copy small { display:block; margin-top:3px; color:var(--ns-muted); font-size:10px; line-height:1.35; }
+.ns-format-check { width:23px;height:23px;display:grid;place-items:center;border:1.5px solid #3a2a37;border-radius:50%;color:#fff!important;font-size:13px;font-weight:700; }
+.ns-format-card.chosen { border-color:#351d49; background:#542b70; color:#fff; box-shadow:5px 5px 0 #f5ce43; }
+.ns-format-card.chosen .ns-format-copy small { color:#e8dced; }
+.ns-format-card.chosen .ns-format-check { border-color:#ec348b;background:#ec348b; }
+.ns-venue-head { margin-top:27px; }
+.ns-format-reassure { margin:2px 0 0; color:var(--ns-muted); font-size:11px; }
+.ns-guest-guide { margin:15px 0; padding:15px 17px; display:flex; align-items:center; justify-content:space-between; gap:18px; border:1px solid #eadce9; border-radius:15px; background:#fbf6f5; }
+.ns-guest-guide strong { font-family:Fraunces,Georgia,serif; font-size:17px; }
+.ns-guest-guide p { max-width:620px; margin:4px 0 0; color:var(--ns-muted); font-size:11px; }
+.ns-guest-guide>span { padding:6px 9px; border:1px solid #e6dbe5; border-radius:999px; color:#8c858b; font-size:9px; white-space:nowrap; }
+.ns-guest-row { min-height:0; padding:12px 15px; display:flex; flex-direction:column; align-items:stretch; gap:9px; }
+.ns-guest-review-pills { display:flex; flex-wrap:wrap; align-items:center; gap:7px; }
+.ns-guest-review-pills button,.ns-guest-restore { min-height:31px; padding:5px 10px; border:1px solid #e7dce7; border-radius:999px; background:#fff; color:#706675; font-size:10px; font-weight:700; cursor:pointer; }
+.ns-guest-review-pills button.selected { border-color:#583273; background:#f0e9f3; color:#492960; }
+.ns-guest-review-pills button.is-maybe { color:#898288; }
+.ns-guest-review-pills button.is-maybe.selected { border-color:#c9c3c7; background:#e9e6e7; color:#777077; }
+.ns-guest-restore { border-color:transparent; background:transparent; color:#6d5b73; }
+.ns-guest-row.guest-removed { background:#f4f2f2; color:#918a90; }
+.ns-guest-row.guest-removed .ns-guest-name strong { text-decoration:none; }
+.ns-guest-row.guest-removed .ns-guest-name small { color:#918a90; }
+.ns-guest-row.guest-removed select { border-color:#e2dfe0; background:#f7f6f6; color:#8e878d; }
+.ns-app-top { justify-content:center; }
+.ns-app-top .ns-brand { font-size:19px; }
+
+@media(max-width:620px) {
+  .ns-app .ns-moment { width:calc(100% - 32px); padding-top:25px; }
+  .ns-app .ns-moment h1 { font-size:clamp(29px,8vw,37px); }
+  .ns-moment-choice { grid-template-columns:38px 1fr; gap:9px; padding:14px; }
+  .ns-moment-choice>span:first-child { width:36px;height:36px; }
+  .ns-moment-choice select { grid-column:1/-1; }
+  .ns-moment-fields { grid-template-columns:1fr; padding:15px; gap:11px; }
+  .ns-moment-summary { padding:13px; gap:0 12px; }
+  .ns-moment-summary strong { font-size:12px; }
+  .ns-starting-point { padding:15px; }
+  .ns-starting-point h2 { font-size:20px; }
+  .ns-format-section { padding:15px; }
+  .ns-format-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .ns-format-card { min-height:132px; padding:11px; grid-template-columns:34px minmax(0,1fr); grid-template-rows:42px auto; align-items:start; gap:8px; border-radius:16px; }
+  .ns-format-card .ns-format-icon { width:34px;height:34px;font-size:18px; }
+  .ns-format-card .ns-format-copy { grid-column:1/-1; }
+  .ns-format-card .ns-format-copy strong { font-size:11px; }
+  .ns-format-card .ns-format-copy small { font-size:9px; }
+  .ns-format-card .ns-format-check { position:absolute; top:9px; right:9px; width:20px;height:20px; }
+  .ns-format-section-head h2 { font-size:24px; }
+  .ns-format-section-head>span { font-size:9px; }
+  .ns-guest-guide { align-items:flex-start; flex-direction:column; gap:10px; }
+  .ns-guest-row { padding:11px; }
+  .ns-guest-review-pills { gap:6px; }
+  .ns-guest-review-pills button,.ns-guest-restore { padding:5px 8px; font-size:9px; }
+  .ns-app-top .ns-brand { font-size:18px; }
+}
