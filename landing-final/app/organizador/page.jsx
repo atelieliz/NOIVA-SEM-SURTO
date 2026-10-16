@@ -214,8 +214,8 @@ export default function OrganizadorPage() {
         </>}
 
         {view === "evento" && <>
-          <PageHeading eyebrow="FORMATO E ORGANIZAÇÃO" title="Como esse momento vai acontecer" intro="Escolha o formato que faz sentido para vocês e organize os fornecedores e responsabilidades que tornam esse plano possível." back={() => go("inicio")} />
-          <div className="ns-view-tabs" role="tablist" aria-label="Formato e fornecedores">
+          <PageHeading eyebrow="CERIMÔNIA E PLANEJAMENTO" title="Como esse momento vai acontecer" intro="Escolha o formato que faz sentido para vocês e organize os fornecedores e responsabilidades que tornam esse plano possível." back={() => go("inicio")} />
+          <div className="ns-view-tabs" role="tablist" aria-label="Cerimônia e fornecedores">
             <button type="button" role="tab" aria-selected={eventTab === "formato"} className={eventTab === "formato" ? "selected" : ""} onClick={() => setEventTab("formato")}><span>🥂</span><strong>Detalhes da cerimônia</strong><small>Escolhas para lembrar e combinar</small></button>
             <button type="button" role="tab" aria-selected={eventTab === "fornecedores"} className={eventTab === "fornecedores" ? "selected" : ""} onClick={() => setEventTab("fornecedores")}><span>🤝</span><strong>Fornecedores</strong><small>Serviços e responsáveis</small></button>
           </div>
