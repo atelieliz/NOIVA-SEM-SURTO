@@ -897,3 +897,27 @@
   .ns-review-item { break-inside:avoid; }
   .ns-view-inicio .ns-section-head { text-align:left; justify-items:start; }
 }
+
+
+/* Escala tipográfica mais confortável, alinhada ao texto validado do produto. */
+.ns-welcome h1 { font-size: clamp(38px, 5vw, 46px); line-height: 1.05; }
+.ns-dashboard-hero h1 { font-size: clamp(36px, 4.3vw, 44px); line-height: 1.06; }
+.ns-page-heading h1 { font-size: clamp(34px, 4.2vw, 42px); line-height: 1.08; }
+.ns-view-inicio .ns-section-head h2 { font-size: clamp(30px, 3.4vw, 36px); line-height: 1.15; }
+.ns-moment h1 { font-size: clamp(32px, 4vw, 38px); }
+.ns-card h2 { font-size: clamp(24px, 2.7vw, 29px); }
+.ns-lead,.ns-page-heading>p:last-child,.ns-dashboard-hero p:not(.ns-kicker) { font-size: 15px; line-height: 1.65; }
+.ns-module-title { font-size: 14px; }
+.ns-module-desc { font-size: 12px; line-height: 1.5; }
+
+@media (max-width: 620px) {
+  .ns-welcome h1 { font-size: clamp(34px, 10vw, 39px); line-height: 1.08; }
+  .ns-dashboard-hero h1 { font-size: clamp(32px, 8.5vw, 37px); line-height: 1.08; }
+  .ns-page-heading h1 { font-size: clamp(29px, 7.6vw, 34px); line-height: 1.12; }
+  .ns-view-inicio .ns-section-head h2 { font-size: clamp(28px, 7.2vw, 32px); line-height: 1.16; }
+  .ns-moment h1 { font-size: clamp(29px, 7.5vw, 33px); }
+  .ns-card h2 { font-size: 24px; }
+  .ns-lead,.ns-page-heading>p:last-child,.ns-dashboard-hero p:not(.ns-kicker) { font-size: 15px; line-height: 1.6; }
+  .ns-module-title { font-size: 14px; }
+  .ns-module-desc { font-size: 12px; }
+}
