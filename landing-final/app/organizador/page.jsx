@@ -74,6 +74,7 @@ export default function OrganizadorPage() {
   function setBudget(key, value) { update((current) => ({ ...current, budget: { ...current.budget, [key]: value } })); }
   function updateRsvp(key, value) { if (key === "brideName") setBrideName(value); else setBridePhone(value); update((current) => ({ ...current, rsvp: { ...current.rsvp, [key]: value } })); }
   function go(next) { setView(next); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  function startRoute() { update((current) => ({ ...current, started: true })); go("momento"); }
   function enterApp() { update((current) => ({ ...current, started: true })); go("inicio"); }
 
   function addGuest(name = guestDraft.name, group = guestDraft.group) {
@@ -124,7 +125,7 @@ export default function OrganizadorPage() {
       <p className="ns-welcome-title">Parabéns, noiva!</p>
       <p className="ns-lead">O pedido aconteceu. Agora eu vou organizar as decisões na ordem certa e mostrar só o que faz sentido resolver agora.</p>
       <p className="ns-reassure">Respira. Você não precisa saber tudo.<br />Eu te conduzo a partir daqui.</p>
-      <button className="ns-button ns-button-primary" onClick={() => go("momento")}>Começar minha rota <span>→</span></button>
+      <button type="button" className="ns-button ns-button-primary" onClick={startRoute}>Começar minha rota <span>→</span></button>
       <p className="ns-footnote">Sem pressa. Suas escolhas ficam salvas neste aparelho.</p>
     </section>
   </main>;
