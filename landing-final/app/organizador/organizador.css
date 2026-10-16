@@ -644,3 +644,25 @@
   .ns-guest-summary strong { font-size:19px; }
   .ns-rsvp-check { padding:13px; }
 }
+
+
+.ns-overview-details { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+.ns-overview-details .ns-card { margin:0; padding:18px; }
+.ns-overview-details .ns-card h2 { font-size:20px; margin-bottom:12px; }
+.ns-overview-details .ns-card>p {
+  margin:0;
+  padding:9px 0;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  border-top:1px solid #efe4dc;
+  color:var(--ns-ink);
+  font-size:13px;
+}
+.ns-overview-details .ns-card>p strong { font-size:13px; }
+.ns-overview-details .ns-card>p span { color:var(--ns-muted); text-align:right; }
+@media(max-width:620px) {
+  .ns-overview-details { grid-template-columns:1fr; gap:8px; }
+  .ns-overview-details .ns-card { padding:15px; }
+  .ns-overview-details .ns-card h2 { font-size:18px; }
+}
