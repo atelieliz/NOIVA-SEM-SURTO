@@ -214,7 +214,7 @@ export default function OrganizadorPage() {
         </>}
 
         {view === "evento" && <>
-          <PageHeading eyebrow="FORMATO E ORGANIZAÇÃO" title="Como esse momento vai acontecer" intro="Escolha o formato que faz sentido para vocês e organize os fornecedores e responsabilidades que tornam esse plano possível." back={null} />
+          <PageHeading eyebrow="FORMATO E ORGANIZAÇÃO" title="Como esse momento vai acontecer" intro="Escolha o formato que faz sentido para vocês e organize os fornecedores e responsabilidades que tornam esse plano possível." back={() => go("inicio")} />
           <div className="ns-view-tabs" role="tablist" aria-label="Formato e fornecedores">
             <button type="button" role="tab" aria-selected={eventTab === "formato"} className={eventTab === "formato" ? "selected" : ""} onClick={() => setEventTab("formato")}><span>🥂</span><strong>Detalhes da cerimônia</strong><small>Escolhas para lembrar e combinar</small></button>
             <button type="button" role="tab" aria-selected={eventTab === "fornecedores"} className={eventTab === "fornecedores" ? "selected" : ""} onClick={() => setEventTab("fornecedores")}><span>🤝</span><strong>Fornecedores</strong><small>Serviços e responsáveis</small></button>
@@ -232,7 +232,7 @@ export default function OrganizadorPage() {
         </>}
 
         {view === "rota" && <>
-          <PageHeading eyebrow="ROTA SEM SURTO" title="Seu próximo passo, sem a lista infinita" intro="Uma lista para imprimir, adaptar e continuar. Ela considera o momento e as prioridades que você marcou." back={null} />
+          <PageHeading eyebrow="ROTA SEM SURTO" title="Seu próximo passo, sem a lista infinita" intro="Uma lista para imprimir, adaptar e continuar. Ela considera o momento e as prioridades que você marcou." back={() => go("inicio")} />
           <div className="ns-route-priority"><span>🧭</span><div><small>O FOCO DE AGORA</small><strong>{data.moment.priority}</strong><p>{data.moment.phase} · {data.moment.event}</p></div><button className="ns-text-button" onClick={() => go("momento")}>Ajustar</button></div>
           <div className="ns-route-list">{makeRoute(data).map((item, index) => <label className="ns-route-item" key={item}><input type="checkbox" checked={data.tasks.some((task) => task.text === item && task.done)} onChange={(e) => update((d) => { const found = d.tasks.find((task) => task.text === item); return { ...d, tasks: found ? d.tasks.map((task) => task.id === found.id ? { ...task, done: e.target.checked } : task) : [...d.tasks, { id: makeId(), text: item, done: e.target.checked }] }; })} /><span className="ns-route-number">{String(index + 1).padStart(2, "0")}</span><span>{item}</span></label>)}</div>
           <div className="ns-route-footer"><button type="button" className="ns-button ns-button-primary" onClick={() => window.print()}>🖨️ Imprimir rota e resumo</button><button type="button" className="ns-button ns-button-quiet" onClick={copyPlannerSummary}>📋 Copiar resumo</button><a className="ns-button ns-button-quiet" href={plannerWhatsAppUrl()} target="_blank" rel="noreferrer">💬 Compartilhar no WhatsApp ↗</a></div>
