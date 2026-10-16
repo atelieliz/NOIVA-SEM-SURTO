@@ -298,7 +298,7 @@
   .ns-top,.ns-sidebar,.ns-bottom-nav,.ns-footer,.ns-back-inline,.ns-print-button,.ns-rsvp,.ns-rsvp-locked,.ns-route-footer,.ns-next-card button { display:none!important; }
   .ns-layout { display:block; min-height:0; }
   .ns-content { max-width:none; padding:0; }
-  .ns-guest-row.guest-removed { display:none; }
+  .ns-guest-row.guest-removed { display:grid; color:#999; background:#f3f1f1; }
   .ns-route-item,.ns-guest-row,.ns-budget-row,.ns-card { break-inside:avoid; }
   .ns-page-heading h1 { font-size:30pt; }
 }
