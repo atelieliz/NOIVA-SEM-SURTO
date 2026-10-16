@@ -97,7 +97,7 @@ export default function OrganizadorPage() {
     return { title: "Retome a próxima ação", detail: "Seu plano está organizado. Escolha uma tarefa pequena e marque quem vai cuidar dela.", reason: "Uma ação clara evita que tudo dependa da memória ou fique acumulado.", action: "Abrir minha rota", view: "rota", tab: "" };
   }, [target, activeGuests.length, guestGap, data.celebration.format, data.vendors.length]);
 
-  function update(updater) { setData((current) => typeof updater === "function" ? updater(current) : ({ ...current, ...updater })); }
+  function update(updater) { setData((current) => { const next = typeof updater === "function" ? updater(current) : { ...current, ...updater }; return { ...next, finalReviewDone: false }; }); }
   function setMoment(key, value) { update((current) => ({ ...current, moment: { ...current.moment, [key]: value } })); }
   function setBudget(key, value) { update((current) => ({ ...current, budget: { ...current.budget, [key]: value } })); }
   function toggleMomentDetail(id) { update((current) => { const moments = current.celebration.moments || []; return { ...current, celebration: { ...current.celebration, moments: moments.includes(id) ? moments.filter((item) => item !== id) : [...moments, id] } }; }); }
