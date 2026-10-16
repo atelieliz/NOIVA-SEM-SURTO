@@ -89,13 +89,52 @@ export default function OrganizadorPage() {
     return `Comece conversando sobre o grupo “${largest?.group || "Amigos"}”, que hoje tem mais nomes. A lista continua inteira enquanto vocês decidem.`;
   }, [groupsCount, guestGap]);
   const advisor = useMemo(() => {
-    if (!target) return { title: "Defina um limite confortável", detail: "Sem um teto inicial, qualquer orçamento pode parecer urgente.", reason: "O limite orienta a lista de pessoas, o formato e as conversas com fornecedores.", action: "Definir meu orçamento", view: "recursos", tab: "investimento" };
-    if (!activeGuests.length) return { title: "Coloque as pessoas no papel", detail: "Comece listando sem cortar ninguém. Depois vocês revisam juntos quem é essencial.", reason: "A quantidade de convidados influencia espaço, alimentação e investimento.", action: "Organizar convidados", view: "recursos", tab: "convidados" };
-    if (guestGap > 0) return { title: "Revise a previsão de pessoas", detail: `Há ${guestGap} nomes acima da quantidade que vocês imaginaram. A lista continua salva enquanto conversam.`, reason: "Ajustar a previsão evita comparar opções com números diferentes.", action: "Revisar convidados", view: "recursos", tab: "convidados" };
-    if (data.celebration.format === "Ainda estamos escolhendo" || !data.celebration.moments?.length) return { title: "Escolha o que importa para esse momento", detail: "Marque os detalhes que combinam com vocês; a lista pode mudar conforme o plano.", reason: "Uma escolha concreta ajuda a lembrar do que combinar com o local e os fornecedores.", action: "Ver cerimônia e detalhes", view: "evento", tab: "formato" };
-    if (!data.vendors.length) return { title: "Compare o primeiro serviço", detail: "Registre o que estão pesquisando e quem vai acompanhar o próximo contato.", reason: "Uma decisão com responsável e valor anotado fica mais fácil de retomar.", action: "Organizar fornecedores", view: "evento", tab: "fornecedores" };
-    return { title: "Retome a próxima ação", detail: "Seu plano está organizado. Escolha uma tarefa pequena e marque quem vai cuidar dela.", reason: "Uma ação clara evita que tudo dependa da memória ou fique acumulado.", action: "Abrir minha rota", view: "rota", tab: "" };
-  }, [target, activeGuests.length, guestGap, data.celebration.format, data.vendors.length]);
+    const priority = data.moment.priority;
+    const occasion = {
+      "Casamento": "do casamento",
+      "Casamento civil": "do casamento civil",
+      "Cerimônia": "da cerimônia",
+      "Uma celebração íntima": "de uma celebração íntima",
+      "Bodas / renovação de votos": "das bodas e da renovação de votos",
+      "Ainda estamos decidindo": "do momento que vocês querem celebrar",
+    }[data.moment.event] || "do casamento";
+    const phaseHint = {
+      "Ainda é uma ideia": "Como ainda é uma ideia, vocês podem explorar opções antes de assumir compromissos.",
+      "Já temos uma data": "Com a data definida, fica mais fácil transformar escolhas em prazos.",
+      "Estamos pesquisando": "Nesta fase, comparar opções com os mesmos critérios ajuda a decidir com calma.",
+      "Já contratamos alguns serviços": "Com alguns serviços contratados, vale acompanhar o que ainda falta pagar ou combinar.",
+      "Faltam poucos meses": "Com a data próxima, priorizem o que ainda precisa de confirmação.",
+    }[data.moment.phase] || "Avancem no ritmo que fizer sentido para vocês.";
+
+    // Cinco caminhos de orientação, definidos pela prioridade escolhida no Meu momento.
+    if (priority === "Tenho medo de gastar demais") {
+      return target > 0
+        ? { title: "Revise o limite com calma", detail: `Vocês já registraram ${money(target)} como referência ${occasion}. Confira se o valor continua confortável antes de assumir novos gastos.`, reason: `Um teto claro ajuda a escolher sem cortar itens no impulso. ${phaseHint}`, action: "Revisar meu orçamento", view: "recursos", tab: "investimento" }
+        : { title: "Defina um limite confortável", detail: `Comece pelo valor que parece possível ${occasion}; ele pode ser ajustado quando vocês tiverem mais informações.`, reason: `O limite ajuda a conversar sobre pessoas, formato e fornecedores com mais clareza. ${phaseHint}`, action: "Definir meu orçamento", view: "recursos", tab: "investimento" };
+    }
+
+    if (priority === "Preciso organizar convidados") {
+      return activeGuests.length
+        ? { title: guestGap > 0 ? "Revise a previsão de pessoas" : "Confira sua lista com calma", detail: `Há ${activeGuests.length} nomes ativos para uma previsão de ${Number(data.guests.target) || 0}. A lista fica visível enquanto vocês revisam juntos.`, reason: `A quantidade de pessoas influencia espaço, alimentação e investimento. ${phaseHint}`, action: "Revisar convidados", view: "recursos", tab: "convidados" }
+        : { title: "Comece listando quem importa", detail: `Anote as pessoas que gostariam de ter por perto ${occasion}. Não precisa decidir cortes agora.`, reason: `A lista dá uma estimativa inicial para comparar espaços e custos. ${phaseHint}`, action: "Organizar convidados", view: "recursos", tab: "convidados" };
+    }
+
+    if (priority === "Não sei escolher fornecedores") {
+      return data.vendors.length
+        ? { title: "Retome uma cotação por vez", detail: `Vocês já registraram ${data.vendors.length} fornecedor(es). Compare valores, condições e o que está incluído antes de fechar.`, reason: `Propostas comparáveis deixam a decisão mais clara. ${phaseHint}`, action: "Ver fornecedores", view: "evento", tab: "fornecedores" }
+        : { title: "Compare um fornecedor por vez", detail: `Escolha um serviço importante ${occasion} e anote o que cada proposta inclui.`, reason: `Comparar o mesmo serviço ajuda a avaliar custo e condições sem se perder em muitas opções. ${phaseHint}`, action: "Organizar fornecedores", view: "evento", tab: "fornecedores" };
+    }
+
+    if (priority === "Quero dividir responsabilidades") {
+      return { title: "Escolha uma tarefa para dividir", detail: "Definam juntos quem pode pesquisar, decidir ou retomar o próximo assunto. Uma tarefa pequena já ajuda.", reason: `Responsáveis e prazos evitam que o planejamento fique concentrado em uma pessoa. ${phaseHint}`, action: "Ver minha rota", view: "rota", tab: "" };
+    }
+
+    // Não sei por onde começar e tenho muitas ideias usam o mesmo caminho de destravamento.
+    if (data.moment.phase === "Faltam poucos meses" || data.moment.phase === "Já contratamos alguns serviços") {
+      return { title: "Revise o que ainda falta", detail: `Olhem uma pendência de cada vez ${occasion}; o que já está encaminhado não precisa ser refeito.`, reason: `Uma revisão curta mostra o que precisa de ação e o que pode esperar. ${phaseHint}`, action: "Abrir minha rota", view: "rota", tab: "" };
+    }
+    return { title: "Escolha uma primeira prioridade", detail: `Você não precisa decidir tudo agora. Escolham um detalhe importante ${occasion} e avancem por etapas.`, reason: `Uma decisão concreta dá direção às ideias sem transformar o plano em uma lista infinita. ${phaseHint}`, action: "Escolher detalhes", view: "evento", tab: "formato" };
+  }, [data.moment.priority, data.moment.phase, data.moment.event, data.guests.target, target, activeGuests.length, guestGap, data.vendors.length]);
 
   function update(updater) { setData((current) => { const next = typeof updater === "function" ? updater(current) : { ...current, ...updater }; return { ...next, finalReviewDone: false }; }); }
   function setMoment(key, value) { update((current) => ({ ...current, moment: { ...current.moment, [key]: value } })); }
@@ -194,7 +233,7 @@ export default function OrganizadorPage() {
       <aside className="ns-sidebar"><p className="ns-kicker">SEU ESPAÇO</p><button className={`ns-nav-link ${view === "inicio" ? "selected" : ""}`} onClick={() => go("inicio")}><span>🏠</span>Início</button>{routes.map(([id, label, icon]) => <button key={id} className={`ns-nav-link ${view === id ? "selected" : ""} ${id === "sos" ? "sos-link" : ""}`} onClick={() => go(id)}><span>{icon}</span>{label}</button>)}<div className="ns-sidebar-note"><span>♡</span><p>Você não precisa resolver tudo hoje.</p></div></aside>
       <div className="ns-content">
         {!activeRoute && <>
-          <section className="ns-advisor-card"><div className="ns-advisor-heading"><span>✦</span><div><p className="ns-kicker">APOIO PARA ORGANIZAR SEU CASAMENTO</p><small>SUGESTÃO COM BASE NO QUE VOCÊ PREENCHEU</small></div></div><div className="ns-advisor-body"><div><span className="ns-advisor-label">O PRÓXIMO PASSO</span><h1>{advisor.title}</h1><p>{advisor.detail}</p></div><aside><span>POR QUE ISSO VEM AGORA</span><p>{advisor.reason}</p></aside></div><button type="button" className="ns-button ns-button-primary" onClick={() => advisor.view === "recursos" ? openResources(advisor.tab) : advisor.view === "evento" ? openEvent(advisor.tab) : go(advisor.view)}>{advisor.action} <span>→</span></button></section>
+          <section className="ns-advisor-card"><div className="ns-advisor-heading"><span>✦</span><div><p className="ns-kicker">APOIO PARA ORGANIZAR SEU CASAMENTO</p><small>SUGESTÃO DO SEU MOMENTO · {data.moment.event} · {data.moment.phase}</small></div></div><div className="ns-advisor-body"><div><span className="ns-advisor-label">O PRÓXIMO PASSO</span><h1>{advisor.title}</h1><p>{advisor.detail}</p></div><aside><span>POR QUE ISSO VEM AGORA</span><p>{advisor.reason}</p></aside></div><button type="button" className="ns-button ns-button-primary" onClick={() => advisor.view === "recursos" ? openResources(advisor.tab) : advisor.view === "evento" ? openEvent(advisor.tab) : go(advisor.view)}>{advisor.action} <span>→</span></button></section>
           <section className="ns-section-head"><div><p className="ns-kicker">ORGANIZE EM QUATRO ETAPAS</p><h2>Uma decisão prepara a próxima</h2></div><button className="ns-link-button" onClick={() => go("momento")}>Atualizar meu momento ↗</button></section>
           <div className="ns-module-grid">{routes.map(([id, label, icon, description], index) => <button key={id} type="button" className={`ns-module-card ${id === "sos" ? "module-sos" : ""}`} onClick={() => id === "recursos" ? openResources() : id === "evento" ? openEvent() : go(id)}><span className="ns-module-order">{id === "sos" ? "AJUDA" : `ETAPA ${stageRoutes.findIndex(([stageId]) => stageId === id) + 1}`}</span><span className="ns-module-icon">{icon}</span><span className="ns-module-title">{label}</span><span className="ns-module-desc">{description}</span><span className="ns-module-arrow" aria-hidden="true">→</span></button>)}</div>
           
