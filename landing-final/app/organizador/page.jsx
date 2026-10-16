@@ -16,7 +16,7 @@ const DEFAULTS = {
   budget: { target: 0, saved: 0, monthly: 0, categories: BASE_CATEGORIES.map(([name, weight], i) => ({ id: `base-${i}`, name, weight, actual: 0 })) },
   guests: { target: 100, people: [] },
   vendors: [], tasks: [], celebration: { format: "Ainda estamos escolhendo", details: "", location: "" },
-  compassAnswers: {},
+  compassAnswers: {}, rsvp: { brideName: "", bridePhone: "" },
 };
 
 const money = (value) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(Number(value) || 0);
@@ -27,7 +27,7 @@ function loadState() {
   if (typeof window === "undefined") return DEFAULTS;
   try {
     const parsed = JSON.parse(localStorage.getItem(STORE) || "null");
-    return parsed ? { ...DEFAULTS, ...parsed, moment: { ...DEFAULTS.moment, ...parsed.moment }, budget: { ...DEFAULTS.budget, ...parsed.budget }, guests: { ...DEFAULTS.guests, ...parsed.guests }, celebration: { ...DEFAULTS.celebration, ...parsed.celebration } } : DEFAULTS;
+    return parsed ? { ...DEFAULTS, ...parsed, moment: { ...DEFAULTS.moment, ...parsed.moment }, budget: { ...DEFAULTS.budget, ...parsed.budget }, guests: { ...DEFAULTS.guests, ...parsed.guests }, celebration: { ...DEFAULTS.celebration, ...parsed.celebration }, rsvp: { ...DEFAULTS.rsvp, ...parsed.rsvp } } : DEFAULTS;
   } catch { return DEFAULTS; }
 }
 
@@ -48,7 +48,7 @@ export default function OrganizadorPage() {
   const [brideName, setBrideName] = useState("");
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => { setData(loadState()); setHydrated(true); }, []);
+  useEffect(() => { const loaded = loadState(); setData(loaded); setBrideName(loaded.rsvp.brideName); setBridePhone(loaded.rsvp.bridePhone); setHydrated(true); }, []);
   useEffect(() => { if (hydrated) localStorage.setItem(STORE, JSON.stringify(data)); }, [data, hydrated]);
 
   const budget = data.budget || DEFAULTS.budget;
@@ -72,6 +72,7 @@ export default function OrganizadorPage() {
   function update(updater) { setData((current) => typeof updater === "function" ? updater(current) : ({ ...current, ...updater })); }
   function setMoment(key, value) { update((current) => ({ ...current, moment: { ...current.moment, [key]: value } })); }
   function setBudget(key, value) { update((current) => ({ ...current, budget: { ...current.budget, [key]: value } })); }
+  function updateRsvp(key, value) { if (key === "brideName") setBrideName(value); else setBridePhone(value); update((current) => ({ ...current, rsvp: { ...current.rsvp, [key]: value } })); }
   function go(next) { setView(next); window.scrollTo({ top: 0, behavior: "smooth" }); }
   function enterApp() { update((current) => ({ ...current, started: true })); go("inicio"); }
 
@@ -185,7 +186,7 @@ export default function OrganizadorPage() {
           <div className="ns-guest-list">{data.guests.people.length ? data.guests.people.map((person) => <article key={person.id} className={`ns-guest-row ${person.removed ? "guest-removed" : ""}`}><div className="ns-guest-name"><strong>{person.name}</strong><small>{person.group}{person.removed && person.reason ? ` · ${person.reason}` : ""}</small></div><select aria-label={`Grupo de ${person.name}`} value={person.group} onChange={(e) => updateGuest(person.id, { group: e.target.value })}>{GROUPS.map((group) => <option key={group}>{group}</option>)}</select><button className="ns-text-button" onClick={() => toggleRemoved(person)}>{person.removed ? "↶ Recolocar" : "Rever nome"}</button></article>) : <div className="ns-empty"><span>♡</span><strong>Sua lista começa com uma pessoa.</strong><p>Adicione o primeiro nome ou cole uma lista que já montou.</p></div>}</div>
           <div className="ns-first-tip"><span>✦</span><div><small>UMA FORMA GENTIL DE COMEÇAR</small><p>{bestFirstStep}</p></div></div>
           <button className="ns-print-button" onClick={() => window.print()}>Imprimir lista e grupos ↗</button>
-          {(data.moment.date || data.moment.certain) ? <section className="ns-card ns-rsvp"><p className="ns-kicker">QUANDO A DATA ESTIVER CERTA</p><h2>Vamos começar a confirmar?</h2><p>Monte o convite com um atalho de resposta. Ao tocar nele, cada convidado envia a confirmação para o WhatsApp da noiva.</p><div className="ns-rsvp-fields"><Field label="Nome do casal" value={brideName} onChange={(e) => setBrideName(e.target.value)} placeholder="Ex.: Ana e Luiza" /><Field label="WhatsApp da noiva (com DDI e DDD)" value={bridePhone} onChange={(e) => setBridePhone(e.target.value)} placeholder="5511999999999" /><Field label="Data do evento" type="date" value={data.moment.date} onChange={(e) => setMoment("date", e.target.value)} /><Field label="Local" value={data.celebration.location || ""} onChange={(e) => update((d) => ({ ...d, celebration: { ...d.celebration, location: e.target.value } }))} placeholder="Nome e endereço do local" /></div><div className="ns-rsvp-actions"><button className="ns-button ns-button-quiet" onClick={copyRsvp}>{copied ? "Convite copiado ✓" : "Copiar texto do convite"}</button><a className={`ns-button ns-button-primary ${!rsvpUrl() ? "is-disabled" : ""}`} href={rsvpUrl() || undefined} target="_blank" rel="noreferrer">Enviar convite pelo WhatsApp <span>↗</span></a></div><small className="ns-rsvp-note">O WhatsApp abre a lista de contatos com o convite pronto. A resposta de cada convidado abre uma conversa com a noiva. Ela precisa revisar e enviar as mensagens no WhatsApp; para importar respostas automaticamente de volta ao app, será necessária uma integração oficial do WhatsApp Business com servidor seguro.</small></section> : <div className="ns-rsvp-locked"><span>🔒</span><div><strong>A confirmação entra quando houver data ou certeza do evento.</strong><p>Assim a lista continua sendo um espaço para pensar, sem pressão para confirmar antes da hora.</p></div><button className="ns-text-button" onClick={() => update((d) => ({ ...d, moment: { ...d.moment, certain: !d.moment.certain } }))}>{data.moment.certain ? "Desmarcar" : "Já temos certeza"}</button></div>}
+          {(data.moment.date || data.moment.certain) ? <section className="ns-card ns-rsvp"><p className="ns-kicker">QUANDO A DATA ESTIVER CERTA</p><h2>Vamos começar a confirmar?</h2><p>Monte o convite com um atalho de resposta. Ao tocar nele, cada convidado envia a confirmação para o WhatsApp da noiva.</p><div className="ns-rsvp-fields"><Field label="Nome do casal" value={brideName} onChange={(e) => updateRsvp("brideName", e.target.value)} placeholder="Ex.: Ana e Luiza" /><Field label="WhatsApp da noiva (com DDI e DDD)" value={bridePhone} onChange={(e) => updateRsvp("bridePhone", e.target.value)} placeholder="5511999999999" /><Field label="Data do evento" type="date" value={data.moment.date} onChange={(e) => setMoment("date", e.target.value)} /><Field label="Local" value={data.celebration.location || ""} onChange={(e) => update((d) => ({ ...d, celebration: { ...d.celebration, location: e.target.value } }))} placeholder="Nome e endereço do local" /></div><div className="ns-rsvp-actions"><button className="ns-button ns-button-quiet" onClick={copyRsvp}>{copied ? "Convite copiado ✓" : "Copiar texto do convite"}</button><a className={`ns-button ns-button-primary ${!rsvpUrl() ? "is-disabled" : ""}`} href={rsvpUrl() || undefined} target="_blank" rel="noreferrer">Enviar convite pelo WhatsApp <span>↗</span></a></div><small className="ns-rsvp-note">O WhatsApp abre a lista de contatos com o convite pronto. A resposta de cada convidado abre uma conversa com a noiva. Ela precisa revisar e enviar as mensagens no WhatsApp; para importar respostas automaticamente de volta ao app, será necessária uma integração oficial do WhatsApp Business com servidor seguro.</small></section> : <div className="ns-rsvp-locked"><span>🔒</span><div><strong>A confirmação entra quando houver data ou certeza do evento.</strong><p>Assim a lista continua sendo um espaço para pensar, sem pressão para confirmar antes da hora.</p></div><button className="ns-text-button" onClick={() => update((d) => ({ ...d, moment: { ...d.moment, certain: !d.moment.certain } }))}>{data.moment.certain ? "Desmarcar" : "Já temos certeza"}</button></div>}
         </>}
 
         {view === "planejamento" && <>
