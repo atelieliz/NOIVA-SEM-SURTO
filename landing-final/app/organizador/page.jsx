@@ -189,7 +189,7 @@ export default function OrganizadorPage() {
   ];
   function markFinalReview() { setData((current) => ({ ...current, finalReviewDone: !current.finalReviewDone })); }
   return <main className={"ns-app ns-view-" + view}>
-    <header className="ns-top ns-app-top"><div className="ns-brand"><span className="ns-brand-mark">N</span><span>Noiva sem Surto</span></div>{view !== "sos" && <button className="ns-sos-top" onClick={() => go("sos")}>SOS</button>}</header>
+    <header className="ns-top ns-app-top"><div className="ns-brand"><span className="ns-brand-mark">N</span><span>Noiva sem Surto</span></div></header>
     <div className="ns-layout">
       <aside className="ns-sidebar"><p className="ns-kicker">SEU ESPAÇO</p><button className={`ns-nav-link ${view === "inicio" ? "selected" : ""}`} onClick={() => go("inicio")}><span>🏠</span>Início</button>{routes.map(([id, label, icon]) => <button key={id} className={`ns-nav-link ${view === id ? "selected" : ""} ${id === "sos" ? "sos-link" : ""}`} onClick={() => go(id)}><span>{icon}</span>{label}</button>)}<div className="ns-sidebar-note"><span>♡</span><p>Você não precisa resolver tudo hoje.</p></div></aside>
       <div className="ns-content">
